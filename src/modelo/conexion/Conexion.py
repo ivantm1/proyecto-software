@@ -10,6 +10,7 @@ class Conexion:
 
     def createConnection(self):
         try:
+            # Cambiar drivers a los de SQL server
             jdbc_driver = "com.mysql.cj.jdbc.Driver"
             jar_file = "lib/mysql-connector-j-9.6.0.jar"
             self.conexion = jaydebeapi.connect(
