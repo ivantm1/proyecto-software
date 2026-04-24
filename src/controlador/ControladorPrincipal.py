@@ -3,12 +3,12 @@ from src.modelo.vo.RegistroVO import RegistroVO
 
 # Para mandar cosas de la vista se debe hacer un metodo en la vista y llamarlo desde el controlador
 class ControladorPrincipal:
-    def __init__(self, ref_vista, ref_modelo):
+    def __init__(self, ref_vista, ref_modelo, ref_vista_registro=None):
         self._vista = ref_vista
         self._modelo = ref_modelo
 
     def ventanaIniciarSesion(self):
-        self._vistaLogin.show()
+        self._vista.show()
 
     def comprobarLogin(self, nombre, contrasena):
         if not nombre or not contrasena:
@@ -25,7 +25,8 @@ class ControladorPrincipal:
             self._vista.close()
 
     def ventanaRegistro(self):
-        self._vistaRegistro.show()
+        if self._vistaRegistro:
+            self._vistaRegistro.show()
 
     def registrarUsuario(self, nombre, apellidos, correo, contrasena, confirmar_contrasena):
         if not nombre or not apellidos or not correo or not contrasena or not confirmar_contrasena:
