@@ -6,6 +6,7 @@ class ControladorPrincipal:
     def __init__(self, ref_vista, ref_modelo, ref_vista_registro=None):
         self._vista = ref_vista
         self._modelo = ref_modelo
+        self._vistaRegistro = ref_vista_registro
 
     def ventanaIniciarSesion(self):
         self._vista.show()
