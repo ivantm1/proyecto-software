@@ -10,7 +10,7 @@ class SancionDaoJDBC(Conexion):
     SQL_INSERT     = "INSERT INTO Sanciones (correo_estudiante, tipo, semanas_sancion, fecha_inicio) VALUES (?, ?, ?, ?)"
     SQL_SELECT_EST = "SELECT correo_estudiante, tipo, semanas_sancion, fecha_inicio FROM Sanciones WHERE correo_estudiante = ?"
 
-    # RF24 — sanción automática por retraso (se llama al detectar fecha_devolucion superada)
+    # RF24 — sanción automática por retraso
     def aplicarSancionRetraso(self, correo_estudiante, semanas_retraso):
         semanas = _TABLA_RETRASO.get(semanas_retraso, _SANCION_MAX_RETRASO)
         return self._insertarSancion(correo_estudiante, "retraso", semanas)
@@ -33,24 +33,6 @@ class SancionDaoJDBC(Conexion):
     # Consultar todas las sanciones de un estudiante
     def obtenerSancionesEstudiante(self, correo_estudiante):
         cursor = self.getCursor()
-        sanciones = []
-        try:
-            cursor.execute(self.SQL_SELECT_EST, (correo_estudiante,))
-            for row in cursor.fetchall():
-                correo, tipo, semanas, fecha_inicio = row
-                sanciones.append(SancionVO(correo, tipo, semanas, fecha_inicio))
-        except Exception as e:
-            print(f"Error en obtenerSancionesEstudiante: {e}")
-        return sanciones
-
-    # Comprobar si un estudiante tiene alguna sanción aún activa
-    def tieneSancionActiva(self, correo_estudiante):
-        hoy = datetime.date.today()
-        for s in self.obtenerSancionesEstudiante(correo_estudiante):
-            fecha_fin = s.fecha_inicio + datetime.timedelta(weeks=s.semanas_sancion)
-            if fecha_fin > hoy:
-                return True
-        return False
         sanciones = []
         try:
             cursor.execute(self.SQL_SELECT_EST, (correo_estudiante,))
