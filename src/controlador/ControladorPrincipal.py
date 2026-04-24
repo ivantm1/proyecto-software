@@ -7,15 +7,21 @@ class ControladorPrincipal:
         self._modelo = ref_modelo
 
     def ventanaIniciarSesion(self):
-        self._vista.show()
+        self._vistaLogin.show()
 
     def comprobarLogin(self, nombre, passw):
+        if not nombre or not passw:
+            self._vista.lanzarAviso("Por favor, introduce usuario y contraseña.")
+            return
+        
         login = LoginVO(nombre, passw)
         # Comprobar si el usuario y contraseñas son adecuados, si no lo son, no se envia nada al modelo
         resultado = self._modelo.consultarLogin(login)
-        self._vista.lanzarAviso("Usuario o contraseña incorrecto")
-
-        if resultado == None:
-            print("No existe")
+        if resultado is None:
+            self._vista.lanzarAviso("Usuario o contraseña incorrecto.")
         else:
+            self._vista.lanzarAviso("Inicio de sesión con éxito")
             self._vista.close()
+
+    def ventanaRegistro(self):
+        self._vista.show()

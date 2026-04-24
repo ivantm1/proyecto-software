@@ -1,9 +1,9 @@
 from PyQt5.QtWidgets import QApplication, QMainWindow, QMessageBox
 from PyQt5 import uic
-from src.modelo.vo.LoginVO import LoginVO
+from src.modelo.vo.RegistroVO import RegistroVO
 
 # Cargar la interfaz generada desde el archivo .ui
-Form, Window = uic.loadUiType("./src/vista/Ui/VistaLogin.ui")
+Form, Window = uic.loadUiType("./src/vista/Ui/VistaRegistro.ui")
 
 class MiVentana(QMainWindow, Form):
     def __init__(self):
@@ -11,17 +11,7 @@ class MiVentana(QMainWindow, Form):
         self.setupUi(self)  # Inicializa los widgets
         self.controlador = None
         # Conectar el botón a la función
-        self.boton_inicio_sesion.clicked.connect(self.on_login_click)
         self.boton_registro.clicked.connect(self.on_register_click)
-
-    def on_login_click(self):
-        user = self.Linea_usuario.text() #Obtener el texto del campo nombre
-        password = self.Linea_contrasena.text() #Obtener el texto del campo Contraseña
-
-        login = LoginVO(user, password)
-        if self.controlador:
-            self.controlador.comprobarLogin(user, password)
-        return login
     
     def on_register_click(self):
         if self.controlador:
