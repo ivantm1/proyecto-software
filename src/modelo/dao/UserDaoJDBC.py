@@ -11,15 +11,11 @@ class UserDaoJBDC(Conexion):
         cursor = self.getCursor()
         try:
             cursor.execute(self.SQL_CHECK_LOGIN, (loginVO.nombre, loginVO.contrasena))
-            rows = cursor.fetchone()
-
-            if rows == None:
+            row = cursor.fetchone()
+            if row is None:
                 return None
-            else:
-                nombre, primer_apellido, segundo_apellido, email = rows
-                usuario = UsuariosVO(nombre, primer_apellido, segundo_apellido, email)
-                return usuario
-            
+            nombre_user, first_name, full_name, email, tipo = row
+            return UsuariosVO(nombre_user, first_name, full_name, email, tipo)
         except Exception as e:
             print(f"Error en el login: {e}")
             return None
@@ -37,16 +33,15 @@ class UserDaoJBDC(Conexion):
     def select(self):
         cursor = self.getCursor()
         users = []
-
         try:
             cursor.execute(self.SQL_SELECT)
             rows = cursor.fetchall()
-
             for row in rows:
                 nombre, primer_apellido, segundo_apellido, email = row
                 usuario = UsuariosVO(nombre, primer_apellido, segundo_apellido, email)
 
         except Exception as e:
             print(e)
+        return users
 
         return users
