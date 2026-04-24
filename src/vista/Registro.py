@@ -1,6 +1,5 @@
 from PyQt5.QtWidgets import QApplication, QMainWindow, QMessageBox
 from PyQt5 import uic
-from src.modelo.vo.RegistroVO import RegistroVO
 
 # Cargar la interfaz generada desde el archivo .ui
 Form, Window = uic.loadUiType("./src/vista/Ui/VistaRegistro.ui")
@@ -20,10 +19,8 @@ class MiVentana(QMainWindow, Form):
         contrasena = self.Linea_contrasena.text()
         confirmar_contrasena = self.Linea_confirmar_contrasena.text()
 
-        registro = RegistroVO(nombre, apellidos, correo, contrasena, confirmar_contrasena)
         if self.controlador:
             self.controlador.registrarUsuario(nombre, apellidos, correo, contrasena, confirmar_contrasena)
-        return registro
     
     def lanzarAviso(self, aviso):
         QMessageBox.information(self, "Información", aviso)
