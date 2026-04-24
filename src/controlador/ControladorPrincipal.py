@@ -11,11 +11,8 @@ class ControladorPrincipal:
 
     def comprobarLogin(self, nombre, passw):
         login = LoginVO(nombre, passw)
-        # Comprobar si el usuario y contraseñas son adecuados, si no lo son, no se envia nada al modelo
-        resultado = self._modelo.consultarLogin(login)
-        self._vista.lanzarAviso("Usuario o contraseña incorrecto")
-
-        if resultado == None:
-            print("No existe")
+        resultado = self._modelo.comprobarLogin(login)
+        if resultado is None:
+            self._vista.lanzarAviso("Usuario o contraseña incorrecto")
         else:
             self._vista.close()

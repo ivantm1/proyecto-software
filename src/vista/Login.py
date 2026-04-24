@@ -21,7 +21,7 @@ class MiVentana(QMainWindow, Form):
         return login
     
     def lanzarAviso(self, aviso):
-        QMessageBox.information(self._vista, "Info", aviso)
+        QMessageBox.information(self, "Info", aviso)
     
     @property
     def controlador(self):
