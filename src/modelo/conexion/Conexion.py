@@ -10,11 +10,15 @@ class Conexion:
 
     def createConnection(self):
         try:
-            jdbc_driver = "com.mysql.cj.jdbc.Driver"
-            jar_file = "lib/mysql-connector-j-9.6.0.jar"
+            jdbc_driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver"
+            jar_file = "lib/mssql-jdbc-13.4.0.jre11.jar"
+            connection_url = (
+                f"jdbc:sqlserver://{self._host};"
+                f"databaseName={self._database}"
+            )
             self.conexion = jaydebeapi.connect(
                 jdbc_driver,
-                f"jdbc:mysql://{self._host}/{self._database}",
+                connection_url,
                 [self._user, self._password],
                 jar_file
             )

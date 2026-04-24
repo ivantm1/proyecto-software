@@ -15,12 +15,12 @@ class MiVentana(QMainWindow, Form):
         self.boton_registro.clicked.connect(self.on_register_click)
 
     def on_login_click(self):
-        user = self.Linea_usuario.text() #Obtener el texto del campo nombre
-        password = self.Linea_contrasena.text() #Obtener el texto del campo Contraseña
+        usuario = self.Linea_usuario.text() #Obtener el texto del campo nombre
+        contrasena = self.Linea_contrasena.text() #Obtener el texto del campo Contraseña
 
-        login = LoginVO(user, password)
+        login = LoginVO(usuario, contrasena)
         if self.controlador:
-            self.controlador.comprobarLogin(user, password)
+            self.controlador.comprobarLogin(usuario, contrasena)
         return login
     
     def on_register_click(self):

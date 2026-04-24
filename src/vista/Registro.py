@@ -14,8 +14,16 @@ class MiVentana(QMainWindow, Form):
         self.boton_registro.clicked.connect(self.on_register_click)
     
     def on_register_click(self):
+        nombre = self.Linea_nombre.text()
+        apellidos = self.Linea_apellidos.text()
+        correo = self.Linea_correo.text()
+        contrasena = self.Linea_contrasena.text()
+        confirmar_contrasena = self.Linea_confirmar_contrasena.text()
+
+        registro = RegistroVO(nombre, apellidos, correo, contrasena, confirmar_contrasena)
         if self.controlador:
-            self.controlador.ventanaRegistro()
+            self.controlador.registrarUsuario(nombre, apellidos, correo, contrasena, confirmar_contrasena)
+        return registro
     
     def lanzarAviso(self, aviso):
         QMessageBox.information(self, "Información", aviso)
