@@ -45,7 +45,7 @@ CREATE TABLE Libros (
     autor VARCHAR(100) NOT NULL,
     fecha_llegada DATE,
 	num_copias INT default 1,
-	disponibilidad VARCHAR(40) CHECK (tipo IN ('Disponible', 'Retirado', 'Prestado')),
+	disponibilidad VARCHAR(40) CHECK (disponibilidad IN ('Disponible', 'Retirado', 'Prestado')),
     descripcion TEXT,
     nombre_tema VARCHAR(100),
     FOREIGN KEY (nombre_tema) REFERENCES Tema(nombre_tema)
@@ -65,7 +65,7 @@ CREATE TABLE Sanciones (
 
 CREATE TABLE Reservas (
 	ID_reserva INT PRIMARY KEY IDENTITY(1,1),
-	estado VARCHAR(40) CHECK (tipo IN ('Pendiente', 'Cumplida')) default 'Pendiente' ,
+	estado VARCHAR(40) CHECK (estado IN ('Pendiente', 'Cumplida')) default 'Pendiente' ,
     ID_usuario INT,
     ISBN VARCHAR(20),
     fecha_reserva DATE NOT NULL,
@@ -77,7 +77,7 @@ CREATE TABLE Prestamos (
 	ID_prestamo INT PRIMARY KEY IDENTITY(1,1),
     ID_usuario INT,
     ID_ejemplar INT,
-	estado VARCHAR(40) CHECK (tipo IN ('Activo', 'Devuelto', 'Vencido')),
+	estado VARCHAR(40) CHECK (estado IN ('Activo', 'Devuelto', 'Vencido')),
     fecha_prestamo DATE NOT NULL,
     fecha_devolucion DATE NOT NULL,
 	prorroga BIT default 0,
