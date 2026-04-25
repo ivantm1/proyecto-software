@@ -27,6 +27,7 @@ class ControladorPrincipal:
 
     def ventanaRegistro(self):
         if self._vistaRegistro:
+            self._vistaLogin.close()
             self._vistaRegistro.show()
 
     def registrarUsuario(self, nombre, apellidos, correo, contrasena, confirmar_contrasena):

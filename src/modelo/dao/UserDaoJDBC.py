@@ -1,5 +1,5 @@
 from src.modelo.conexion.Conexion import Conexion
-from src.modelo.vo.UsuarioVO import UsuarioVo
+from src.modelo.vo.UsuarioVO import UsuarioVO
 
 class UserDaoJDBC(Conexion):
     SQL_CHECK_LOGIN = "SELECT email, contrasena FROM Usuarios WHERE email = ? AND contrasena = ?"
