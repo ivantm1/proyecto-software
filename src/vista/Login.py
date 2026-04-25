@@ -1,11 +1,11 @@
-from PyQt5.QtWidgets import QApplication, QMainWindow, QMessageBox
+from PyQt5.QtWidgets import QApplication, QMainWindow, QMessageBox, QDialog
 from PyQt5 import uic
 from src.modelo.vo.LoginVO import LoginVO
 
 # Cargar la interfaz generada desde el archivo .ui
 Form, Window = uic.loadUiType("./src/vista/Ui/VistaLogin.ui")
 
-class MiVentana(QMainWindow, Form):
+class MiVentana(QDialog, Form):
     def __init__(self):
         super().__init__()
         self.setupUi(self)  # Inicializa los widgets

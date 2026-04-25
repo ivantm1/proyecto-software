@@ -14,7 +14,9 @@ class Conexion:
             jar_file = "lib/mssql-jdbc-13.4.0.jre11.jar"
             connection_url = (
                 f"jdbc:sqlserver://{self._host};"
-                f"databaseName={self._database}"
+                f"databaseName={self._database};"
+                f"encrypt=true;"
+                f"trustServerCertificate=true;"
             )
             self.conexion = jaydebeapi.connect(
                 jdbc_driver,
