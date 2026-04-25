@@ -90,61 +90,60 @@ GO
 
 
 
-
-
-
 USE BibliotecaDB;
 GO
 
 
 INSERT INTO Tema (nombre_tema, descripcion) VALUES 
-('Medicina y Anatomía', 'Manuales clínicos, atlas anatómicos y patología'),
-('Derecho Civil y Penal', 'Códigos legislativos, jurisprudencia y manuales de grado'),
-('Ingeniería Informática', 'Algoritmia, bases de datos y arquitectura de sistemas'),
-('Economía y Empresa', 'Microeconomía, macroeconomía y contabilidad financiera'),
-('Arquitectura', 'Diseño estructural, historia del arte arquitectónico y urbanismo'),
-('Biología Celular', 'Microbiología, genética y prácticas de laboratorio'),
-('Física y Matemáticas', 'Cálculo avanzado, álgebra lineal y mecánica cuántica'),
-('Psicología Clínica', 'Evaluación psicológica, neurociencia y terapias'),
-('Historia Contemporánea', 'Archivos históricos y monografías del siglo XX'),
-('Filología Moderna', 'Lingüística, gramática histórica y literatura comparada');
+('Medicina y Anatomï¿½a', 'Manuales clï¿½nicos, atlas anatï¿½micos y patologï¿½a'),
+('Derecho Civil y Penal', 'Cï¿½digos legislativos, jurisprudencia y manuales de grado'),
+('Ingenierï¿½a Informï¿½tica', 'Algoritmia, bases de datos y arquitectura de sistemas'),
+('Economï¿½a y Empresa', 'Microeconomï¿½a, macroeconomï¿½a y contabilidad financiera'),
+('Arquitectura', 'Diseï¿½o estructural, historia del arte arquitectï¿½nico y urbanismo'),
+('Biologï¿½a Celular', 'Microbiologï¿½a, genï¿½tica y prï¿½cticas de laboratorio'),
+('Fï¿½sica y Matemï¿½ticas', 'Cï¿½lculo avanzado, ï¿½lgebra lineal y mecï¿½nica cuï¿½ntica'),
+('Psicologï¿½a Clï¿½nica', 'Evaluaciï¿½n psicolï¿½gica, neurociencia y terapias'),
+('Historia Contemporï¿½nea', 'Archivos histï¿½ricos y monografï¿½as del siglo XX'),
+('Filologï¿½a Moderna', 'Lingï¿½ï¿½stica, gramï¿½tica histï¿½rica y literatura comparada');
 
 
 INSERT INTO Usuarios (contrasena, email, nombre, apellidos, tipo) VALUES 
 
-('pass_med', 'elena.rodriguez@alumnos.univ.edu', 'Elena', 'Rodríguez', 'Estudiante'),
-('pass_der', 'miguel.gomez@alumnos.univ.edu', 'Miguel', 'Gómez', 'Estudiante'),
-('pass_ing', 'sara.martin@alumnos.univ.edu', 'Sara', 'Martín', 'Estudiante'),
-('pass_eco', 'david.fer@alumnos.univ.edu', 'David', 'Fernández', 'Estudiante'),
-('pass_arq', 'laura.diaz@alumnos.univ.edu', 'Laura', 'Díaz', 'Estudiante'),
+('1234', 'estudiante1@estudiantes.unileon.es', 'Elena', 'Rodrï¿½guez', 'Estudiante'),
+('pass_der', 'miguel.gomez@estudiantes.unileon.es', 'Miguel', 'Gï¿½mez', 'Estudiante'),
+('pass_ing', 'sara.martin@estudiantes.unileon.es', 'Sara', 'Martï¿½n', 'Estudiante'),
+('pass_eco', 'david.fer@estudiantes.unileon.es', 'David', 'Fernï¿½ndez', 'Estudiante'),
+('pass_arq', 'laura.diaz@estudiantes.unileon.es', 'Laura', 'Dï¿½az', 'Estudiante'),
 
 
-('biblio_jefe', 'carlos.biblio@pdi.univ.edu', 'Carlos', 'López', 'Bibliotecario'),
-('biblio_tarde', 'marta.biblio@pdi.univ.edu', 'Marta', 'Sánchez', 'Bibliotecario'),
+('biblio_jefe', 'carlos.biblio@unileon.es', 'Carlos', 'Lï¿½pez', 'Bibliotecario'),
+('biblio_tarde', 'marta.biblio@unileon.es', 'Marta', 'Sï¿½nchez', 'Bibliotecario'),
 
 
-('admin_root', 'sistemas.biblioteca@univ.edu', 'Admin', 'Sistemas IT', 'Admin');
+('admin_root', 'sistemas.biblioteca@unileon.es', 'Admin', 'Sistemas IT', 'Admin');
 
 
 INSERT INTO Estudiantes (ID_usuario, num_prestamos, num_reservas, sanciones)
 SELECT ID_usuario, 0, 0, 0 
 FROM Usuarios 
 WHERE tipo = 'Estudiante';
+ALTER LOGIN biblioteca_user WITH PASSWORD = 'pruebaISD2024';
+ALTER LOGIN biblioteca_user ENABLE;
 
 
 INSERT INTO Libros (ISBN, titulo, autor, fecha_llegada, num_copias, disponibilidad, descripcion, nombre_tema) VALUES 
 
-('978-84-MED', 'Anatomía con orientación clínica (Moore)', 'Keith L. Moore', '2023-09-01', 1, 'Disponible', 'Bibliografía obligatoria para 1º de Medicina', 'Medicina y Anatomía'),
+('978-84-MED', 'Anatomï¿½a con orientaciï¿½n clï¿½nica (Moore)', 'Keith L. Moore', '2023-09-01', 1, 'Disponible', 'Bibliografï¿½a obligatoria para 1ï¿½ de Medicina', 'Medicina y Anatomï¿½a'),
 
-('978-01-ING', 'Introduction to Algorithms (Cormen)', 'Thomas H. Cormen', '2023-09-15', 1, 'Disponible', 'El estándar mundial para el estudio de algoritmos', 'Ingeniería Informática'),
+('978-01-ING', 'Introduction to Algorithms (Cormen)', 'Thomas H. Cormen', '2023-09-15', 1, 'Disponible', 'El estï¿½ndar mundial para el estudio de algoritmos', 'Ingenierï¿½a Informï¿½tica'),
 
-('978-33-DER', 'Código Civil Español Comentado', 'Carlos Lasarte', '2024-01-10', 1, 'Retirado', 'Edición de consulta en sala. No disponible para préstamo externo.', 'Derecho Civil y Penal'),
-
-
-('978-55-ECO', 'Principios de Economía', 'N. Gregory Mankiw', '2022-09-05', 1, 'Prestado', 'Manual básico de introducción a la micro y macroeconomía', 'Economía y Empresa'),
+('978-33-DER', 'Cï¿½digo Civil Espaï¿½ol Comentado', 'Carlos Lasarte', '2024-01-10', 1, 'Retirado', 'Ediciï¿½n de consulta en sala. No disponible para prï¿½stamo externo.', 'Derecho Civil y Penal'),
 
 
-('978-99-ARQ', 'Historia de la Arquitectura Moderna', 'Leonardo Benevolo', '2021-11-20', 1, 'Disponible', 'Edición ilustrada. Requiere trato cuidadoso.', 'Arquitectura');
+('978-55-ECO', 'Principios de Economï¿½a', 'N. Gregory Mankiw', '2022-09-05', 1, 'Prestado', 'Manual bï¿½sico de introducciï¿½n a la micro y macroeconomï¿½a', 'Economï¿½a y Empresa'),
+
+
+('978-99-ARQ', 'Historia de la Arquitectura Moderna', 'Leonardo Benevolo', '2021-11-20', 1, 'Disponible', 'Ediciï¿½n ilustrada. Requiere trato cuidadoso.', 'Arquitectura');
 
 GO
 

@@ -17,18 +17,38 @@ class ControladorPrincipal:
             return False
         
         # Comprobar si el usuario y contraseñas son adecuados, si no lo son, no se envia nada al modelo
+        login = LoginVO(nombre, contrasena)
         resultado = self._modelo.comprobarLogin(login)
         if resultado is None:
-            self._vistaLogin.lanzarAviso("Usuario o contraseña incorrecto.")
-            return False
+            self._vista.lanzarAviso("Usuario o contraseña incorrecto.")
         else:
-            self._vistaLogin.lanzarAviso("Inicio de sesión con éxito")
-            self._vistaLogin.close()
+            self._vista.close()
+            if resultado.tipo == "Estudiante":
+                self.ventanaEstudiante()
+            elif resultado.tipo == "Bibliotecario":
+                self.ventanaBibliotecario()
+            elif resultado.tipo == "Admin":
+                self.ventanaAdmin()
 
     def ventanaRegistro(self):
         if self._vistaRegistro:
             self._vistaLogin.close()
             self._vistaRegistro.show()
+
+    def ventanaEstudiante(self):
+        if self._vistaEstudiante:
+            self._vistaLogin.close()
+            self._vistaEstudiante.show()
+
+    def ventanaBibliotecario(self):
+        if self._vistaBibliotecario:
+            self._vistaLogin.close()
+            self._vistaBibliotecario.show()
+
+    def ventanaAdmin(self):
+        if self._vistaAdmin:
+            self._vistaLogin.close()
+            self._vistaAdmin.show()
 
     def registrarUsuario(self, nombre, apellidos, correo, contrasena, confirmar_contrasena):
         if not nombre or not apellidos or not correo or not contrasena or not confirmar_contrasena:
