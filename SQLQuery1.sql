@@ -55,7 +55,7 @@ CREATE TABLE Libros (
 CREATE TABLE Sanciones (
     ID_sancion INT PRIMARY KEY IDENTITY(1,1),
     tipo VARCHAR(100) NOT NULL,
-	estado VARCHAR(40) CHECK (tipo IN ('Activa', 'Cumplida')),
+	estado VARCHAR(40) CHECK (estado IN ('Activa', 'Cumplida')),
     fecha_inicio DATE NOT NULL,
     fecha_fin DATE,
     ID_usuario INT, 
@@ -76,13 +76,13 @@ CREATE TABLE Reservas (
 CREATE TABLE Prestamos (
 	ID_prestamo INT PRIMARY KEY IDENTITY(1,1),
     ID_usuario INT,
-    ID_ejemplar INT,
+    ISBN VARCHAR(20),
 	estado VARCHAR(40) CHECK (estado IN ('Activo', 'Devuelto', 'Vencido')),
     fecha_prestamo DATE NOT NULL,
     fecha_devolucion DATE NOT NULL,
 	prorroga BIT default 0,
     FOREIGN KEY (ID_usuario) REFERENCES Estudiantes(ID_usuario),
-    FOREIGN KEY (ID_ejemplar) REFERENCES Ejemplar(ID_ejemplar)
+    FOREIGN KEY (ISBN) REFERENCES Libros(ISBN)
 );
 GO
 
