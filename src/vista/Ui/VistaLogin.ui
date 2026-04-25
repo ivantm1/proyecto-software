@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1086</width>
-    <height>835</height>
+    <width>1267</width>
+    <height>924</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,7 +15,7 @@
   </property>
   <property name="styleSheet">
    <string notr="true">#Dialog {
-    background-color: #7be087;
+    background-color: #89ABA7;
 }</string>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout_5">
@@ -39,7 +39,7 @@
    <item>
     <layout class="QVBoxLayout" name="verticalLayout_2">
      <property name="spacing">
-      <number>10</number>
+      <number>20</number>
      </property>
      <property name="sizeConstraint">
       <enum>QLayout::SetMinAndMaxSize</enum>
@@ -142,15 +142,19 @@
       <widget class="QPushButton" name="boton_inicio_sesion">
        <property name="styleSheet">
         <string notr="true">QPushButton {
-    background-color: #2E5F3A; /* Usamos el verde bosque */
-    color: white;              /* Texto en blanco para contraste */
-    border-radius: 5px;        /* Bordes redondeados */
-    padding: 8px;              /* Espaciado interno */
+    background-color: #1B4332; 
+    color: white;  
+    border-radius: 5px; 
+    padding: 8px;  
     font-weight: bold;
 }
 
 QPushButton:hover {
-    background-color: #3e7f4d; /* Un verde un poco más claro al pasar el ratón */
+    background-color: #2D6A4F; 
+}
+
+QPushButton:pressed {
+    background-color: #081C15; 
 }</string>
        </property>
        <property name="text">
@@ -179,15 +183,19 @@ QPushButton:hover {
       <widget class="QPushButton" name="boton_registro">
        <property name="styleSheet">
         <string notr="true">QPushButton {
-    background-color: #2E5F3A; /* Usamos el verde bosque */
-    color: white;              /* Texto en blanco para contraste */
-    border-radius: 5px;        /* Bordes redondeados */
-    padding: 8px;              /* Espaciado interno */
+    background-color: #1B4332; 
+    color: white;  
+    border-radius: 5px; 
+    padding: 8px;  
     font-weight: bold;
 }
 
 QPushButton:hover {
-    background-color: #3e7f4d; /* Un verde un poco más claro al pasar el ratón */
+    background-color: #2D6A4F; 
+}
+
+QPushButton:pressed {
+    background-color: #081C15; 
 }</string>
        </property>
        <property name="text">
