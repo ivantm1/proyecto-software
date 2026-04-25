@@ -5,7 +5,7 @@ from src.modelo.vo.LoginVO import LoginVO
 # Cargar la interfaz generada desde el archivo .ui
 Form, Window = uic.loadUiType("./src/vista/Ui/VistaLogin.ui")
 
-class MiVentana(QDialog, Form):
+class Login(QDialog, Form):
     def __init__(self):
         super().__init__()
         self.setupUi(self)  # Inicializa los widgets
@@ -20,7 +20,7 @@ class MiVentana(QDialog, Form):
 
         login = LoginVO(usuario, contrasena)
         if self.controlador:
-            self.controlador.comprobarLogin(usuario, contrasena)
+            self.controlador.comprobarLogin(login)
         return login
     
     def on_register_click(self):

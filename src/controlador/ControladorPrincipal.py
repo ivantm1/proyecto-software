@@ -3,27 +3,27 @@ from src.modelo.vo.RegistroVO import RegistroVO
 
 # Para mandar cosas de la vista se debe hacer un metodo en la vista y llamarlo desde el controlador
 class ControladorPrincipal:
-    def __init__(self, ref_vista, ref_modelo, ref_vista_registro=None):
-        self._vista = ref_vista
+    def __init__(self, ref_modelo, ref_login, ref_vista_registro=None):
+        self._vistaLogin = ref_login
         self._modelo = ref_modelo
         self._vistaRegistro = ref_vista_registro
 
     def ventanaIniciarSesion(self):
-        self._vista.show()
+        self._vistaLogin.show()
 
-    def comprobarLogin(self, nombre, contrasena):
-        if not nombre or not contrasena:
-            self._vista.lanzarAviso("Por favor, introduce usuario y contraseña.")
-            return
+    def comprobarLogin(self, login):
+        if not login.nombre or not login.contrasena:
+            self._vistaLogin.lanzarAviso("Por favor, introduce usuario y contraseña.")
+            return False
         
-        login = LoginVO(nombre, contrasena)
         # Comprobar si el usuario y contraseñas son adecuados, si no lo son, no se envia nada al modelo
         resultado = self._modelo.comprobarLogin(login)
         if resultado is None:
-            self._vista.lanzarAviso("Usuario o contraseña incorrecto.")
+            self._vistaLogin.lanzarAviso("Usuario o contraseña incorrecto.")
+            return False
         else:
-            self._vista.lanzarAviso("Inicio de sesión con éxito")
-            self._vista.close()
+            self._vistaLogin.lanzarAviso("Inicio de sesión con éxito")
+            self._vistaLogin.close()
 
     def ventanaRegistro(self):
         if self._vistaRegistro:
@@ -31,22 +31,22 @@ class ControladorPrincipal:
 
     def registrarUsuario(self, nombre, apellidos, correo, contrasena, confirmar_contrasena):
         if not nombre or not apellidos or not correo or not contrasena or not confirmar_contrasena:
-            self._vista.lanzarAviso("Por favor, rellena todos los campos.")
+            self._vistaLogin.lanzarAviso("Por favor, rellena todos los campos.")
             return
         
         if "@estudiantes.unileon.es" not in correo:
-            self._vista.lanzarAviso("Por favor, utilice un correo institucional.")
+            self._vistaLogin.lanzarAviso("Por favor, utilice un correo institucional.")
             return
 
         if contrasena != confirmar_contrasena:
-            self._vista.lanzarAviso("Las contraseñas no coinciden.")
+            self._vistaLogin.lanzarAviso("Las contraseñas no coinciden.")
             return
         
         registro = RegistroVO(nombre, apellidos, correo, contrasena)
         # Comprobar si el usuario y contraseñas son adecuados, si no lo son, no se envia nada al modelo
         resultado = self._modelo.registrarUsuario(registro)
         if resultado:
-            self._vista.lanzarAviso("Usuario registrado con éxito")
-            self._vista.close()
+            self._vistaLogin.lanzarAviso("Usuario registrado con éxito")
+            self._vistaLogin.close()
         else:
-            self._vista.lanzarAviso("Error al registrarse.")
+            self._vistaLogin.lanzarAviso("Error al registrarse.")

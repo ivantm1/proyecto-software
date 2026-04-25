@@ -1,10 +1,8 @@
 from src.modelo.conexion.Conexion import Conexion
-from src.modelo.vo.RegistroVO import RegistroVO
-from src.modelo.vo.UsuariosVO import UsuariosVO
+from src.modelo.vo.UsuarioVO import UsuarioVo
 
 class UserDaoJDBC(Conexion):
-    SQL_SELECT = "SELECT nombre, primer_apellido, segundo_apellido, email, tipo FROM Usuarios"
-    SQL_CHECK_LOGIN = "SELECT nombre, primer_apellido, segundo_apellido, email, tipo FROM Usuarios WHERE email = ? AND contrasena = ?"
+    SQL_CHECK_LOGIN = "SELECT email, contrasena FROM Usuarios WHERE email = ? AND contrasena = ?"
     SQL_REGISTRO = "INSERT INTO Usuarios (nombre, apellidos, email, contrasena) VALUES (?, ?, ?, ?)"
 
     def comprobarLogin(self, loginVO):
@@ -15,7 +13,7 @@ class UserDaoJDBC(Conexion):
             if row is None:
                 return None
             nombre_user, first_name, full_name, email, tipo = row
-            return UsuariosVO(nombre_user, first_name, full_name, email, tipo)
+            return UsuarioVO(nombre_user, first_name, full_name, email)
         except Exception as e:
             print(f"Error en el login: {e}")
             return None
@@ -29,17 +27,3 @@ class UserDaoJDBC(Conexion):
         except Exception as e:
             print(f"Error en el registro: {e}")
             return False
-
-    def select(self):
-        cursor = self.getCursor()
-        users = []
-        try:
-            cursor.execute(self.SQL_SELECT)
-            rows = cursor.fetchall()
-            for row in rows:
-                nombre, primer_apellido, segundo_apellido, email, tipo = row
-                usuario = UsuariosVO(nombre, primer_apellido, segundo_apellido, email, tipo)
-                users.append(usuario)
-        except Exception as e:
-            print(e)
-        return users
