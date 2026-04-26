@@ -1,9 +1,9 @@
 from PyQt5.QtWidgets import QMainWindow, QMessageBox, QDialog
 from PyQt5 import uic
 
-Form, Window = uic.loadUiType("./src/vista/Ui/VistaEstudiante.ui")
+Form, Window = uic.loadUiType("./src/vista/Ui/VistaBibliotecario.ui")
 
-class Estudiante(QDialog, Form):
+class Bibliotecario(QDialog, Form):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
@@ -11,7 +11,9 @@ class Estudiante(QDialog, Form):
         # Conectar el botón a la función
         self.boton_perfil.clicked.connect(self.on_ver_perfil_click)
         self.boton_catalogo.clicked.connect(self.on_ver_catalogo_click)
-        self.boton_prestamos.clicked.connect(self.on_mis_prestamos_click)
+        self.boton_devolucion.clicked.connect(self.on_devolucion_click)
+        self.boton_prestamo.clicked.connect(self.on_prestamo_click)
+        self.boton_sanciones.clicked.connect(self.on_sanciones_click)
 
     def on_ver_perfil_click(self):
         if self.controlador:
@@ -21,9 +23,19 @@ class Estudiante(QDialog, Form):
         if self.controlador:
             self.controlador.ventanaVerCatalogo()
 
-    def on_mis_prestamos_click(self):
+    def on_devolucion_click(self):
         if self.controlador:
-            self.controlador.ventanaMisPrestamos()
+            self.controlador.ventanaDevolucion()
+
+    def on_prestamo_click(self):
+        if self.controlador:
+            self.controlador.ventanaPrestamo()
+
+    def on_sanciones_click(self):
+        if self.controlador:
+            self.controlador.ventanaSanciones()
+
+
 
 
     @property

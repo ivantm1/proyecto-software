@@ -3,11 +3,12 @@ from src.modelo.vo.RegistroVO import RegistroVO
 
 # Para mandar cosas de la vista se debe hacer un metodo en la vista y llamarlo desde el controlador
 class ControladorPrincipal:
-    def __init__(self, ref_modelo, ref_login, ref_vista_registro=None,ref_vista_estudiante=None):
+    def __init__(self, ref_modelo, ref_login, ref_vista_registro=None,ref_vista_estudiante=None,ref_vista_bibliotecario=None):
         self._vistaLogin = ref_login
         self._modelo = ref_modelo
         self._vistaRegistro = ref_vista_registro
         self._vistaEstudiante = ref_vista_estudiante
+        self._vistaBibliotecario = ref_vista_bibliotecario
 
     def ventanaIniciarSesion(self):
         self._vistaLogin.show()
@@ -20,7 +21,7 @@ class ControladorPrincipal:
         # Comprobar si el usuario y contraseñas son adecuados, si no lo son, no se envia nada al modelo
         resultado = self._modelo.comprobarLogin(login)
         if resultado is None:
-            self._vista.lanzarAviso("Usuario o contraseña incorrecto.")
+            self._vistaLogin.lanzarAviso("Usuario o contraseña incorrecto.")
         else:
             self._vistaLogin.close()
             if resultado.tipo == "Estudiante":
@@ -42,12 +43,10 @@ class ControladorPrincipal:
 
     def ventanaBibliotecario(self):
         if self._vistaBibliotecario:
-
             self._vistaBibliotecario.show()
 
     def ventanaAdmin(self):
         if self._vistaAdmin:
-
             self._vistaAdmin.show()
 
     def registrarUsuario(self, nombre, apellidos, correo, contrasena, confirmar_contrasena):

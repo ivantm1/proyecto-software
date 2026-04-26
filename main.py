@@ -3,6 +3,7 @@ from PyQt5 import uic
 from src.vista.Login import Login
 from src.vista.Registro import Registro
 from src.vista.Estudiante import Estudiante
+from src.vista.Bibliotecario import Bibliotecario
 from src.modelo.Logica import Logica
 from src.controlador.ControladorPrincipal import ControladorPrincipal
 
@@ -14,8 +15,9 @@ if __name__ == "__main__":
     registro = Registro()
     modelo = Logica()
     estudiante= Estudiante()
+    bibliotecario= Bibliotecario()
 
-    controlador = ControladorPrincipal(modelo, login, registro, estudiante)
+    controlador = ControladorPrincipal(modelo, login, registro, estudiante, bibliotecario)
 
     login.controlador = controlador
     controlador.ventanaIniciarSesion()
