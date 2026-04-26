@@ -19,7 +19,7 @@ class Estudiante(QDialog, Form):
 
     def on_ver_catalogo_click(self):
         if self.controlador:
-            self.controlador.ventanaVerCatalogo()
+            self.controlador.ventanaCatalogo()
 
     def on_mis_prestamos_click(self):
         if self.controlador:

@@ -1,4 +1,5 @@
 from src.modelo.dao.UserDaoJDBC import UserDaoJDBC
+from src.modelo.dao.LibroDaoJDBC import LibroDaoJDBC
 
 class Logica():
     def pruebaSelect(self):
@@ -14,3 +15,11 @@ class Logica():
     def registrarUsuario(self, registroVO):                                          
         registro_dao = UserDaoJDBC()                                                 
         return registro_dao.registrarUsuario(registroVO) 
+    
+    def buscar_libros(self, linea_busqueda, tema):
+        libros_dao = LibroDaoJDBC()
+        lista = libros_dao.buscarLibros(linea_busqueda, tema)
+        if len(lista)==0:
+            return None
+        else:
+            return lista

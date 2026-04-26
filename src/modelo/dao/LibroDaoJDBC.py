@@ -57,6 +57,31 @@ class LibroDaoJDBC(Conexion):
             print(f"Error en buscarPorTitulo: {e}")
         return libros
 
+    def buscarLibros(self, titulo, tema):
+
+        cursor = self.getCursor()
+        libros_vo = [] # Aquí guardaremos la lista de objetos
+
+        sql = "SELECT isbn, titulo, autores, tema, fecha_llegada, descripcion, estado FROM Libros WHERE titulo LIKE ?"
+        params = [f"%{titulo}%"]
+
+        if tema != "Ninguno":
+            sql += " AND tema = ?"
+            params.append(tema)
+
+        try:
+            cursor.execute(sql, params)
+            filas = cursor.fetchall()
+
+            for row in filas:
+                nuevo_libro = self._fila_a_vo(row)
+                libros_vo.append(nuevo_libro)
+
+        except Exception as e:
+            print(f"Error en buscarLibros (DAO): {e}")
+            
+        return libros_vo
+
     # RF22 — buscar por tema (estudiante)
     def buscarPorTema(self, tema):
         cursor = self.getCursor()
