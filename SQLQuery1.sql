@@ -1,4 +1,3 @@
-
 CREATE DATABASE BibliotecaDB;
 GO
 
@@ -95,16 +94,29 @@ GO
 
 
 INSERT INTO Tema (nombre_tema, descripcion) VALUES 
-('Medicina y Anatom�a', 'Manuales cl�nicos, atlas anat�micos y patolog�a'),
-('Derecho Civil y Penal', 'C�digos legislativos, jurisprudencia y manuales de grado'),
-('Ingenier�a Inform�tica', 'Algoritmia, bases de datos y arquitectura de sistemas'),
-('Econom�a y Empresa', 'Microeconom�a, macroeconom�a y contabilidad financiera'),
-('Arquitectura', 'Dise�o estructural, historia del arte arquitect�nico y urbanismo'),
-('Biolog�a Celular', 'Microbiolog�a, gen�tica y pr�cticas de laboratorio'),
-('F�sica y Matem�ticas', 'C�lculo avanzado, �lgebra lineal y mec�nica cu�ntica'),
-('Psicolog�a Cl�nica', 'Evaluaci�n psicol�gica, neurociencia y terapias'),
-('Historia Contempor�nea', 'Archivos hist�ricos y monograf�as del siglo XX'),
-('Filolog�a Moderna', 'Ling��stica, gram�tica hist�rica y literatura comparada');
+('Matemáticas', 'Análisis matemático, álgebra, estadística y lógica pura'),
+('Física', 'Estudio de la materia, energía, termodinámica y mecánica'),
+('Química', 'Química orgánica, inorgánica, bioquímica y elementos químicos'),
+('Biología', 'Estudio de los seres vivos, genética, evolución y ecología'),
+('Geología', 'Ciencias de la Tierra, mineralogía, tectónica y paleontología'),
+('Medicina', 'Ciencias de la salud, anatomía clínica, patología y farmacología'),
+('Enfermería', 'Protocolos de cuidado, atención al paciente y técnicas sanitarias'),
+('Veterinaria', 'Medicina animal, salud pública veterinaria y cuidado de especies'),
+('Psicología', 'Comportamiento humano, procesos cognitivos y terapias'),
+('Dibujo técnico', 'Geometría descriptiva, representación gráfica y sistemas de planos'),
+('IA', 'Inteligencia artificial, aprendizaje automático y redes neuronales'),
+('Informática', 'Algoritmia, lenguajes de programación y sistemas operativos'),
+('Economía', 'Análisis micro y macroeconómico, finanzas y contabilidad'),
+('Historia', 'Investigación histórica, cronología y análisis de eventos pasados'),
+('Filosofía', 'Ética, metafísica, teoría del conocimiento y pensamiento crítico'),
+('Derecho', 'Sistemas jurídicos, leyes civiles, penales y jurisprudencia'),
+('Literatura', 'Obras clásicas, narrativa, poesía y análisis literario'),
+('Música', 'Teoría musical, solfeo, composición e historia de la música'),
+('Arte', 'Historia del arte, teoría estética, pintura, escultura y diseño'),
+('Electrónica', 'Circuitos eléctricos, sistemas de control y microelectrónica'),
+('Mecánica', 'Diseño de máquinas, termodinámica aplicada y cinemática'),
+('Diseño', 'Diseño gráfico, industrial, de interiores y metodologías creativas'),
+('Deporte', 'Ciencias del deporte, fisiología del ejercicio y metodología de entrenamiento');
 
 
 INSERT INTO Usuarios (contrasena, email, nombre, apellidos, tipo) VALUES 
@@ -132,18 +144,25 @@ ALTER LOGIN biblioteca_user ENABLE;
 
 
 INSERT INTO Libros (ISBN, titulo, autor, fecha_llegada, num_copias, disponibilidad, descripcion, nombre_tema) VALUES 
+('978-84-MAT01', 'Cálculo Infinitesimal', 'Michael Spivak', '2024-01-15', 5, 'Disponible', 'Texto fundamental de análisis matemático para ingenierías.', 'Matemáticas'),
 
-('978-84-MED', 'Anatom�a con orientaci�n cl�nica (Moore)', 'Keith L. Moore', '2023-09-01', 1, 'Disponible', 'Bibliograf�a obligatoria para 1� de Medicina', 'Medicina y Anatom�a'),
+('978-84-IA02', 'Inteligencia Artificial: Un Enfoque Moderno', 'Stuart Russell', '2025-05-10', 3, 'Prestado', 'El estándar mundial en enseñanza de IA y agentes inteligentes.', 'IA'),
 
-('978-01-ING', 'Introduction to Algorithms (Cormen)', 'Thomas H. Cormen', '2023-09-15', 1, 'Disponible', 'El est�ndar mundial para el estudio de algoritmos', 'Ingenier�a Inform�tica'),
+('978-84-FIS03', 'Física para la ciencia y la tecnología', 'Paul A. Tipler', '2024-02-20', 4, 'Disponible', 'Volumen 1: Mecánica, oscilaciones y ondas, termodinámica.', 'Física'),
 
-('978-33-DER', 'C�digo Civil Espa�ol Comentado', 'Carlos Lasarte', '2024-01-10', 1, 'Retirado', 'Edici�n de consulta en sala. No disponible para pr�stamo externo.', 'Derecho Civil y Penal'),
+('978-84-MED04', 'Anatomía de Gray', 'Henry Gray', '2023-09-01', 2, 'Retirado', 'Edición de colección. Solo consulta en sala de investigadores.', 'Medicina'),
 
+('978-84-INF05', 'Clean Code: A Handbook of Agile Software Craftsmanship', 'Robert C. Martin', '2024-10-15', 8, 'Disponible', 'Mejores prácticas para desarrollo de software profesional.', 'Informática'),
 
-('978-55-ECO', 'Principios de Econom�a', 'N. Gregory Mankiw', '2022-09-05', 1, 'Prestado', 'Manual b�sico de introducci�n a la micro y macroeconom�a', 'Econom�a y Empresa'),
+('978-84-DER06', 'Teoría Pura del Derecho', 'Hans Kelsen', '2023-11-20', 1, 'Disponible', 'Obra clásica de la filosofía del derecho y positivismo.', 'Derecho'),
 
+('978-84-LIT07', 'Cien años de soledad', 'Gabriel García Márquez', '2022-03-20', 10, 'Disponible', 'Obra cumbre del realismo mágico y la literatura hispana.', 'Literatura'),
 
-('978-99-ARQ', 'Historia de la Arquitectura Moderna', 'Leonardo Benevolo', '2021-11-20', 1, 'Disponible', 'Edici�n ilustrada. Requiere trato cuidadoso.', 'Arquitectura');
+('978-84-PSI08', 'Psicología Social', 'David G. Myers', '2025-01-05', 6, 'Prestado', 'Estudio científico de cómo las personas piensan unas de otras.', 'Psicología'),
+
+('978-84-HIS09', 'Sapiens: De animales a dioses', 'Yuval Noah Harari', '2024-08-12', 4, 'Disponible', 'Una breve historia de la evolución de la humanidad.', 'Historia'),
+
+('978-84-MUS10', 'Teoría Completa de la Música', 'Dionisio de Pedro', '2023-04-14', 7, 'Disponible', 'Manual técnico avanzado de solfeo, armonía y composición.', 'Música');
 
 GO
 

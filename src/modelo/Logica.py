@@ -19,7 +19,7 @@ class Logica():
         registro_dao = UserDaoJDBC()                                                 
         return registro_dao.registrarUsuario(registroVO) 
     
-    def buscar_libros(self, linea_busqueda, tema):
+    def buscarLibro(self, linea_busqueda, tema):
         libros_dao = LibroDaoJDBC()
         lista = libros_dao.buscarLibros(linea_busqueda, tema)
         if len(lista)==0:

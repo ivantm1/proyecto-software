@@ -101,7 +101,7 @@ class ControladorPrincipal:
         )
         self._vistaPerfil.show()
 
-    def ventanaVerCatalogo(self):
+    def ventanaCatalogo(self):
         if not self._vistaCatalogo or not self._usuario_activo:
             return
         ctrl = CatalogoControlador(
@@ -111,8 +111,6 @@ class ControladorPrincipal:
             tipo_usuario=self._usuario_activo.tipo,
         )
         self._vistaCatalogo.controlador = ctrl
-        self._vistaCatalogo.mostrarParaTipo(self._usuario_activo.tipo)
-        ctrl.cargarCatalogo()
         self._vistaCatalogo.show()
 
     def ventanaMisPrestamos(self):

@@ -3,6 +3,7 @@ from src.vista.Login import Login
 from src.vista.Registro import Registro
 from src.vista.Estudiante import Estudiante
 from src.vista.Bibliotecario import Bibliotecario
+from src.vista.catalogo import VistaCatalogo
 from src.vista.MisPrestamos import MisPrestamos
 from src.vista.Devolucion import Devolucion
 from src.modelo.Logica import Logica
@@ -17,11 +18,13 @@ if __name__ == "__main__":
     bibliotecario = Bibliotecario()
     mis_prestamos = MisPrestamos()
     devolucion = Devolucion()
+    VistaCatalogo = VistaCatalogo()
 
     controlador = ControladorPrincipal(
         modelo, login, registro, estudiante, bibliotecario,
-        vista_mis_prestamos=mis_prestamos,
-        vista_devolucion=devolucion,
+        VistaCatalogo,
+        MisPrestamos,
+        Devolucion,
     )
 
     login.controlador = controlador

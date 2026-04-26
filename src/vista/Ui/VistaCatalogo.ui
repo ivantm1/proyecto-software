@@ -246,7 +246,7 @@
         </layout>
        </item>
        <item>
-        <widget class="QTableWidget" name="lista_libros">
+        <widget class="QTableWidget" name="tabla_libros">
          <property name="minimumSize">
           <size>
            <width>800</width>

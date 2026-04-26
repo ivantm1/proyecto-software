@@ -1,7 +1,6 @@
 from PyQt5.QtWidgets import QDialog, QTableWidgetItem
 from PyQt5 import uic
 
-# Cargamos el archivo .ui correspondiente a la vista del catálogo
 Form, Window = uic.loadUiType("./src/vista/Ui/VistaCatalogo.ui")
 
 class VistaCatalogo(QDialog, Form):
@@ -18,13 +17,16 @@ class VistaCatalogo(QDialog, Form):
             
             tema = self.opcion_buscador.currentText()
 
-            self.controlador.realizar_busqueda(texto_busqueda, tema)
+            self.controlador.buscarLibro(texto_busqueda, tema)
 
 
     def cargar_lista_libros(self, lista_libros):
 
+        if lista_libros is None:
+            self.tabla_libros.setRowCount(0)
+            return
+
         self.tabla_libros.setRowCount(0)
-        
         self.tabla_libros.setRowCount(len(lista_libros))
         
         for fila, libro in enumerate(lista_libros):

@@ -4,7 +4,7 @@ from src.modelo.vo.LibroVO import LibroVO
 class LibroDaoJDBC(Conexion):
     SQL_INSERT       = "INSERT INTO Libros (isbn, titulo, autores, tema, fecha_llegada, descripcion, estado) VALUES (?, ?, ?, ?, ?, ?, ?)"
     SQL_DELETE       = "DELETE FROM Libros WHERE isbn = ?"
-    SQL_SELECT_ALL   = "SELECT isbn, titulo, autores, tema, fecha_llegada, descripcion, estado FROM Libros"
+    SQL_SELECT_ALL   = "SELECT ISBN, titulo, autor, fecha_llegada, num_copias, disponibilidad, descripcion, nombre_tema FROM Libros"
     SQL_SELECT_ISBN  = "SELECT isbn, titulo, autores, tema, fecha_llegada, descripcion, estado FROM Libros WHERE isbn = ?"
     SQL_SELECT_TITULO= "SELECT isbn, titulo, autores, tema, fecha_llegada, descripcion, estado FROM Libros WHERE titulo LIKE ?"
     SQL_SELECT_TEMA  = "SELECT isbn, titulo, autores, tema, fecha_llegada, descripcion, estado FROM Libros WHERE tema = ?"
@@ -12,8 +12,8 @@ class LibroDaoJDBC(Conexion):
     SQL_CHECK_LIBRE  = "SELECT COUNT(*) FROM Libros WHERE isbn = ? AND estado = 'disponible'"
 
     def _fila_a_vo(self, row):
-        isbn, titulo, autores, tema, fecha_llegada, descripcion, estado = row
-        return LibroVO(isbn, titulo, autores, tema, fecha_llegada, descripcion, estado)
+        ISBN, titulo, autor, fecha_llegada, num_copias, disponibilidad, descripcion, nombre_tema,  estado = row
+        return LibroVO(ISBN, titulo, autor, fecha_llegada, num_copias, disponibilidad, descripcion, nombre_tema, estado)
 
     # RF01 — dar de alta un libro nuevo
     def altaLibro(self, libroVO):
@@ -62,7 +62,7 @@ class LibroDaoJDBC(Conexion):
         cursor = self.getCursor()
         libros_vo = [] # Aquí guardaremos la lista de objetos
 
-        sql = "SELECT isbn, titulo, autores, tema, fecha_llegada, descripcion, estado FROM Libros WHERE titulo LIKE ?"
+        sql = "SELECT ISBN, titulo, autor, fecha_llegada, num_copias, disponibilidad, descripcion, nombre_tema FROM Libros WHERE titulo LIKE ?"
         params = [f"%{titulo}%"]
 
         if tema != "Ninguno":
