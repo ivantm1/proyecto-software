@@ -1,16 +1,11 @@
-from PyQt5.QtWidgets import QApplication, QMainWindow
-from PyQt5 import uic
+from PyQt5.QtWidgets import QApplication
 from src.vista.Login import Login
 from src.vista.Registro import Registro
 from src.vista.Estudiante import Estudiante
 from src.vista.Bibliotecario import Bibliotecario
-from src.vista.catalogo import VistaCatalogo
-
 from src.modelo.Logica import Logica
 from src.controlador.ControladorPrincipal import ControladorPrincipal
 
-import os.path
-os.path.dirname(os.path.abspath(__file__))
 if __name__ == "__main__":
     app = QApplication([])
     login = Login()
@@ -19,7 +14,7 @@ if __name__ == "__main__":
     estudiante= Estudiante()
     bibliotecario= Bibliotecario()
 
-    controlador = ControladorPrincipal(modelo, login, registro, estudiante, bibliotecario, VistaCatalogo)
+    controlador = ControladorPrincipal(modelo, login, registro, estudiante, bibliotecario)
 
     login.controlador = controlador
     controlador.ventanaIniciarSesion()
