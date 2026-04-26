@@ -1,13 +1,10 @@
 from src.modelo.dao.UserDaoJDBC import UserDaoJDBC
-<<<<<<< HEAD
 from src.modelo.dao.LibroDaoJDBC import LibroDaoJDBC
-=======
 from src.modelo.Logica import Logica
 from src.modelo.dao.LibroDaoJDBC import LibroDaoJDBC
 from src.modelo.dao.PrestamoDaoJDBC import PrestamoDaoJDBC
 from src.modelo.dao.ReservaDaoJDBC import ReservaDaoJDBC
 from src.modelo.dao.SancionDaoJDBC import SancionDaoJDBC
->>>>>>> c7baac4d86c786c2e445a19fcdc51528c641c26b
 
 class Logica():
     def pruebaSelect(self):
@@ -23,7 +20,6 @@ class Logica():
     def registrarUsuario(self, registroVO):                                          
         registro_dao = UserDaoJDBC()                                                 
         return registro_dao.registrarUsuario(registroVO) 
-<<<<<<< HEAD
     
     def buscar_libros(self, linea_busqueda, tema):
         libros_dao = LibroDaoJDBC()
@@ -32,7 +28,6 @@ class Logica():
             return None
         else:
             return lista
-=======
 
     def obtenerCatalogo(self):
         return LibroDaoJDBC().obtenerCatalogo()
@@ -103,4 +98,3 @@ class Logica():
     def obtenerReservaPorLibro(self, isbn):
         return ReservaDaoJDBC().obtenerReservaPorLibro(isbn)
 
->>>>>>> c7baac4d86c786c2e445a19fcdc51528c641c26b
