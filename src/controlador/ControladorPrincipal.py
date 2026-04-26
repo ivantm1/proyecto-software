@@ -3,31 +3,6 @@ from src.controlador.CatalogoControlador import CatalogoControlador
 
 
 class ControladorPrincipalExtension(ControladorPrincipal):
-    """
-    Extiende ControladorPrincipal añadiendo los métodos de navegación
-    que invocan Estudiante.py y Bibliotecario.py pero que faltan en la
-    clase base.
-
-    Uso en main.py:
-        from src.controlador.ControladorPrincipalExtension import ControladorPrincipalExtension
-        from src.vista.Catalogo import Catalogo
-        from src.vista.MisPrestamos import MisPrestamos
-        from src.vista.Perfil import Perfil
-        from src.vista.Sanciones import Sanciones
-        from src.vista.Devolucion import Devolucion
-
-        catalogo      = Catalogo()
-        mis_prestamos = MisPrestamos()
-        perfil        = Perfil()
-        sanciones     = Sanciones()
-        devolucion    = Devolucion()
-
-        controlador = ControladorPrincipalExtension(
-            modelo, login, registro, estudiante, bibliotecario,
-            catalogo, mis_prestamos, perfil, sanciones, devolucion
-        )
-    """
-
     def __init__(self, ref_modelo, ref_login,
                  ref_vista_registro=None,
                  ref_vista_estudiante=None,
