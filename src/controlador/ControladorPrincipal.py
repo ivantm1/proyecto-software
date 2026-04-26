@@ -38,9 +38,7 @@ class ControladorPrincipal:
     def ventanaEstudiante(self):
         print(f"_vistaEstudiante vale: {self._vistaEstudiante}")
         if self._vistaEstudiante:
-            print("Abriendo vista estudiante")
             self._vistaEstudiante.show()
-            print("Abriendo vista estudiante222")
 
     def ventanaBibliotecario(self):
         if self._vistaBibliotecario:
