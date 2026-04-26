@@ -7,6 +7,7 @@ class PrestamoControlador:
     def __init__(self, ref_vista):
         self._vista = ref_vista
 
+    # RF10 — validar condiciones y registrar nuevo préstamo
     def registrarPrestamo(self, id_usuario, isbn):
         if not id_usuario or not isbn:
             self._vista.lanzarAviso("Por favor, introduce el ID de usuario y el ISBN.")
@@ -24,6 +25,7 @@ class PrestamoControlador:
             self._vista.lanzarAviso("El usuario tiene una sanción activa y no puede solicitar préstamos.")
             return
 
+        # RF06 — límite de préstamos simultáneos
         if dao.contarPrestamosActivos(id_usuario) >= LIMITE_PRESTAMOS:
             self._vista.lanzarAviso(f"El usuario ha alcanzado el límite de {LIMITE_PRESTAMOS} préstamos activos.")
             return
@@ -39,6 +41,7 @@ class PrestamoControlador:
         else:
             self._vista.lanzarAviso("Error al registrar el préstamo.")
 
+    # RF11 + Apéndice 4.2 — devolver y aplicar sanción si hay retraso
     def devolverPrestamo(self, id_prestamo, isbn):
         try:
             id_prestamo = int(id_prestamo)
@@ -70,6 +73,7 @@ class PrestamoControlador:
 
         self.cargarPrestamosUsuario(str(prestamo.id_usuario))
 
+    # RF14 — cargar y mostrar los préstamos activos de un usuario
     def cargarPrestamosUsuario(self, id_usuario):
         try:
             id_usuario = int(id_usuario)

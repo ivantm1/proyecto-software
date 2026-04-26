@@ -8,13 +8,30 @@ from src.controlador.PrestamoControlador import PrestamoControlador
 
 
 class ControladorPrincipal:
-    def __init__(self, ref_modelo, ref_login, ref_vista_registro=None,ref_vista_estudiante=None,ref_vista_bibliotecario=None, vista_catalogo=None):
-        self._vistaLogin = ref_login
-        self._modelo = ref_modelo
-        self._vistaRegistro = ref_vista_registro
-        self._vistaEstudiante = ref_vista_estudiante
+    def __init__(self, ref_modelo, ref_login,
+                 ref_vista_registro=None,
+                 ref_vista_estudiante=None,
+                 ref_vista_bibliotecario=None,
+                 ref_vista_catalogo=None,
+                 ref_vista_mis_prestamos=None,
+                 ref_vista_perfil=None,
+                 ref_vista_prestamo=None,
+                 ref_vista_sanciones=None,
+                 ref_vista_devolucion=None):
+
+        self._modelo             = ref_modelo
+        self._vistaLogin         = ref_login
+        self._vistaRegistro      = ref_vista_registro
+        self._vistaEstudiante    = ref_vista_estudiante
         self._vistaBibliotecario = ref_vista_bibliotecario
-        self._vista_catalogo = vista_catalogo
+        self._vistaCatalogo      = ref_vista_catalogo
+        self._vistaMisPrestamos  = ref_vista_mis_prestamos
+        self._vistaPerfil        = ref_vista_perfil
+        self._vistaPrestamo      = ref_vista_prestamo
+        self._vistaSanciones     = ref_vista_sanciones
+        self._vistaDevolucion    = ref_vista_devolucion
+
+        self._usuario_activo = None  
 
     def ventanaIniciarSesion(self):
         self._vistaLogin.show()
@@ -101,21 +118,32 @@ class ControladorPrincipal:
     def ventanaMisPrestamos(self):
         if not self._vistaMisPrestamos or not self._usuario_activo:
             return
-        
-        registro = RegistroVO(nombre, apellidos, correo, contrasena)
-        # Comprobar si el usuario y contraseñas son adecuados, si no lo son, no se envia nada al modelo
-        resultado = self._modelo.registrarUsuario(registro)
-        if resultado:
-            self._vistaLogin.lanzarAviso("Usuario registrado con éxito")
-            self._vistaLogin.close()
-        else:
-            self._vistaLogin.lanzarAviso("Error al registrarse.")
+        ctrl = MisPrestamosControlador(
+            self._modelo,
+            self._vistaMisPrestamos,
+            self._usuario_activo.correo,
+        )
+        self._vistaMisPrestamos.controlador = ctrl
+        ctrl.actualizarPrestamos()
+        self._vistaMisPrestamos.show()
 
-    def ventanaCatalogo(self):
-        if self._vista_catalogo:
-            self._vistaEstudiante.close()
-            self._vista_catalogo.show()
+    def ventanaPrestamo(self):
+        if not self._vistaPrestamo:
+            return
+        ctrl = PrestamoControlador(self._vistaPrestamo)
+        self._vistaPrestamo.controlador = ctrl
+        self._vistaPrestamo.show()
 
-    def buscarLibros(self, linea_busqueda,tema):
-        lista_libros_vo = self._modelo.buscarLibros(linea_busqueda, tema)
-        self._vista_catalogo.cargar_lista_libros(lista_libros_vo)
+    def ventanaDevolucion(self):
+        if not self._vistaDevolucion:
+            return
+        ctrl = DevolucionControlador(self._modelo, self._vistaDevolucion)
+        self._vistaDevolucion.controlador = ctrl
+        self._vistaDevolucion.show()
+
+    def ventanaSanciones(self):
+        if not self._vistaSanciones or not self._usuario_activo:
+            return
+        ctrl = SancionesControlador(self._modelo, self._vistaSanciones)
+        self._vistaSanciones.controlador = ctrl
+        self._vistaSanciones.show()
