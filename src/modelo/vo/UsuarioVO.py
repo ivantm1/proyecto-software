@@ -1,9 +1,10 @@
 class UsuarioVO:
-    def __init__(self, nombre, apellidos, correo, contrasena):
+    def __init__(self, nombre, apellidos, correo, contrasena,tipo):
         self._nombre = nombre
         self._apellidos = apellidos
         self._correo = correo
         self._contrasena = contrasena
+        self._tipo = tipo
 
     @property
     def nombre(self):
@@ -20,3 +21,7 @@ class UsuarioVO:
     @property
     def contrasena(self):
         return self._contrasena
+    
+    @property
+    def tipo(self):
+        return self._tipo

@@ -2,7 +2,7 @@ from src.modelo.conexion.Conexion import Conexion
 from src.modelo.vo.UsuarioVO import UsuarioVO
 
 class UserDaoJDBC(Conexion):
-    SQL_CHECK_LOGIN = "SELECT email, contrasena FROM Usuarios WHERE email = ? AND contrasena = ?"
+    SQL_CHECK_LOGIN = "SELECT nombre, apellidos, email, contrasena, tipo FROM Usuarios WHERE email = ? AND contrasena = ?"
     SQL_REGISTRO = "INSERT INTO Usuarios (nombre, apellidos, email, contrasena) VALUES (?, ?, ?, ?)"
 
     def comprobarLogin(self, loginVO):
@@ -12,8 +12,8 @@ class UserDaoJDBC(Conexion):
             row = cursor.fetchone()
             if row is None:
                 return None
-            nombre_user, first_name, full_name, email, tipo = row
-            return UsuarioVO(nombre_user, first_name, full_name, email)
+            nombre, apellidos, email, contrasena, tipo = row
+            return UsuarioVO(nombre, apellidos, email, contrasena, tipo)
         except Exception as e:
             print(f"Error en el login: {e}")
             return None

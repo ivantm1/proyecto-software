@@ -3,10 +3,11 @@ from src.modelo.vo.RegistroVO import RegistroVO
 
 # Para mandar cosas de la vista se debe hacer un metodo en la vista y llamarlo desde el controlador
 class ControladorPrincipal:
-    def __init__(self, ref_modelo, ref_login, ref_vista_registro=None):
+    def __init__(self, ref_modelo, ref_login, ref_vista_registro=None,ref_vista_estudiante=None):
         self._vistaLogin = ref_login
         self._modelo = ref_modelo
         self._vistaRegistro = ref_vista_registro
+        self._vistaEstudiante = ref_vista_estudiante
 
     def ventanaIniciarSesion(self):
         self._vistaLogin.show()
@@ -17,12 +18,11 @@ class ControladorPrincipal:
             return False
         
         # Comprobar si el usuario y contraseñas son adecuados, si no lo son, no se envia nada al modelo
-        login = LoginVO(nombre, contrasena)
         resultado = self._modelo.comprobarLogin(login)
         if resultado is None:
             self._vista.lanzarAviso("Usuario o contraseña incorrecto.")
         else:
-            self._vista.close()
+            self._vistaLogin.close()
             if resultado.tipo == "Estudiante":
                 self.ventanaEstudiante()
             elif resultado.tipo == "Bibliotecario":
@@ -36,18 +36,20 @@ class ControladorPrincipal:
             self._vistaRegistro.show()
 
     def ventanaEstudiante(self):
+        print(f"_vistaEstudiante vale: {self._vistaEstudiante}")
         if self._vistaEstudiante:
-            self._vistaLogin.close()
+            print("Abriendo vista estudiante")
             self._vistaEstudiante.show()
+            print("Abriendo vista estudiante222")
 
     def ventanaBibliotecario(self):
         if self._vistaBibliotecario:
-            self._vistaLogin.close()
+
             self._vistaBibliotecario.show()
 
     def ventanaAdmin(self):
         if self._vistaAdmin:
-            self._vistaLogin.close()
+
             self._vistaAdmin.show()
 
     def registrarUsuario(self, nombre, apellidos, correo, contrasena, confirmar_contrasena):
