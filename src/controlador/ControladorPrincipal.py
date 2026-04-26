@@ -1,72 +1,108 @@
-from src.modelo.vo.LoginVO import LoginVO
-from src.modelo.vo.RegistroVO import RegistroVO
+from src.controlador.ControladorPrincipal import ControladorPrincipal
+from src.controlador.CatalogoControlador import CatalogoControlador
 
-# Para mandar cosas de la vista se debe hacer un metodo en la vista y llamarlo desde el controlador
-class ControladorPrincipal:
-    def __init__(self, ref_modelo, ref_login, ref_vista_registro=None,ref_vista_estudiante=None,ref_vista_bibliotecario=None):
-        self._vistaLogin = ref_login
-        self._modelo = ref_modelo
-        self._vistaRegistro = ref_vista_registro
-        self._vistaEstudiante = ref_vista_estudiante
-        self._vistaBibliotecario = ref_vista_bibliotecario
 
-    def ventanaIniciarSesion(self):
-        self._vistaLogin.show()
+class ControladorPrincipalExtension(ControladorPrincipal):
+    """
+    Extiende ControladorPrincipal añadiendo los métodos de navegación
+    que invocan Estudiante.py y Bibliotecario.py pero que faltan en la
+    clase base.
 
-    def comprobarLogin(self, login):
-        if not login.nombre or not login.contrasena:
-            self._vistaLogin.lanzarAviso("Por favor, introduce usuario y contraseña.")
-            return False
-        
-        # Comprobar si el usuario y contraseñas son adecuados, si no lo son, no se envia nada al modelo
-        resultado = self._modelo.comprobarLogin(login)
-        if resultado is None:
-            self._vistaLogin.lanzarAviso("Usuario o contraseña incorrecto.")
-        else:
-            self._vistaLogin.close()
-            if resultado.tipo == "Estudiante":
-                self.ventanaEstudiante()
-            elif resultado.tipo == "Bibliotecario":
-                self.ventanaBibliotecario()
-            elif resultado.tipo == "Admin":
-                self.ventanaAdmin()
+    Uso en main.py:
+        from src.controlador.ControladorPrincipalExtension import ControladorPrincipalExtension
+        from src.vista.Catalogo import Catalogo
+        from src.vista.MisPrestamos import MisPrestamos
+        from src.vista.Perfil import Perfil
+        from src.vista.Sanciones import Sanciones
+        from src.vista.Devolucion import Devolucion
 
-    def ventanaRegistro(self):
-        if self._vistaRegistro:
-            self._vistaLogin.close()
-            self._vistaRegistro.show()
+        catalogo      = Catalogo()
+        mis_prestamos = MisPrestamos()
+        perfil        = Perfil()
+        sanciones     = Sanciones()
+        devolucion    = Devolucion()
 
-    def ventanaEstudiante(self):
-        print(f"_vistaEstudiante vale: {self._vistaEstudiante}")
-        if self._vistaEstudiante:
-            self._vistaEstudiante.show()
+        controlador = ControladorPrincipalExtension(
+            modelo, login, registro, estudiante, bibliotecario,
+            catalogo, mis_prestamos, perfil, sanciones, devolucion
+        )
+    """
 
-    def ventanaBibliotecario(self):
+    def __init__(self, ref_modelo, ref_login,
+                 ref_vista_registro=None,
+                 ref_vista_estudiante=None,
+                 ref_vista_bibliotecario=None,
+                 ref_vista_catalogo=None,
+                 ref_vista_mis_prestamos=None,
+                 ref_vista_perfil=None,
+                 ref_vista_sanciones=None,
+                 ref_vista_devolucion=None):
+
+        super().__init__(
+            ref_modelo, ref_login,
+            ref_vista_registro,
+            ref_vista_estudiante,
+            ref_vista_bibliotecario,
+        )
+        self._vistaCatalogo     = ref_vista_catalogo
+        self._vistaMisPrestamos = ref_vista_mis_prestamos
+        self._vistaPerfil       = ref_vista_perfil
+        self._vistaSanciones    = ref_vista_sanciones
+        self._vistaDevolucion   = ref_vista_devolucion
+
+        # correo y tipo del usuario logueado — se rellenan en comprobarLogin
+        self._correo_activo = None
+        self._tipo_activo   = None
+
+    # ------------------------------------------------------------------
+    # Navegación — métodos que invocaban las vistas y no existían
+    # ------------------------------------------------------------------
+
+    def ventanaVerCatalogo(self):
+        if not self._vistaCatalogo:
+            return
+        catalogo_ctrl = CatalogoControlador(
+            self._modelo,
+            self._vistaCatalogo,
+            correo_usuario=self._correo_activo,
+            tipo_usuario=self._tipo_activo,
+        )
+        self._vistaCatalogo.controlador = catalogo_ctrl
+        self._vistaCatalogo.mostrarParaTipo(self._tipo_activo)
+        catalogo_ctrl.cargarCatalogo()
+        self._vistaCatalogo.show()
+
+    def ventanaVerPerfil(self):
+        if self._vistaPerfil:
+            self._vistaPerfil.mostrarUsuario(
+                self._correo_activo, self._tipo_activo
+            )
+            self._vistaPerfil.show()
+
+    def ventanaMisPrestamos(self):
+        if self._vistaMisPrestamos:
+            self._vistaMisPrestamos.cargarPrestamos(
+                self._modelo, self._correo_activo
+            )
+            self._vistaMisPrestamos.show()
+
+    def ventanaPrestamo(self):
+        # Reutiliza la vista Prestamo existente
         if self._vistaBibliotecario:
-            self._vistaBibliotecario.show()
+            from src.vista.Prestamo import Prestamo
+            from src.controlador.PrestamoControlador import PrestamoControlador
+            vista_prestamo = Prestamo(parent=None)
+            ctrl = PrestamoControlador(vista_prestamo)
+            vista_prestamo.controlador = ctrl
+            vista_prestamo.show()
 
-    def ventanaAdmin(self):
-        if self._vistaAdmin:
-            self._vistaAdmin.show()
+    def ventanaDevolucion(self):
+        if self._vistaDevolucion:
+            self._vistaDevolucion.show()
 
-    def registrarUsuario(self, nombre, apellidos, correo, contrasena, confirmar_contrasena):
-        if not nombre or not apellidos or not correo or not contrasena or not confirmar_contrasena:
-            self._vistaLogin.lanzarAviso("Por favor, rellena todos los campos.")
-            return
-        
-        if "@estudiantes.unileon.es" not in correo:
-            self._vistaLogin.lanzarAviso("Por favor, utilice un correo institucional.")
-            return
-
-        if contrasena != confirmar_contrasena:
-            self._vistaLogin.lanzarAviso("Las contraseñas no coinciden.")
-            return
-        
-        registro = RegistroVO(nombre, apellidos, correo, contrasena)
-        # Comprobar si el usuario y contraseñas son adecuados, si no lo son, no se envia nada al modelo
-        resultado = self._modelo.registrarUsuario(registro)
-        if resultado:
-            self._vistaLogin.lanzarAviso("Usuario registrado con éxito")
-            self._vistaLogin.close()
-        else:
-            self._vistaLogin.lanzarAviso("Error al registrarse.")
+    def ventanaSanciones(self):
+        if self._vistaSanciones:
+            self._vistaSanciones.cargarSanciones(
+                self._modelo, self._correo_activo
+            )
+            self._vistaSanciones.show()
