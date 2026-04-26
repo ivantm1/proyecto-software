@@ -1,6 +1,5 @@
 from src.modelo.dao.UserDaoJDBC import UserDaoJDBC
 from src.modelo.dao.LibroDaoJDBC import LibroDaoJDBC
-from src.modelo.Logica import Logica
 from src.modelo.dao.LibroDaoJDBC import LibroDaoJDBC
 from src.modelo.dao.PrestamoDaoJDBC import PrestamoDaoJDBC
 from src.modelo.dao.ReservaDaoJDBC import ReservaDaoJDBC
