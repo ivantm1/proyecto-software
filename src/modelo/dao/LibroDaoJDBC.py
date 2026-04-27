@@ -2,18 +2,11 @@ from src.modelo.conexion.Conexion import Conexion
 from src.modelo.vo.LibroVO import LibroVO
 
 class LibroDaoJDBC(Conexion):
-    SQL_INSERT       = "INSERT INTO Libros (isbn, titulo, autores, tema, fecha_llegada, descripcion, estado) VALUES (?, ?, ?, ?, ?, ?, ?)"
-    SQL_DELETE       = "DELETE FROM Libros WHERE isbn = ?"
-    SQL_SELECT_ALL   = "SELECT ISBN, titulo, autor, fecha_llegada, num_copias, disponibilidad, descripcion, nombre_tema FROM Libros"
-    SQL_SELECT_ISBN  = "SELECT isbn, titulo, autores, tema, fecha_llegada, descripcion, estado FROM Libros WHERE isbn = ?"
-    SQL_SELECT_TITULO= "SELECT isbn, titulo, autores, tema, fecha_llegada, descripcion, estado FROM Libros WHERE titulo LIKE ?"
-    SQL_SELECT_TEMA  = "SELECT isbn, titulo, autores, tema, fecha_llegada, descripcion, estado FROM Libros WHERE tema = ?"
-    SQL_RESERVADOS   = "SELECT isbn, titulo, autores, tema, fecha_llegada, descripcion, estado FROM Libros WHERE estado = 'reserva'"
-    SQL_CHECK_LIBRE  = "SELECT COUNT(*) FROM Libros WHERE isbn = ? AND estado = 'disponible'"
+
 
     def _fila_a_vo(self, row):
-        ISBN, titulo, autor, fecha_llegada, num_copias, disponibilidad, descripcion, nombre_tema,  estado = row
-        return LibroVO(ISBN, titulo, autor, fecha_llegada, num_copias, disponibilidad, descripcion, nombre_tema, estado)
+        isbn, titulo, autor, fecha_llegada, num_copias, disponibilidad, descripcion, nombre_tema = row
+        return LibroVO(isbn, titulo, autor, fecha_llegada, num_copias, disponibilidad, descripcion, nombre_tema)
 
     # RF01 — dar de alta un libro nuevo
     def altaLibro(self, libroVO):
@@ -45,28 +38,19 @@ class LibroDaoJDBC(Conexion):
             print(f"Error en bajaLibro: {e}")
             return False
 
-    # RF22 — buscar por título (estudiante)
-    def buscarPorTitulo(self, titulo):
-        cursor = self.getCursor()
-        libros = []
-        try:
-            cursor.execute(self.SQL_SELECT_TITULO, (f"%{titulo}%",))
-            for row in cursor.fetchall():
-                libros.append(self._fila_a_vo(row))
-        except Exception as e:
-            print(f"Error en buscarPorTitulo: {e}")
-        return libros
 
     def buscarLibros(self, titulo, tema):
 
         cursor = self.getCursor()
         libros_vo = [] # Aquí guardaremos la lista de objetos
 
+        titulo_like = f"%{titulo}%"
+
         sql = "SELECT ISBN, titulo, autor, fecha_llegada, num_copias, disponibilidad, descripcion, nombre_tema FROM Libros WHERE titulo LIKE ?"
-        params = [f"%{titulo}%"]
+        params = [titulo_like]
 
         if tema != "Ninguno":
-            sql += " AND tema = ?"
+            sql += " AND nombre_tema = ?"
             params.append(tema)
 
         try:
@@ -82,29 +66,9 @@ class LibroDaoJDBC(Conexion):
             
         return libros_vo
 
-    # RF22 — buscar por tema (estudiante)
-    def buscarPorTema(self, tema):
-        cursor = self.getCursor()
-        libros = []
-        try:
-            cursor.execute(self.SQL_SELECT_TEMA, (tema,))
-            for row in cursor.fetchall():
-                libros.append(self._fila_a_vo(row))
-        except Exception as e:
-            print(f"Error en buscarPorTema: {e}")
-        return libros
 
-    # RF23 — catálogo completo (bibliotecario)
-    def obtenerCatalogo(self):
-        cursor = self.getCursor()
-        libros = []
-        try:
-            cursor.execute(self.SQL_SELECT_ALL)
-            for row in cursor.fetchall():
-                libros.append(self._fila_a_vo(row))
-        except Exception as e:
-            print(f"Error en obtenerCatalogo: {e}")
-        return libros
+
+
 
     # RF23 — solo libros en reserva (bibliotecario)
     def obtenerReservados(self):

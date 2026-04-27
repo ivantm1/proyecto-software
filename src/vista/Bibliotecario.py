@@ -21,7 +21,7 @@ class Bibliotecario(QDialog, Form):
 
     def on_ver_catalogo_click(self):
         if self.controlador:
-            self.controlador.ventanaVerCatalogo()
+            self.controlador.ventanaCatalogo()
 
     def on_devolucion_click(self):
         if self.controlador:

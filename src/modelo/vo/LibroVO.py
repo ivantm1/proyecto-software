@@ -1,26 +1,27 @@
 class LibroVO:
-    def __init__(self, isbn, titulo, autores, tema, fecha_llegada, descripcion, estado="disponible"):
+    def __init__(self, isbn, titulo, autor, fecha_llegada, num_copias, disponibilidad, descripcion, nombre_tema):
         self._isbn = isbn
         self._titulo = titulo
-        self._autores = autores
-        self._tema = tema
+        self._autor = autor
         self._fecha_llegada = fecha_llegada
+        self._num_copias = num_copias
+        self._disponibilidad = disponibilidad
         self._descripcion = descripcion
-        self._estado = estado
+        self._nombre_tema = nombre_tema
 
     @property
     def isbn(self): return self._isbn
     @property
     def titulo(self): return self._titulo
     @property
-    def autores(self): return self._autores
-    @property
-    def tema(self): return self._tema
+    def autor(self): return self._autor
     @property
     def fecha_llegada(self): return self._fecha_llegada
     @property
+    def num_copias(self): return self._num_copias
+    @property
+    def disponibilidad(self): return self._disponibilidad
+    @property
     def descripcion(self): return self._descripcion
     @property
-    def estado(self): return self._estado
-    @estado.setter
-    def estado(self, nuevo_estado): self._estado = nuevo_estado
+    def nombre_tema(self): return self._nombre_tema

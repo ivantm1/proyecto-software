@@ -18,13 +18,13 @@ if __name__ == "__main__":
     bibliotecario = Bibliotecario()
     mis_prestamos = MisPrestamos()
     devolucion = Devolucion()
-    VistaCatalogo = VistaCatalogo()
+    vistaCatalogo = VistaCatalogo()
 
     controlador = ControladorPrincipal(
         modelo, login, registro, estudiante, bibliotecario,
-        VistaCatalogo,
-        MisPrestamos,
-        Devolucion,
+        vistaCatalogo,
+        mis_prestamos,
+        devolucion,
     )
 
     login.controlador = controlador

@@ -122,7 +122,7 @@ INSERT INTO Tema (nombre_tema, descripcion) VALUES
 INSERT INTO Usuarios (contrasena, email, nombre, apellidos, tipo) VALUES 
 
 ('1234', 'estudiante1@estudiantes.unileon.es', 'Elena', 'Rodr�guez', 'Estudiante'),
-('pass_der', 'miguel.gomez@estudiantes.unileon.es', 'Miguel', 'G�mez', 'Estudiante'),
+('123', '123', 'Miguel', 'G�mez', 'Estudiante'),
 ('pass_ing', 'sara.martin@estudiantes.unileon.es', 'Sara', 'Mart�n', 'Estudiante'),
 ('pass_eco', 'david.fer@estudiantes.unileon.es', 'David', 'Fern�ndez', 'Estudiante'),
 ('pass_arq', 'laura.diaz@estudiantes.unileon.es', 'Laura', 'D�az', 'Estudiante'),
@@ -139,6 +139,11 @@ INSERT INTO Estudiantes (ID_usuario, num_prestamos, num_reservas, sanciones)
 SELECT ID_usuario, 0, 0, 0 
 FROM Usuarios 
 WHERE tipo = 'Estudiante';
+
+
+USE BibliotecaDB;
+CREATE USER biblioteca_user FOR LOGIN biblioteca_user;
+ALTER ROLE db_owner ADD MEMBER biblioteca_user;
 ALTER LOGIN biblioteca_user WITH PASSWORD = 'pruebaISD2024';
 ALTER LOGIN biblioteca_user ENABLE;
 

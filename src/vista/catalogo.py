@@ -30,10 +30,10 @@ class VistaCatalogo(QDialog, Form):
         self.tabla_libros.setRowCount(len(lista_libros))
         
         for fila, libro in enumerate(lista_libros):
-            self.tabla_libros.setItem(fila, 0, QTableWidgetItem(libro.get("nombre", "")))
-            self.tabla_libros.setItem(fila, 1, QTableWidgetItem(libro.get("autor", "")))
-            self.tabla_libros.setItem(fila, 2, QTableWidgetItem(str(libro.get("disponibilidad", ""))))
-            self.tabla_libros.setItem(fila, 3, QTableWidgetItem(libro.get("tema", "")))
+            self.tabla_libros.setItem(fila, 0, QTableWidgetItem(str(libro.titulo)))
+            self.tabla_libros.setItem(fila, 1, QTableWidgetItem(str(libro.autor)))
+            self.tabla_libros.setItem(fila, 2, QTableWidgetItem(str(libro.disponibilidad)))
+            self.tabla_libros.setItem(fila, 3, QTableWidgetItem(str(libro.nombre_tema)))
 
     @property
     def controlador(self):
