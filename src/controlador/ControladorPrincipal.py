@@ -103,7 +103,6 @@ class ControladorPrincipal:
         self._vistaPerfil.show()
 
     def ventanaCatalogo(self):
-        print(self._usuario_activo.correo)
         if not self._vistaCatalogo or not self._usuario_activo:
             return
         ctrl = CatalogoControlador(
