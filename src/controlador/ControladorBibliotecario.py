@@ -7,7 +7,7 @@ from src.controlador.DevolucionControlador import DevolucionControlador
 from src.controlador.PrestamoControlador import PrestamoControlador
 
 
-class ControladorPrincipal:
+class ControladorBibliotecario:
     def __init__(self, 
                  ref_vista_bibliotecario=None,
                  ref_vista_catalogo=None,

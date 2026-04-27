@@ -149,25 +149,25 @@ ALTER LOGIN biblioteca_user ENABLE;
 
 
 INSERT INTO Libros (ISBN, titulo, autor, fecha_llegada, num_copias, disponibilidad, descripcion, nombre_tema) VALUES 
-('978-84-MAT01', 'Cálculo Infinitesimal', 'Michael Spivak', '2024-01-15', 5, 'Disponible', 'Texto fundamental de análisis matemático para ingenierías.', 'Matemáticas'),
+('978-84-MAT01', 'Cálculo Infinitesimal', 'Michael Spivak', '2024-01-15', 1, 'Disponible', 'Texto fundamental de análisis matemático para ingenierías.', 'Matemáticas'),
 
-('978-84-IA02', 'Inteligencia Artificial: Un Enfoque Moderno', 'Stuart Russell', '2025-05-10', 3, 'Prestado', 'El estándar mundial en enseñanza de IA y agentes inteligentes.', 'IA'),
+('978-84-IA02', 'Inteligencia Artificial: Un Enfoque Moderno', 'Stuart Russell', '2025-05-10', 1, 'Prestado', 'El estándar mundial en enseñanza de IA y agentes inteligentes.', 'IA'),
 
-('978-84-FIS03', 'Física para la ciencia y la tecnología', 'Paul A. Tipler', '2024-02-20', 4, 'Disponible', 'Volumen 1: Mecánica, oscilaciones y ondas, termodinámica.', 'Física'),
+('978-84-FIS03', 'Física para la ciencia y la tecnología', 'Paul A. Tipler', '2024-02-20', 1, 'Disponible', 'Volumen 1: Mecánica, oscilaciones y ondas, termodinámica.', 'Física'),
 
-('978-84-MED04', 'Anatomía de Gray', 'Henry Gray', '2023-09-01', 2, 'Retirado', 'Edición de colección. Solo consulta en sala de investigadores.', 'Medicina'),
+('978-84-MED04', 'Anatomía de Gray', 'Henry Gray', '2023-09-01', 1, 'Retirado', 'Edición de colección. Solo consulta en sala de investigadores.', 'Medicina'),
 
-('978-84-INF05', 'Clean Code: A Handbook of Agile Software Craftsmanship', 'Robert C. Martin', '2024-10-15', 8, 'Disponible', 'Mejores prácticas para desarrollo de software profesional.', 'Informática'),
+('978-84-INF05', 'Clean Code: A Handbook of Agile Software Craftsmanship', 'Robert C. Martin', '2024-10-15', 1, 'Disponible', 'Mejores prácticas para desarrollo de software profesional.', 'Informática'),
 
 ('978-84-DER06', 'Teoría Pura del Derecho', 'Hans Kelsen', '2023-11-20', 1, 'Disponible', 'Obra clásica de la filosofía del derecho y positivismo.', 'Derecho'),
 
-('978-84-LIT07', 'Cien años de soledad', 'Gabriel García Márquez', '2022-03-20', 10, 'Disponible', 'Obra cumbre del realismo mágico y la literatura hispana.', 'Literatura'),
+('978-84-LIT07', 'Cien años de soledad', 'Gabriel García Márquez', '2022-03-20', 1, 'Disponible', 'Obra cumbre del realismo mágico y la literatura hispana.', 'Literatura'),
 
-('978-84-PSI08', 'Psicología Social', 'David G. Myers', '2025-01-05', 6, 'Prestado', 'Estudio científico de cómo las personas piensan unas de otras.', 'Psicología'),
+('978-84-PSI08', 'Psicología Social', 'David G. Myers', '2025-01-05', 1, 'Prestado', 'Estudio científico de cómo las personas piensan unas de otras.', 'Psicología'),
 
-('978-84-HIS09', 'Sapiens: De animales a dioses', 'Yuval Noah Harari', '2024-08-12', 4, 'Disponible', 'Una breve historia de la evolución de la humanidad.', 'Historia'),
+('978-84-HIS09', 'Sapiens: De animales a dioses', 'Yuval Noah Harari', '2024-08-12', 1, 'Disponible', 'Una breve historia de la evolución de la humanidad.', 'Historia'),
 
-('978-84-MUS10', 'Teoría Completa de la Música', 'Dionisio de Pedro', '2023-04-14', 7, 'Disponible', 'Manual técnico avanzado de solfeo, armonía y composición.', 'Música');
+('978-84-MUS10', 'Teoría Completa de la Música', 'Dionisio de Pedro', '2023-04-14', 1, 'Disponible', 'Manual técnico avanzado de solfeo, armonía y composición.', 'Música');
 
 GO
 

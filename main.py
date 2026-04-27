@@ -20,6 +20,7 @@ if __name__ == "__main__":
     devolucion = Devolucion()
     vistaCatalogo = VistaCatalogo()
 
+
     controlador = ControladorPrincipal(
         modelo, login, registro, estudiante, bibliotecario,
         vistaCatalogo,

@@ -18,6 +18,7 @@ class ControladorPrincipal:
                  ref_vista_prestamo=None,
                  ref_vista_sanciones=None,
                  ref_vista_devolucion=None):
+        
 
         self._modelo             = ref_modelo
         self._vistaLogin         = ref_login
@@ -102,6 +103,7 @@ class ControladorPrincipal:
         self._vistaPerfil.show()
 
     def ventanaCatalogo(self):
+        print(self._usuario_activo.correo)
         if not self._vistaCatalogo or not self._usuario_activo:
             return
         ctrl = CatalogoControlador(
