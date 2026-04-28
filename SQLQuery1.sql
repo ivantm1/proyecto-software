@@ -1,3 +1,14 @@
+USE master;
+GO
+
+IF EXISTS (SELECT name FROM sys.databases WHERE name = 'BibliotecaDB')
+BEGIN
+    ALTER DATABASE BibliotecaDB SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
+    DROP DATABASE BibliotecaDB;
+END
+GO
+
+
 CREATE DATABASE BibliotecaDB;
 GO
 
@@ -11,9 +22,8 @@ CREATE TABLE Tema (
 );
 
 CREATE TABLE Usuarios (
-    ID_usuario INT PRIMARY KEY IDENTITY(1,1),
     contrasena VARCHAR(255) NOT NULL,
-    email VARCHAR(100) UNIQUE NOT NULL,
+    email VARCHAR(100) PRIMARY KEY,
     nombre VARCHAR(50),
 	apellidos VARCHAR(50),
     tipo VARCHAR(20) CHECK (tipo IN ('Estudiante', 'Bibliotecario', 'Admin')) 
@@ -21,11 +31,11 @@ CREATE TABLE Usuarios (
 
 
 CREATE TABLE Estudiantes (
-    ID_usuario INT PRIMARY KEY,
+    email VARCHAR(100) PRIMARY KEY,
     num_prestamos INT DEFAULT 0,
     num_reservas INT DEFAULT 0,
 	sanciones INT DEFAULT 0,
-    FOREIGN KEY (ID_usuario) REFERENCES Usuarios(ID_usuario) ON DELETE CASCADE
+    FOREIGN KEY (email) REFERENCES Usuarios(email) ON DELETE CASCADE
 );
 
 
@@ -34,8 +44,8 @@ CREATE TABLE Notificaciones (
     ID_notificacion INT PRIMARY KEY IDENTITY(1,1),
     mensaje TEXT NOT NULL,
     fecha_envio DATETIME DEFAULT GETDATE(),
-    ID_usuario INT,
-    FOREIGN KEY (ID_usuario) REFERENCES Estudiantes(ID_usuario) ON DELETE CASCADE
+    email VARCHAR(100) UNIQUE NOT NULL,
+    FOREIGN KEY (email) REFERENCES Estudiantes(email) ON DELETE CASCADE
 );
 
 CREATE TABLE Libros (
@@ -57,30 +67,30 @@ CREATE TABLE Sanciones (
 	estado VARCHAR(40) CHECK (estado IN ('Activa', 'Cumplida')),
     fecha_inicio DATE NOT NULL,
     fecha_fin DATE,
-    ID_usuario INT, 
-    FOREIGN KEY (ID_usuario) REFERENCES Estudiantes(ID_usuario) ON DELETE CASCADE
+    email VARCHAR(100) NOT NULL, 
+    FOREIGN KEY (email) REFERENCES Estudiantes(email) ON DELETE CASCADE
 );
 
 
 CREATE TABLE Reservas (
 	ID_reserva INT PRIMARY KEY IDENTITY(1,1),
 	estado VARCHAR(40) CHECK (estado IN ('Pendiente', 'Cumplida')) default 'Pendiente' ,
-    ID_usuario INT,
+    email VARCHAR(100) NOT NULL,
     ISBN VARCHAR(20),
     fecha_reserva DATE NOT NULL,
-    FOREIGN KEY (ID_usuario) REFERENCES Estudiantes(ID_usuario),
+    FOREIGN KEY (email) REFERENCES Estudiantes(email),
     FOREIGN KEY (ISBN) REFERENCES Libros(ISBN)
 );
 
 CREATE TABLE Prestamos (
 	ID_prestamo INT PRIMARY KEY IDENTITY(1,1),
-    ID_usuario INT,
+    email VARCHAR(100) NOT NULL,
     ISBN VARCHAR(20),
 	estado VARCHAR(40) CHECK (estado IN ('Activo', 'Devuelto', 'Vencido')),
     fecha_prestamo DATE NOT NULL,
     fecha_devolucion DATE NOT NULL,
 	prorroga BIT default 0,
-    FOREIGN KEY (ID_usuario) REFERENCES Estudiantes(ID_usuario),
+    FOREIGN KEY (email) REFERENCES Estudiantes(email),
     FOREIGN KEY (ISBN) REFERENCES Libros(ISBN)
 );
 GO
@@ -91,6 +101,7 @@ GO
 
 USE BibliotecaDB;
 GO
+
 
 
 INSERT INTO Tema (nombre_tema, descripcion) VALUES 
@@ -135,17 +146,10 @@ INSERT INTO Usuarios (contrasena, email, nombre, apellidos, tipo) VALUES
 ('admin_root', 'sistemas.biblioteca@unileon.es', 'Admin', 'Sistemas IT', 'Admin');
 
 
-INSERT INTO Estudiantes (ID_usuario, num_prestamos, num_reservas, sanciones)
-SELECT ID_usuario, 0, 0, 0 
+INSERT INTO Estudiantes (email, num_prestamos, num_reservas, sanciones)
+SELECT email, 0, 0, 0 
 FROM Usuarios 
 WHERE tipo = 'Estudiante';
-
-
-USE BibliotecaDB;
-CREATE USER biblioteca_user FOR LOGIN biblioteca_user;
-ALTER ROLE db_owner ADD MEMBER biblioteca_user;
-ALTER LOGIN biblioteca_user WITH PASSWORD = 'pruebaISD2024';
-ALTER LOGIN biblioteca_user ENABLE;
 
 
 INSERT INTO Libros (ISBN, titulo, autor, fecha_llegada, num_copias, disponibilidad, descripcion, nombre_tema) VALUES 
@@ -169,5 +173,18 @@ INSERT INTO Libros (ISBN, titulo, autor, fecha_llegada, num_copias, disponibilid
 
 ('978-84-MUS10', 'Teoría Completa de la Música', 'Dionisio de Pedro', '2023-04-14', 1, 'Disponible', 'Manual técnico avanzado de solfeo, armonía y composición.', 'Música');
 
+
+
+INSERT INTO Prestamos (email, ISBN, estado, fecha_prestamo, fecha_devolucion, prorroga) VALUES 
+
+('123', '978-84-INF05', 'Activo', '2026-04-20', '2026-05-04', 0);
+
+
 GO
 
+
+USE BibliotecaDB;
+CREATE USER biblioteca_user FOR LOGIN biblioteca_user;
+ALTER ROLE db_owner ADD MEMBER biblioteca_user;
+ALTER LOGIN biblioteca_user WITH PASSWORD = 'pruebaISD2024';
+ALTER LOGIN biblioteca_user ENABLE;
