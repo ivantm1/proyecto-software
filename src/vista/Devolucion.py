@@ -1,5 +1,4 @@
-from PyQt5.QtWidgets import (QDialog, QVBoxLayout, QHBoxLayout, QLabel,
-                              QLineEdit, QPushButton, QMessageBox)
+from PyQt5.QtWidgets import QDialog, QVBoxLayout, QHBoxLayout, QLabel, QLineEdit, QPushButton, QMessageBox
 
 
 class Devolucion(QDialog):
@@ -8,8 +7,6 @@ class Devolucion(QDialog):
         self.setWindowTitle("Registrar devolución — BiblioULE")
         self.setMinimumSize(450, 200)
         self._controlador = None
-
-    
 
     def on_devolver_click(self):
         isbn = self.Linea_isbn.text().strip()
