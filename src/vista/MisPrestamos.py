@@ -17,7 +17,7 @@ class MisPrestamos(QDialog):
         self._controlador = None
         self._construir_ui()
 
-def _construir_ui(self):
+    def _construir_ui(self):
         layout = QVBoxLayout()
 
         layout.addWidget(QLabel("<b>Mis préstamos activos</b>"))
