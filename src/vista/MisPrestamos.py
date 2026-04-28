@@ -17,7 +17,31 @@ class MisPrestamos(QDialog):
         self._controlador = None
         self._construir_ui()
 
-    
+def _construir_ui(self):
+        layout = QVBoxLayout()
+
+        layout.addWidget(QLabel("<b>Mis préstamos activos</b>"))
+
+        self.tabla_prestamos = QTableWidget()
+        self.tabla_prestamos.setColumnCount(4)
+        self.tabla_prestamos.setHorizontalHeaderLabels(
+            ["ISBN", "Fecha préstamo", "Fecha devolución", "Prórrogado"]
+        )
+        self.tabla_prestamos.setSelectionBehavior(QTableWidget.SelectRows)
+        self.tabla_prestamos.setEditTriggers(QTableWidget.NoEditTriggers)
+        layout.addWidget(self.tabla_prestamos)
+
+        layout_botones = QHBoxLayout()
+        self.boton_prorrogar = QPushButton("Solicitar prórroga (+7 días)")
+        self.boton_actualizar = QPushButton("Actualizar")
+        layout_botones.addWidget(self.boton_prorrogar)
+        layout_botones.addWidget(self.boton_actualizar)
+        layout.addLayout(layout_botones)
+
+        self.setLayout(layout)
+
+        self.boton_prorrogar.clicked.connect(self.on_prorrogar_click)
+        self.boton_actualizar.clicked.connect(self.on_actualizar_click)
 
     # ------------------------------------------------------------------
     # Manejadores
