@@ -32,7 +32,7 @@ class CatalogoControlador:
     
     def buscarLibro(self, titulo, tema):
         libros = self._modelo.buscarLibro(titulo, tema)
-        if self._tipo_usuario == "Estudiante":
+        if self._tipo_usuario == "estudiante":
             self._vista_catalogo.cargar_lista_libros_estudiante(libros)
         else:
             self._vista_catalogo.cargar_lista_libros_bibliotecario(libros)

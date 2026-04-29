@@ -3,7 +3,7 @@ from src.modelo.vo.UsuarioVO import UsuarioVO
 
 class UserDaoJDBC(Conexion):
     SQL_CHECK_LOGIN = "SELECT nombre, apellidos, email, contrasena, tipo FROM Usuarios WHERE email = ? AND contrasena = ?"
-    SQL_REGISTRO = "INSERT INTO Usuarios (nombre, apellidos, email, contrasena) VALUES (?, ?, ?, ?)"
+    SQL_REGISTRO = "INSERT INTO Usuarios (nombre, apellidos, email, contrasena, tipo) VALUES (?, ?, ?, ?, 'Estudiante')"
 
     def comprobarLogin(self, loginVO):
         cursor = self.getCursor()
@@ -21,7 +21,7 @@ class UserDaoJDBC(Conexion):
     def registrarUsuario(self, registroVO):
         cursor = self.getCursor()
         try:
-            cursor.execute(self.SQL_REGISTRO, (registroVO.nombre_user, registroVO.apellidos, registroVO.email, registroVO.contrasena))
+            cursor.execute(self.SQL_REGISTRO, (registroVO.nombre, registroVO.apellidos, registroVO.correo, registroVO.contrasena))
             self.conexion.commit()
             return True
         except Exception as e:

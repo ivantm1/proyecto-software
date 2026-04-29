@@ -57,29 +57,31 @@ class ControladorPrincipal:
 
     def ventanaRegistro(self):
         if self._vistaRegistro:
+            self._vistaRegistro.controlador = self
             self._vistaLogin.close()
             self._vistaRegistro.showMaximized()
 
     def registrarUsuario(self, nombre, apellidos, correo, contrasena, confirmar):
+        print("hola")
         if not all([nombre, apellidos, correo, contrasena, confirmar]):
             self._vistaRegistro.lanzarAviso("Rellena todos los campos.")
             return
-
+ 
         if "@estudiantes.unileon.es" not in correo:
-            self._vistaRegistro.lanzarAviso("Usa un correo institucional.")
+            self._vistaRegistro.lanzarAviso("Usa un correo institucional @estudiantes.unileon.es")
             return
-
+ 
         if contrasena != confirmar:
             self._vistaRegistro.lanzarAviso("Las contraseñas no coinciden.")
             return
-
+ 
         registro = RegistroVO(nombre, apellidos, correo, contrasena)
         if self._modelo.registrarUsuario(registro):
-            self._vistaRegistro.lanzarAviso("Usuario registrado con éxito.")
+            self._vistaRegistro.lanzarAviso("Usuario registrado con éxito. Vuelve al login.")
             self._vistaRegistro.close()
             self.ventanaIniciarSesion()
         else:
-            self._vistaRegistro.lanzarAviso("Error al registrarse.")
+            self._vistaRegistro.lanzarAviso("Error al registrarse. El email ya puede estar registrado.")
 
     def ventanaEstudiante(self):
         if self._vistaEstudiante:

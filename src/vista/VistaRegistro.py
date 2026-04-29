@@ -9,7 +9,7 @@ class VistaRegistro(QDialog, Form):
         super().__init__()
         self.setupUi(self)  # Inicializa los widgets
         self.controlador = None
-        # Conectar el botón a la función
+
         self.boton_registro.clicked.connect(self.on_register_click)
     
     def on_register_click(self):

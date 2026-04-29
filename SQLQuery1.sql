@@ -86,13 +86,43 @@ CREATE TABLE Prestamos (
 	ID_prestamo INT PRIMARY KEY IDENTITY(1,1),
     email VARCHAR(100) NOT NULL,
     ISBN VARCHAR(20),
-	estado VARCHAR(40) CHECK (estado IN ('Activo', 'Devuelto', 'Vencido')),
+	estado VARCHAR(40) CHECK (estado IN ('Activo', 'Devuelto', 'Vencido')) DEFAULT 'Activo',
     fecha_prestamo DATE NOT NULL,
     fecha_devolucion DATE NOT NULL,
 	prorroga BIT default 0,
     FOREIGN KEY (email) REFERENCES Estudiantes(email),
     FOREIGN KEY (ISBN) REFERENCES Libros(ISBN)
 );
+GO
+
+ALTER TABLE Prestamos 
+ADD CONSTRAINT DF_fecha_prestamo DEFAULT GETDATE() FOR fecha_prestamo;
+
+ALTER TABLE Prestamos 
+ADD CONSTRAINT DF_fecha_devolucion DEFAULT DATEADD(day, 14, GETDATE()) FOR fecha_devolucion;
+GO
+
+CREATE TRIGGER trg_VerificarVencimiento
+ON Prestamos
+AFTER INSERT, UPDATE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    IF EXISTS (
+        SELECT 1 FROM inserted 
+        WHERE fecha_devolucion < CAST(GETDATE() AS DATE) 
+        AND estado = 'Activo'
+    )
+    BEGIN
+        UPDATE P
+        SET estado = 'Vencido'
+        FROM Prestamos P
+        INNER JOIN inserted i ON P.ID_prestamo = i.ID_prestamo
+        WHERE P.fecha_devolucion < CAST(GETDATE() AS DATE)
+          AND P.estado = 'Activo';
+    END
+END;
 GO
 
 
@@ -177,11 +207,8 @@ INSERT INTO Libros (ISBN, titulo, autor, fecha_llegada, num_copias, disponibilid
 
 
 
-INSERT INTO Prestamos (email, ISBN, estado, fecha_prestamo, fecha_devolucion, prorroga) VALUES 
-
-('123', '978-84-INF05', 'Activo', '2026-04-20', '2026-05-04', 0);
-
-
+INSERT INTO Prestamos (email, ISBN) 
+VALUES ('123', '978-84-INF05');
 GO
 
 
