@@ -1,5 +1,6 @@
 from src.modelo.vo.LoginVO import LoginVO
 from src.modelo.vo.RegistroVO import RegistroVO
+from PyQt5.QtWidgets import QApplication
 from src.controlador.CatalogoControlador import CatalogoControlador
 from src.controlador.MisPrestamosControlador import MisPrestamosControlador
 from src.controlador.SancionesControlador import SancionesControlador
@@ -35,6 +36,8 @@ class ControladorPrincipal:
         self._usuario_activo = None  
 
     def ventanaIniciarSesion(self):
+        self._vistaLogin.Linea_usuario.clear()
+        self._vistaLogin.Linea_contrasena.clear()
         self._vistaLogin.showMaximized()
 
     def comprobarLogin(self, loginVO):
@@ -155,3 +158,11 @@ class ControladorPrincipal:
         ctrl = SancionesControlador(self._modelo, self._vistaSanciones)
         self._vistaSanciones.controlador = ctrl
         self._vistaSanciones.show()
+
+
+
+    def CerrarPerfil(self):
+        if self._vistaRegistro:
+            QApplication.closeAllWindows()
+            self.ventanaIniciarSesion()
+
