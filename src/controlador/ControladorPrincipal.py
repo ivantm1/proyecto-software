@@ -58,7 +58,7 @@ class ControladorPrincipal:
     def ventanaRegistro(self):
         if self._vistaRegistro:
             self._vistaLogin.close()
-            self._vistaRegistro.show()
+            self._vistaRegistro.showMaximized()
 
     def registrarUsuario(self, nombre, apellidos, correo, contrasena, confirmar):
         if not all([nombre, apellidos, correo, contrasena, confirmar]):
@@ -84,12 +84,12 @@ class ControladorPrincipal:
     def ventanaEstudiante(self):
         if self._vistaEstudiante:
             self._vistaEstudiante.controlador = self
-            self._vistaEstudiante.show()
+            self._vistaEstudiante.showMaximized()
 
     def ventanaBibliotecario(self):
         if self._vistaBibliotecario:
             self._vistaBibliotecario.controlador = self
-            self._vistaBibliotecario.show()
+            self._vistaBibliotecario.showMaximized()
 
     def ventanaVerPerfil(self):
         if not self._vistaPerfil or not self._usuario_activo:
@@ -116,7 +116,10 @@ class ControladorPrincipal:
         self._vistaCatalogo.showMaximized()
     
         libros = self._modelo.buscarLibro("", "Ninguno")
-        self._vistaCatalogo.cargar_lista_libros(libros)
+        if self._usuario_activo.tipo == "Estudiante":
+            self._vistaCatalogo.cargar_lista_libros_estudiante(libros)
+        else:
+            self._vistaCatalogo.cargar_lista_libros_bibliotecario(libros)
 
     def ventanaMisPrestamos(self):
         if not self._vistaMisPrestamos or not self._usuario_activo:

@@ -41,12 +41,12 @@ class VistaCatalogo(QDialog, Form):
         print(ISBN)
         #self.controlador.abrir_detalle_libro(titulo, autor)
 
-    def cargar_lista_libros(self, lista_libros):
+    def cargar_lista_libros_estudiante(self, lista_libros):
 
         if lista_libros is None:
             self.tabla_libros.setRowCount(0)
             return
-
+        
         lista_libros = [l for l in lista_libros if str(l.disponibilidad).lower() != "retirado"]
         self.tabla_libros.setRowCount(0)
         self.tabla_libros.setRowCount(len(lista_libros))
@@ -69,6 +69,39 @@ class VistaCatalogo(QDialog, Form):
             disp.setFlags(disp.flags() ^ Qt.ItemIsEditable)
 
         self.tabla_libros.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+
+
+    def cargar_lista_libros_bibliotecario(self, lista_libros):
+
+        if lista_libros is None:
+            self.tabla_libros.setRowCount(0)
+            return
+        
+        lista_libros = [l for l in lista_libros]
+        self.tabla_libros.setRowCount(0)
+        self.tabla_libros.setRowCount(len(lista_libros))
+        self.tabla_libros.resizeColumnsToContents()
+        
+        for fila, libro in enumerate(lista_libros):
+            self.tabla_libros.setItem(fila, 0, QTableWidgetItem(str(libro.titulo)))
+            self.tabla_libros.setItem(fila, 1, QTableWidgetItem(str(libro.autor)))
+            self.tabla_libros.setItem(fila, 2, QTableWidgetItem(str(libro.nombre_tema)))
+
+            estado = str(libro.disponibilidad).lower()
+            disp = QTableWidgetItem(str(libro.disponibilidad)) # Creamos el item real
+
+            if estado == "disponible":
+                disp.setBackground(QColor(200, 240, 200)) # Verde
+            elif "reservado" in estado or "prestado" in estado:
+                disp.setBackground(QColor(255, 218, 185)) # Naranja
+            elif "retirado" in estado:
+                disp.setBackground(QColor(240, 200, 200)) # Rojo
+
+            self.tabla_libros.setItem(fila, 3, disp) # Insertamos el objeto PINTADO        
+            disp.setFlags(disp.flags() ^ Qt.ItemIsEditable)
+
+        self.tabla_libros.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+
     @property
     def controlador(self):
         return self._controlador
