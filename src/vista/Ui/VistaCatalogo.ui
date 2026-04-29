@@ -7,8 +7,14 @@
     <x>0</x>
     <y>0</y>
     <width>1040</width>
-    <height>924</height>
+    <height>921</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
@@ -16,42 +22,123 @@
   <property name="styleSheet">
    <string notr="true">#Dialog {
     background-color: #89ABA7;
-}</string>
+}
+
+* {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 13px;
+}
+
+QFrame#frame_principal {
+    background-color: white;
+    border: 2px solid #e5e7eb; /* El borde que pediste */
+    border-radius: 15px;       /* Esquinas redondeadas para el catálogo */
+}
+QTableWidget::item:selected {
+    background-color: #dbeafe; /* Azul muy suave */
+    color: #1e40af;            /* Texto azul oscuro */
+}
+
+QComboBox QAbstractItemView {
+    background-color: white;
+    selection-background-color: #1f2937; /* Color oscuro al seleccionar */
+    selection-color: white;             /* Texto blanco para contrastar */
+}
+
+/* Mejora el aspecto general del buscador */
+QLineEdit, QComboBox {
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    padding: 5px;
+    background-color: white;
+    color: #333;
+}
+
+/* Redondear el buscador */
+QLineEdit {
+    border: 2px solid #bdc3c7;
+    border-radius: 15px; /* Aquí está el redondeo */
+    padding: 5px 15px;
+    background: white;
+    selection-background-color: #34495e;
+}
+
+QLabel {
+    border: 2px solid #bdc3c7;
+    border-radius: 15px; /* Aquí está el redondeo */
+    background: white;
+    selection-background-color: #34495e;
+}
+/* Redondear la tabla */
+QTableWidget {
+    border: 1px solid #d1d5db;
+    border-radius: 10px; 
+    gridline-color: #f3f4f6;
+}
+/* Estilo para las cabeceras de la tabla */
+QHeaderView::section {
+    background-color: #2c3e50;
+    color: white;
+    padding: 5px;
+    border: none;
+    font-weight: bold;
+}
+
+/* Botón de búsqueda redondeado */
+QPushButton#boton_buscar {
+    background-color: #bdc3c7;
+    color: white;
+    border-radius: 10px;
+    padding: 5px;
+}
+
+QHeaderView::section:last {
+    border-top-right-radius: 5px;
+}
+
+QHeaderView::section:first {
+    border-top-left-radius: 5px;
+}
+
+QHeaderView::section {
+    background-color: #1f2937; 
+    color: #ffffff; /* Texto blanco */
+    font-family: &quot;Segoe UI&quot;, Arial, sans-serif;
+    font-size: 15px;
+    font-weight: bold; /* Negrita */
+    padding: 6px;
+    border: none;
+    border-right: 1px solid #374151; /* Una pequeña línea divisoria entre títulos */
+}
+
+</string>
   </property>
-  <layout class="QHBoxLayout" name="horizontalLayout_10">
+  <layout class="QVBoxLayout" name="verticalLayout_2">
+   <property name="sizeConstraint">
+    <enum>QLayout::SetMaximumSize</enum>
+   </property>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_3"/>
+    <layout class="QHBoxLayout" name="horizontalLayout_4"/>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_9">
      <item>
-      <spacer name="horizontalSpacer">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
       <layout class="QVBoxLayout" name="verticalLayout">
-       <item>
-        <spacer name="verticalSpacer">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>40</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
+       <property name="spacing">
+        <number>8</number>
+       </property>
+       <property name="leftMargin">
+        <number>8</number>
+       </property>
+       <property name="topMargin">
+        <number>8</number>
+       </property>
+       <property name="rightMargin">
+        <number>8</number>
+       </property>
+       <property name="bottomMargin">
+        <number>8</number>
+       </property>
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_2">
          <item>
@@ -247,11 +334,26 @@
        </item>
        <item>
         <widget class="QTableWidget" name="tabla_libros">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="minimumSize">
           <size>
-           <width>800</width>
-           <height>700</height>
+           <width>0</width>
+           <height>0</height>
           </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true"/>
          </property>
          <property name="editTriggers">
           <set>QAbstractItemView::NoEditTriggers</set>
@@ -286,6 +388,9 @@
          <attribute name="verticalHeaderCascadingSectionResizes">
           <bool>false</bool>
          </attribute>
+         <attribute name="verticalHeaderStretchLastSection">
+          <bool>false</bool>
+         </attribute>
          <column>
           <property name="text">
            <string>Nombre</string>
@@ -298,48 +403,22 @@
          </column>
          <column>
           <property name="text">
-           <string>Disponibilidad</string>
+           <string>Tema</string>
           </property>
          </column>
          <column>
           <property name="text">
-           <string>Tema</string>
+           <string>Disponibilidad</string>
           </property>
          </column>
         </widget>
        </item>
-       <item>
-        <spacer name="verticalSpacer_2">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>40</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
       </layout>
-     </item>
-     <item>
-      <spacer name="horizontalSpacer_2">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
      </item>
     </layout>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_4"/>
+    <layout class="QHBoxLayout" name="horizontalLayout_3"/>
    </item>
   </layout>
  </widget>

@@ -35,7 +35,7 @@ class ControladorPrincipal:
         self._usuario_activo = None  
 
     def ventanaIniciarSesion(self):
-        self._vistaLogin.show()
+        self._vistaLogin.showMaximized()
 
     def comprobarLogin(self, loginVO):
         if not loginVO.nombre or not loginVO.contrasena:
@@ -112,7 +112,11 @@ class ControladorPrincipal:
             tipo_usuario=self._usuario_activo.tipo,
         )
         self._vistaCatalogo.controlador = ctrl
-        self._vistaCatalogo.show()
+        self._vistaEstudiante.close()
+        self._vistaCatalogo.showMaximized()
+    
+        libros = self._modelo.buscarLibro("", "Ninguno")
+        self._vistaCatalogo.cargar_lista_libros(libros)
 
     def ventanaMisPrestamos(self):
         if not self._vistaMisPrestamos or not self._usuario_activo:
