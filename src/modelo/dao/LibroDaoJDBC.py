@@ -2,7 +2,14 @@ from src.modelo.conexion.Conexion import Conexion
 from src.modelo.vo.LibroVO import LibroVO
 
 class LibroDaoJDBC(Conexion):
+    SQL_INSERT = """
+        INSERT INTO Libros (
+            isbn, titulo, autor, fecha_llegada, num_copias, 
+            disponibilidad, descripcion, nombre_tema, estado
+        ) VALUES (?, ?, ?, ?, 1, ?, ?, ?, 'disponible')
+    """
 
+    SQL_DELETE = "DELETE FROM Libros WHERE isbn = ?"
 
     def _fila_a_vo(self, row):
         isbn, titulo, autor, fecha_llegada, num_copias, disponibilidad, descripcion, nombre_tema = row
@@ -12,30 +19,48 @@ class LibroDaoJDBC(Conexion):
     def altaLibro(self, libroVO):
         cursor = self.getCursor()
         try:
-            cursor.execute(self.SQL_INSERT, (
-                libroVO.isbn, libroVO.titulo, libroVO.autores, libroVO.tema,
-                libroVO.fecha_llegada, libroVO.descripcion, libroVO.estado
-            ))
+            datos = (
+                libroVO.isbn, 
+                libroVO.titulo, 
+                libroVO.autor, 
+                libroVO.fecha_llegada, 
+                libroVO.disponibilidad, 
+                libroVO.descripcion, 
+                libroVO.nombre_tema
+            )
+            
+            cursor.execute(self.SQL_INSERT, datos)
             self.conexion.commit()
             return True
+            
         except Exception as e:
-            print(f"Error en altaLibro: {e}")
+            self.conexion.rollback() 
+            print(f"Error en altaLibro (DAO): {e}")
             return False
 
-    # RF03 — retirar libro (solo si no tiene préstamo activo ni reserva)
     def bajaLibro(self, isbn):
         cursor = self.getCursor()
         try:
             cursor.execute(self.SQL_CHECK_LIBRE, (isbn,))
-            count = cursor.fetchone()[0]
-            if count == 0:
-                print("No se puede retirar: el libro tiene un préstamo activo o una reserva.")
+            resultado = cursor.fetchone()
+            
+            # Si el conteo es 0, significa que el libro no existe o está ocupado
+            if resultado[0] == 0:
+                print(f"No se puede eliminar el ISBN {isbn}: El libro está prestado, reservado o no existe.")
                 return False
+
+            # 2. Si pasó la validación, procedemos a borrar
             cursor.execute(self.SQL_DELETE, (isbn,))
+            
+            # 3. Confirmamos la operación
             self.conexion.commit()
+            print(f"Libro con ISBN {isbn} eliminado correctamente.")
             return True
+
         except Exception as e:
-            print(f"Error en bajaLibro: {e}")
+            # En caso de error de base de datos, deshacemos cambios
+            self.conexion.rollback()
+            print(f"Error en bajaLibro (DAO): {e}")
             return False
 
 
