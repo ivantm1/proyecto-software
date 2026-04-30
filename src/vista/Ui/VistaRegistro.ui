@@ -159,39 +159,57 @@
       </widget>
      </item>
      <item>
-      <spacer name="verticalSpacer_3">
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>20</width>
-         <height>40</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
       <widget class="QPushButton" name="boton_registro">
        <property name="styleSheet">
         <string notr="true">QPushButton {
-    background-color: #1B4332; /* Usamos el verde bosque */
-    color: white;              /* Texto en blanco para contraste */
-    border-radius: 5px;        /* Bordes redondeados */
-    padding: 8px;              /* Espaciado interno */
+    background-color: #1B4332; 
+    color: white; 
+    border-radius: 5px;  
+    padding: 8px;  
     font-weight: bold;
 }
 
 QPushButton:hover {
-    background-color: #2D6A4F; /* Un verde un poco más claro al pasar el ratón */
+    background-color: #2D6A4F; 
 }
 
 QPushButton:pressed {
-    background-color: #081C15; /* Un tono más oscuro al hacer clic */
+    background-color: #081C15;
 }</string>
        </property>
        <property name="text">
         <string>Registrarse</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="boton_volver">
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+    background-color: #1B4332; 
+    color: white; 
+    border-radius: 5px;  
+    padding: 8px;  
+    font-weight: bold;
+}
+
+QPushButton:hover {
+    background-color: #2D6A4F; 
+}
+
+QPushButton:pressed {
+    background-color: #081C15;
+}</string>
+       </property>
+       <property name="text">
+        <string>Volver</string>
        </property>
       </widget>
      </item>
