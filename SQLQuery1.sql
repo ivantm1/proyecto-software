@@ -54,7 +54,7 @@ CREATE TABLE Libros (
     autor VARCHAR(100) NOT NULL,
     fecha_llegada DATE,
 	num_copias INT default 1,
-	disponibilidad VARCHAR(40) CHECK (disponibilidad IN ('Disponible', 'Retirado', 'Prestado')),
+	disponibilidad VARCHAR(40) CHECK (disponibilidad IN ('Disponible', 'Retirado', 'Prestado', 'Reservado')),
     descripcion TEXT,
     nombre_tema VARCHAR(100),
     FOREIGN KEY (nombre_tema) REFERENCES Tema(nombre_tema)

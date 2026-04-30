@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QDialog, QTableWidgetItem
+from PyQt5.QtWidgets import QDialog, QTableWidgetItem, QMessageBox
 from PyQt5 import uic
 from PyQt5.QtWidgets import QHeaderView, QSizePolicy, QAbstractItemView
 from PyQt5.QtCore import Qt
@@ -17,87 +17,85 @@ class VistaCatalogo(QDialog, Form):
         self.tabla_libros.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.tabla_libros.setSelectionMode(QAbstractItemView.SingleSelection)
         self._controlador = None
-        
+        self._libros = []  # guardamos la lista para acceder por índice
+
         self.boton_buscar.clicked.connect(self.on_buscar_click)
-        self.tabla_libros.doubleClicked.connect(self.libro_seleccionado)  
+        self.tabla_libros.doubleClicked.connect(self.libro_seleccionado)
 
     def on_buscar_click(self):
         if self.controlador:
             texto_busqueda = self.linea_busqueda.text()
-            
             tema = self.opcion_buscador.currentText()
-
             self.controlador.buscarLibro(texto_busqueda, tema)
 
     def libro_seleccionado(self):
         seleccion = self.tabla_libros.selectedItems()
-        
         if not seleccion:
             return
-
         fila = seleccion[0].row()
-        
-        ISBN = self.tabla_libros.item(fila, 0).text()
-        print(ISBN)
-        #self.controlador.abrir_detalle_libro(titulo, autor)
+        if self.controlador:
+            self.controlador.abrirDetalleLibro(fila)
+
+    def obtenerLibroPorFila(self, fila):
+        if 0 <= fila < len(self._libros):
+            return self._libros[fila]
+        return None
+
+    def lanzarAviso(self, aviso):
+        QMessageBox.information(self, "Información", aviso)
 
     def cargar_lista_libros_estudiante(self, lista_libros):
-
         if lista_libros is None:
             self.tabla_libros.setRowCount(0)
+            self._libros = []
             return
-        
-        lista_libros = [l for l in lista_libros if str(l.disponibilidad).lower() != "retirado"]
+
+        self._libros = [l for l in lista_libros if str(l.disponibilidad).lower() != "retirado"]
         self.tabla_libros.setRowCount(0)
-        self.tabla_libros.setRowCount(len(lista_libros))
+        self.tabla_libros.setRowCount(len(self._libros))
         self.tabla_libros.resizeColumnsToContents()
-        
-        for fila, libro in enumerate(lista_libros):
+
+        for fila, libro in enumerate(self._libros):
             self.tabla_libros.setItem(fila, 0, QTableWidgetItem(str(libro.titulo)))
             self.tabla_libros.setItem(fila, 1, QTableWidgetItem(str(libro.autor)))
             self.tabla_libros.setItem(fila, 2, QTableWidgetItem(str(libro.nombre_tema)))
 
             estado = str(libro.disponibilidad).lower()
-            disp = QTableWidgetItem(str(libro.disponibilidad)) # Creamos el item real
-
+            disp = QTableWidgetItem(str(libro.disponibilidad))
             if estado == "disponible":
-                disp.setBackground(QColor(200, 240, 200)) # Verde
+                disp.setBackground(QColor(200, 240, 200))
             elif "reservado" in estado or "prestado" in estado:
-                disp.setBackground(QColor(240, 200, 200)) # Rojo
-
-            self.tabla_libros.setItem(fila, 3, disp) # Insertamos el objeto PINTADO        
+                disp.setBackground(QColor(240, 200, 200))
+            self.tabla_libros.setItem(fila, 3, disp)
             disp.setFlags(disp.flags() ^ Qt.ItemIsEditable)
 
         self.tabla_libros.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
 
-
     def cargar_lista_libros_bibliotecario(self, lista_libros):
-
         if lista_libros is None:
             self.tabla_libros.setRowCount(0)
+            self._libros = []
             return
-        
-        lista_libros = [l for l in lista_libros]
+
+        self._libros = list(lista_libros)
         self.tabla_libros.setRowCount(0)
-        self.tabla_libros.setRowCount(len(lista_libros))
+        self.tabla_libros.setRowCount(len(self._libros))
         self.tabla_libros.resizeColumnsToContents()
-        
-        for fila, libro in enumerate(lista_libros):
+
+        for fila, libro in enumerate(self._libros):
             self.tabla_libros.setItem(fila, 0, QTableWidgetItem(str(libro.titulo)))
             self.tabla_libros.setItem(fila, 1, QTableWidgetItem(str(libro.autor)))
             self.tabla_libros.setItem(fila, 2, QTableWidgetItem(str(libro.nombre_tema)))
 
             estado = str(libro.disponibilidad).lower()
-            disp = QTableWidgetItem(str(libro.disponibilidad)) # Creamos el item real
-
+            disp = QTableWidgetItem(str(libro.disponibilidad))
             if estado == "disponible":
-                disp.setBackground(QColor(200, 240, 200)) # Verde
+                disp.setBackground(QColor(200, 240, 200))
             elif "reservado" in estado or "prestado" in estado:
-                disp.setBackground(QColor(255, 218, 185)) # Naranja
+                disp.setBackground(QColor(255, 218, 185))
             elif "retirado" in estado:
-                disp.setBackground(QColor(240, 200, 200)) # Rojo
-
-            self.tabla_libros.setItem(fila, 3, disp) # Insertamos el objeto PINTADO        
+                disp.setBackground(QColor(240, 200, 200))
+            self.tabla_libros.setItem(fila, 3, disp)
             disp.setFlags(disp.flags() ^ Qt.ItemIsEditable)
 
         self.tabla_libros.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)

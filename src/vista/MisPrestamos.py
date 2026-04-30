@@ -1,83 +1,48 @@
-from PyQt5.QtWidgets import QDialog, QVBoxLayout, QHBoxLayout, QLabel, QPushButton, QTableWidget, QTableWidgetItem, QMessageBox
+from PyQt5.QtWidgets import QDialog, QMessageBox, QTableWidgetItem
+from PyQt5 import uic
 
+Form, Window = uic.loadUiType("./src/vista/Ui/VistaMisPrestamos.ui")
 
-class MisPrestamos(QDialog):
-    """
-    Vista para el Estudiante: muestra sus préstamos activos y permite
-    solicitar prórroga de 7 días en el seleccionado.
-    Sin fichero .ui — construida programáticamente (patrón de Prestamo.py).
-    """
-
-    def __init__(self, parent=None):
-        super().__init__(parent)
+class MisPrestamos(QDialog, Form):
+    def __init__(self):
+        super().__init__()
+        self.setupUi(self)
         self.setWindowTitle("Mis préstamos — BiblioULE")
-        self.setMinimumSize(800, 500)
-        self._controlador = None
-        self._construir_ui()
+        self.controlador = None
 
-    def _construir_ui(self):
-        layout = QVBoxLayout()
+        self.boton_buscar.clicked.connect(self.on_buscar_click)
+        self.tabla_libros.cellDoubleClicked.connect(self.on_fila_doble_click)
 
-        layout.addWidget(QLabel("<b>Mis préstamos activos</b>"))
+    def on_buscar_click(self):
+        if self.controlador:
+            titulo = self.linea_busqueda.text()
+            tema   = self.opcion_buscador.currentText()
+            self.controlador.buscarPrestamos(titulo, tema)
 
-        self.tabla_prestamos = QTableWidget()
-        self.tabla_prestamos.setColumnCount(4)
-        self.tabla_prestamos.setHorizontalHeaderLabels(
-            ["ISBN", "Fecha préstamo", "Fecha devolución", "Prórrogado"]
-        )
-        self.tabla_prestamos.setSelectionBehavior(QTableWidget.SelectRows)
-        self.tabla_prestamos.setEditTriggers(QTableWidget.NoEditTriggers)
-        layout.addWidget(self.tabla_prestamos)
-
-        layout_botones = QHBoxLayout()
-        self.boton_prorrogar = QPushButton("Solicitar prórroga (+7 días)")
-        self.boton_actualizar = QPushButton("Actualizar")
-        layout_botones.addWidget(self.boton_prorrogar)
-        layout_botones.addWidget(self.boton_actualizar)
-        layout.addLayout(layout_botones)
-
-        self.setLayout(layout)
-
-        self.boton_prorrogar.clicked.connect(self.on_prorrogar_click)
-        self.boton_actualizar.clicked.connect(self.on_actualizar_click)
-
-    # ------------------------------------------------------------------
-    # Manejadores
-    # ------------------------------------------------------------------
-
-    def on_prorrogar_click(self):
-        fila = self.tabla_prestamos.currentRow()
-        if fila < 0:
-            self.lanzarAviso("Selecciona un préstamo de la tabla.")
-            return
-        isbn = self.tabla_prestamos.item(fila, 0).text()
-        if self._controlador:
-            self._controlador.prorrogarPrestamo(isbn)
-
-    def on_actualizar_click(self):
-        if self._controlador:
-            self._controlador.actualizarPrestamos()
-
-    # ------------------------------------------------------------------
-    # Métodos de visualización
-    # ------------------------------------------------------------------
-
-    def cargarPrestamos(self, modelo, correo_estudiante):
-        """Llamado por el controlador principal al abrir la ventana."""
-        from src.controlador.MisPrestamosControlador import MisPrestamosControlador
-        ctrl = MisPrestamosControlador(modelo, self, correo_estudiante)
-        self.controlador = ctrl
-        ctrl.actualizarPrestamos()
+    def on_fila_doble_click(self, fila, columna):
+        """Al hacer doble clic en una fila, abre el detalle del préstamo"""
+        if self.controlador:
+            self.controlador.abrirDetallePrestamo(fila)
 
     def mostrarPrestamos(self, lista_prestamos):
-        self.tabla_prestamos.setRowCount(0)
-        for p in lista_prestamos:
-            fila = self.tabla_prestamos.rowCount()
-            self.tabla_prestamos.insertRow(fila)
-            self.tabla_prestamos.setItem(fila, 0, QTableWidgetItem(str(p.isbn_libro)))
-            self.tabla_prestamos.setItem(fila, 1, QTableWidgetItem(str(p.fecha_prestamo)))
-            self.tabla_prestamos.setItem(fila, 2, QTableWidgetItem(str(p.fecha_devolucion)))
-            self.tabla_prestamos.setItem(fila, 3, QTableWidgetItem("—"))
+        self.tabla_libros.setRowCount(0)
+        self._prestamos = lista_prestamos  # guardamos para acceder por índice
+
+        if not lista_prestamos:
+            return
+
+        for prestamo in lista_prestamos:
+            fila = self.tabla_libros.rowCount()
+            self.tabla_libros.insertRow(fila)
+            self.tabla_libros.setItem(fila, 0, QTableWidgetItem(str(prestamo.titulo)))
+            self.tabla_libros.setItem(fila, 1, QTableWidgetItem(str(prestamo.autor)))
+            self.tabla_libros.setItem(fila, 2, QTableWidgetItem(str(prestamo.nombre_tema)))
+            self.tabla_libros.setItem(fila, 3, QTableWidgetItem(str(prestamo.fecha_devolucion)))
+
+    def obtenerPrestamoPorFila(self, fila):
+        if hasattr(self, '_prestamos') and 0 <= fila < len(self._prestamos):
+            return self._prestamos[fila]
+        return None
 
     def lanzarAviso(self, aviso):
         QMessageBox.information(self, "Información", aviso)

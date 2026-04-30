@@ -3,28 +3,30 @@ from src.modelo.conexion.Conexion import Conexion
 from src.modelo.vo.ReservaVO import ReservaVO
 
 class ReservaDaoJDBC(Conexion):
-    SQL_CREAR          = "UPDATE Libros SET correo_reserva = ?, fecha_reserva = ? WHERE isbn = ? AND correo_reserva IS NULL"
-    SQL_CANCELAR       = "UPDATE Libros SET correo_reserva = NULL, fecha_reserva = NULL WHERE isbn = ?"
-    SQL_RESERVAS_EST   = "SELECT isbn, correo_reserva, fecha_reserva FROM Libros WHERE correo_reserva = ?"
-    SQL_RESERVA_LIBRO  = "SELECT correo_reserva, fecha_reserva FROM Libros WHERE isbn = ?"
-    SQL_CUENTA_RESERVAS= "SELECT COUNT(*) FROM Libros WHERE correo_reserva = ?"
+    SQL_CREAR           = "INSERT INTO Reservas (email, ISBN, fecha_reserva) VALUES (?, ?, ?)"
+    SQL_CANCELAR        = "UPDATE Reservas SET estado = 'Cumplida' WHERE ISBN = ? AND estado = 'Pendiente'"
+    SQL_RESERVAS_EST    = "SELECT ISBN, email, fecha_reserva FROM Reservas WHERE email = ? AND estado = 'Pendiente'"
+    SQL_RESERVA_LIBRO   = "SELECT email, fecha_reserva FROM Reservas WHERE ISBN = ? AND estado = 'Pendiente'"
+    SQL_CUENTA_RESERVAS = "SELECT COUNT(*) FROM Reservas WHERE email = ? AND estado = 'Pendiente'"
+    SQL_EXISTE          = "SELECT COUNT(*) FROM Reservas WHERE ISBN = ? AND estado = 'Pendiente'"
 
-    # RF15 — crear reserva (solo si el libro no tiene ya otra reserva)
     def crearReserva(self, isbn, correo_estudiante):
         cursor = self.getCursor()
         try:
-            hoy = datetime.date.today()
-            cursor.execute(self.SQL_CREAR, (correo_estudiante, hoy, isbn))
-            if cursor.rowcount == 0:
+            # Comprobar que no hay ya una reserva activa para ese libro
+            cursor.execute(self.SQL_EXISTE, (isbn,))
+            if cursor.fetchone()[0] > 0:
                 print("No se puede reservar: el libro ya tiene una reserva activa.")
                 return False
+
+            hoy = datetime.date.today().strftime('%Y-%m-%d')
+            cursor.execute(self.SQL_CREAR, (correo_estudiante, isbn, hoy))
             self.conexion.commit()
             return True
         except Exception as e:
             print(f"Error en crearReserva: {e}")
             return False
 
-    # RF20 — cancelar reserva (libro devuelto a catálogo por expiración)
     def cancelarReserva(self, isbn):
         cursor = self.getCursor()
         try:
@@ -35,7 +37,6 @@ class ReservaDaoJDBC(Conexion):
             print(f"Error en cancelarReserva: {e}")
             return False
 
-    # RF18 — reservas activas de un estudiante
     def obtenerReservasEstudiante(self, correo_estudiante):
         cursor = self.getCursor()
         reservas = []
@@ -48,21 +49,19 @@ class ReservaDaoJDBC(Conexion):
             print(f"Error en obtenerReservasEstudiante: {e}")
         return reservas
 
-    # RF17 — comprobar si un libro tiene reserva (se llama al devolver)
     def obtenerReservaPorLibro(self, isbn):
         cursor = self.getCursor()
         try:
             cursor.execute(self.SQL_RESERVA_LIBRO, (isbn,))
             row = cursor.fetchone()
-            if row is None or row[0] is None:
+            if row is None:
                 return None
-            correo_reserva, fecha_reserva = row
-            return ReservaVO(isbn, correo_reserva, fecha_reserva)
+            correo, fecha_reserva = row
+            return ReservaVO(isbn, correo, fecha_reserva)
         except Exception as e:
             print(f"Error en obtenerReservaPorLibro: {e}")
             return None
 
-    # RF16 — número de reservas activas de un estudiante
     def contarReservasEstudiante(self, correo_estudiante):
         cursor = self.getCursor()
         try:
@@ -72,10 +71,13 @@ class ReservaDaoJDBC(Conexion):
             print(f"Error en contarReservasEstudiante: {e}")
             return 0
 
-    # RF20 — devuelve True si la reserva lleva más de 7 días sin ser recogida
     def reservaExpirada(self, isbn):
         reserva = self.obtenerReservaPorLibro(isbn)
         if reserva is None:
             return False
-        limite = reserva.fecha_reserva + datetime.timedelta(days=7)
+        if isinstance(reserva.fecha_reserva, str):
+            fecha = datetime.date.fromisoformat(reserva.fecha_reserva[:10])
+        else:
+            fecha = reserva.fecha_reserva
+        limite = fecha + datetime.timedelta(days=7)
         return datetime.date.today() > limite

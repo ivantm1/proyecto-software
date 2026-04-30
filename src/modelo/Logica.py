@@ -95,4 +95,7 @@ class Logica():
 
     def obtenerReservaPorLibro(self, isbn):
         return ReservaDaoJDBC().obtenerReservaPorLibro(isbn)
+    
+    def buscarPrestamosEstudiante(self, correo_estudiante, titulo='', tema='Ninguno'):
+        return PrestamoDaoJDBC().buscarPrestamosEstudiante(correo_estudiante, titulo, tema)
 
