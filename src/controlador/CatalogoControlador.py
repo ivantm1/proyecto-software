@@ -1,4 +1,5 @@
-from src.vista.VistaSeleccionLibro import VistaSeleccionLibro
+from src.vista.VistaLibroDisponible import VistaLibroDisponible
+from src.vista.VistaLibroPrestado import VistaLibroPrestado
 
 class CatalogoControlador:
     def __init__(self, ref_modelo, ref_vista_catalogo, correo_usuario=None, tipo_usuario=None):
@@ -6,11 +7,8 @@ class CatalogoControlador:
         self._vista_catalogo  = ref_vista_catalogo
         self._correo_usuario  = correo_usuario
         self._tipo_usuario    = tipo_usuario
-        self._detalle         = VistaSeleccionLibro()
-
-    # ------------------------------------------------------------------
-    # Catálogo y búsqueda
-    # ------------------------------------------------------------------
+        self._libroDisponible         = VistaLibroDisponible()
+        self._libroPrestado        = VistaLibroPrestado()
 
     def cargarCatalogo(self):
         libros = self._modelo.obtenerCatalogo()
@@ -26,45 +24,41 @@ class CatalogoControlador:
         else:
             self._vista_catalogo.cargar_lista_libros_bibliotecario(libros)
 
-    # ------------------------------------------------------------------
-    # Detalle del libro (doble clic)
-    # ------------------------------------------------------------------
-
-    def abrirDetalleLibro(self, fila):
+    def abrirDetalleLibroDisponible(self, fila):
         libro = self._vista_catalogo.obtenerLibroPorFila(fila)
         if libro is None:
             return
-        self._detalle.controlador = self
-        self._detalle.mostrarLibro(libro)
-        self._detalle.show()
+        self._libroDisponible.controlador = self
+        self._libroDisponible.mostrarLibro(libro)
+        self._libroDisponible.show()
 
-    # ------------------------------------------------------------------
-    # Acciones Estudiante
-    # ------------------------------------------------------------------
+    def abrirDetalleLibroPrestado(self, fila):
+        libro = self._vista_catalogo.obtenerLibroPorFila(fila)
+        if libro is None:
+            return
+        self._libroPrestado.controlador = self
+        self._libroPrestado.mostrarLibro(libro)
+        self._libroPrestado.show()
+
 
     def reservarLibro(self, isbn):
         if not self._correo_usuario:
-            self._detalle.lanzarAviso("No hay usuario identificado.")
+            self._libroPrestado.lanzarAviso("No hay usuario identificado.")
             return
 
         if self._modelo.tieneSancionActiva(self._correo_usuario):
-            self._detalle.lanzarAviso("Tienes una sanción activa y no puedes realizar reservas.")
+            self._libroPrestado.lanzarAviso("Tienes una sanción activa y no puedes realizar reservas.")
             return
 
         exito = self._modelo.crearReserva(isbn, self._correo_usuario)
         if exito:
-            self._detalle.lanzarAviso("Reserva realizada con éxito.")
-            self._detalle.close()
+            self._libroPrestado.lanzarAviso("Reserva realizada con éxito.")
             self.cargarCatalogo()
         else:
-            self._detalle.lanzarAviso(
+            self._libroPrestado.lanzarAviso(
                 "No se pudo reservar el libro. "
                 "Puede que ya tengas una reserva activa."
             )
-
-    # ------------------------------------------------------------------
-    # Acciones Bibliotecario
-    # ------------------------------------------------------------------
 
     def bajaLibro(self, isbn):
         exito = self._modelo.bajaLibro(isbn)
@@ -83,3 +77,9 @@ class CatalogoControlador:
     def verReservados(self):
         libros = self._modelo.obtenerReservados()
         self._vista_catalogo.cargar_lista_libros_bibliotecario(libros)
+
+    def cerrarLibroDisponible(self):
+        self._libroDisponible.close()
+
+    def cerrarLibroPrestado(self):
+        self._libroPrestado.close()

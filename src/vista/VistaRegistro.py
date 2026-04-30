@@ -1,7 +1,6 @@
 from PyQt5.QtWidgets import QApplication, QMainWindow, QMessageBox, QDialog
 from PyQt5 import uic
 
-# Cargar la interfaz generada desde el archivo .ui
 Form, Window = uic.loadUiType("./src/vista/Ui/VistaRegistro.ui")
 
 class VistaRegistro(QDialog, Form):
@@ -11,6 +10,8 @@ class VistaRegistro(QDialog, Form):
         self.controlador = None
 
         self.boton_registro.clicked.connect(self.on_register_click)
+        self.boton_volver.clicked.connect(self.on_volver_click)
+
     
     def on_register_click(self):
         nombre = self.Linea_nombre.text()
@@ -21,6 +22,9 @@ class VistaRegistro(QDialog, Form):
 
         if self.controlador:
             self.controlador.registrarUsuario(nombre, apellidos, correo, contrasena, confirmar_contrasena)
+        
+    def on_volver_click(self):
+        self.controlador.registroAtras()
     
     def lanzarAviso(self, aviso):
         QMessageBox.information(self, "Información", aviso)

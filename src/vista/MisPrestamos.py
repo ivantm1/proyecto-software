@@ -12,6 +12,7 @@ class MisPrestamos(QDialog, Form):
 
         self.boton_buscar.clicked.connect(self.on_buscar_click)
         self.tabla_libros.cellDoubleClicked.connect(self.on_fila_doble_click)
+        self.boton_volver.clicked.connect(self.on_volver_click)
 
     def on_buscar_click(self):
         if self.controlador:
@@ -23,6 +24,9 @@ class MisPrestamos(QDialog, Form):
         """Al hacer doble clic en una fila, abre el detalle del préstamo"""
         if self.controlador:
             self.controlador.abrirDetallePrestamo(fila)
+
+    def on_volver_click(self):
+        self.controlador.registroAtras()
 
     def mostrarPrestamos(self, lista_prestamos):
         self.tabla_libros.setRowCount(0)

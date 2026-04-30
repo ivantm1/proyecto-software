@@ -19,6 +19,7 @@ class VistaCatalogo(QDialog, Form):
         self._controlador = None
         self._libros = []  # guardamos la lista para acceder por índice
 
+        self.boton_volver.clicked.connect(self.on_volver_click)
         self.boton_buscar.clicked.connect(self.on_buscar_click)
         self.tabla_libros.doubleClicked.connect(self.libro_seleccionado)
 
@@ -28,13 +29,20 @@ class VistaCatalogo(QDialog, Form):
             tema = self.opcion_buscador.currentText()
             self.controlador.buscarLibro(texto_busqueda, tema)
 
+    def on_volver_click(self):
+        self.controlador.registroAtras()
+
     def libro_seleccionado(self):
         seleccion = self.tabla_libros.selectedItems()
         if not seleccion:
             return
         fila = seleccion[0].row()
+        estado = self.tabla_libros.item(fila, 3).text()
         if self.controlador:
-            self.controlador.abrirDetalleLibro(fila)
+            if estado=="Disponible":
+                self.controlador.abrirDetalleLibroDisponible(fila)
+            else:
+                self.controlador.abrirDetalleLibroPrestado(fila)
 
     def obtenerLibroPorFila(self, fila):
         if 0 <= fila < len(self._libros):

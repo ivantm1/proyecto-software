@@ -86,6 +86,10 @@ class ControladorPrincipal:
         else:
             self._vistaRegistro.lanzarAviso("Error al registrarse. El email ya puede estar registrado.")
 
+    def registroAtras(self):
+        self._vistaRegistro.close()
+        self.ventanaIniciarSesion()
+
     def ventanaEstudiante(self):
         if self._vistaEstudiante:
             self._vistaEstudiante.controlador = self
