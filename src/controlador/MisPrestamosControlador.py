@@ -1,9 +1,10 @@
 from src.vista.VistaSeleccionPrestamo import VistaSeleccionPrestamo
 
 class MisPrestamosControlador:
-    def __init__(self, ref_modelo, ref_vista, correo_estudiante):
+    def __init__(self, ref_modelo, ref_vista, ref_vista_estudiante, correo_estudiante):
         self._modelo  = ref_modelo
         self._vista   = ref_vista
+        self._vista_estudiante = ref_vista_estudiante
         self._correo  = correo_estudiante
         self._detalle = VistaSeleccionPrestamo()
 
@@ -34,3 +35,7 @@ class MisPrestamosControlador:
                 "No se pudo prorrogar. "
                 "El libro puede tener una reserva activa o ya fue prorrogado."
             )
+
+    def registroAtras(self):
+        self._vista.close()
+        self._vista_estudiante.showMaximized()

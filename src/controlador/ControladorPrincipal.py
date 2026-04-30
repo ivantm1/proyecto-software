@@ -117,6 +117,7 @@ class ControladorPrincipal:
         ctrl = CatalogoControlador(
             self._modelo,
             self._vistaCatalogo,
+            self._vistaEstudiante,
             correo_usuario=self._usuario_activo.correo,
             tipo_usuario=self._usuario_activo.tipo,
         )
@@ -136,11 +137,13 @@ class ControladorPrincipal:
         ctrl = MisPrestamosControlador(
             self._modelo,
             self._vistaMisPrestamos,
+            self._vistaEstudiante,
             self._usuario_activo.correo,
         )
         self._vistaMisPrestamos.controlador = ctrl
         ctrl.actualizarPrestamos()
-        self._vistaMisPrestamos.show()
+        self._vistaEstudiante.close()
+        self._vistaMisPrestamos.showMaximized()
 
     def ventanaPrestamo(self):
         if not self._vistaPrestamo:
