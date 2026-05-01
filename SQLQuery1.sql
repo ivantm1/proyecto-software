@@ -161,21 +161,23 @@ INSERT INTO Tema (nombre_tema, descripcion) VALUES
 
 
 INSERT INTO Usuarios (contrasena, email, nombre, apellidos, tipo) VALUES 
+('1234', 'elena.rod@estudiantes.unileon.es', 'Elena', 'Rodríguez', 'Estudiante'),
+('123', 'miguel.gom@estudiantes.unileon.es', 'Miguel', 'Gómez', 'Estudiante'),
+('pass_ing', 'sara.martin@estudiantes.unileon.es', 'Sara', 'Martín', 'Estudiante'),
+('pass_eco', 'david.fer@estudiantes.unileon.es', 'David', 'Fernández', 'Estudiante'),
+('pass_arq', 'laura.diaz@estudiantes.unileon.es', 'Laura', 'Díaz', 'Estudiante'),
+('pass_bio', 'sergio.blanco@estudiantes.unileon.es', 'Sergio', 'Blanco', 'Estudiante'),
+('pass_vet', 'lucia.ruiz@estudiantes.unileon.es', 'Lucía', 'Ruiz', 'Estudiante'),
+('pass_der', 'pablo.cano@estudiantes.unileon.es', 'Pablo', 'Cano', 'Estudiante'),
+('pass_fil', 'ana.mendez@estudiantes.unileon.es', 'Ana', 'Méndez', 'Estudiante'),
+('pass_inf', 'javier.vazquez@estudiantes.unileon.es', 'Javier', 'Vázquez', 'Estudiante'),
 
-('1234', 'estudiante1@estudiantes.unileon.es', 'Elena', 'Rodr�guez', 'Estudiante'),
-('123', '123', 'Miguel', 'G�mez', 'Estudiante'),
-('pass_ing', 'sara.martin@estudiantes.unileon.es', 'Sara', 'Mart�n', 'Estudiante'),
-('pass_eco', 'david.fer@estudiantes.unileon.es', 'David', 'Fern�ndez', 'Estudiante'),
-('pass_arq', 'laura.diaz@estudiantes.unileon.es', 'Laura', 'D�az', 'Estudiante'),
-
-
-('biblio_jefe', 'carlos.biblio@unileon.es', 'Carlos', 'L�pez', 'Bibliotecario'),
-('biblio_tarde', 'marta.biblio@unileon.es', 'Marta', 'S�nchez', 'Bibliotecario'),
-('12', '12', 'Pepe', 'Pepin', 'Bibliotecario'),
-
+('biblio_jefe', 'carlos.biblio@unileon.es', 'Carlos', 'López', 'Bibliotecario'),
+('biblio_tarde', 'marta.biblio@unileon.es', 'Marta', 'Sánchez', 'Bibliotecario'),
+('12', 'pepe.biblio@unileon.es', 'Pepe', 'Pepín', 'Bibliotecario'),
 
 ('admin_root', 'sistemas.biblioteca@unileon.es', 'Admin', 'Sistemas IT', 'Admin'),
-('1', '1', 'Admin2', 'Sistemas IT2', 'Admin');
+('1', 'admin2.biblioteca@unileon.es', 'Admin2', 'Sistemas IT2', 'Admin');
 
 
 INSERT INTO Estudiantes (email, num_prestamos, num_reservas, sanciones)
