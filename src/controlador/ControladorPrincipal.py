@@ -3,6 +3,7 @@ from src.modelo.vo.RegistroVO import RegistroVO
 from PyQt5.QtWidgets import QApplication
 from src.controlador.CatalogoControlador import CatalogoControlador
 from src.controlador.MisPrestamosControlador import MisPrestamosControlador
+from src.controlador.ControladorMisReservas import ControladorMisReservas
 from src.controlador.SancionesControlador import SancionesControlador
 from src.controlador.DevolucionControlador import DevolucionControlador
 from src.controlador.PrestamoControlador import PrestamoControlador
@@ -16,6 +17,7 @@ class ControladorPrincipal:
                  ref_vista_bibliotecario=None,
                  ref_vista_catalogo=None,
                  ref_vista_mis_prestamos=None,
+                 ref_vista_mis_reservas=None,
                  ref_vista_perfil=None,
                  ref_vista_prestamo=None,
                  ref_vista_sanciones=None,
@@ -28,6 +30,7 @@ class ControladorPrincipal:
         self._vistaBibliotecario = ref_vista_bibliotecario
         self._vistaCatalogo      = ref_vista_catalogo
         self._vistaMisPrestamos  = ref_vista_mis_prestamos
+        self._vistaMisReservas   = ref_vista_mis_reservas
         self._vistaPerfil        = ref_vista_perfil
         self._vistaPrestamo      = ref_vista_prestamo
         self._vistaSanciones     = ref_vista_sanciones
@@ -166,6 +169,22 @@ class ControladorPrincipal:
         ctrl.actualizarPrestamos()
         self._vistaEstudiante.close()
         self._vistaMisPrestamos.showMaximized()
+
+    def ventanaMisReservas(self):
+        if not self._vistaMisReservas or not self._usuario_activo:
+            return
+        ctrl = ControladorMisReservas(
+            self._modelo,
+            self._vistaMisReservas,
+            self._vistaEstudiante,
+            self._vistaBibliotecario,
+            self._usuario_activo.correo,
+            self._usuario_activo.tipo
+        )
+        self._vistaMisReservas.controlador = ctrl
+        ctrl.actualizarReservas()
+        self._vistaEstudiante.close()
+        self._vistaMisReservas.showMaximized()
 
     def ventanaPrestamo(self):
         if not self._vistaPrestamo:

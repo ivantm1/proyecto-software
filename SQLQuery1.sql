@@ -161,16 +161,17 @@ INSERT INTO Tema (nombre_tema, descripcion) VALUES
 
 
 INSERT INTO Usuarios (contrasena, email, nombre, apellidos, tipo) VALUES 
-('1234', 'elena.rod@estudiantes.unileon.es', 'Elena', 'Rodríguez', 'Estudiante'),
-('123', 'miguel.gom@estudiantes.unileon.es', 'Miguel', 'Gómez', 'Estudiante'),
-('pass_ing', 'sara.martin@estudiantes.unileon.es', 'Sara', 'Martín', 'Estudiante'),
-('pass_eco', 'david.fer@estudiantes.unileon.es', 'David', 'Fernández', 'Estudiante'),
-('pass_arq', 'laura.diaz@estudiantes.unileon.es', 'Laura', 'Díaz', 'Estudiante'),
-('pass_bio', 'sergio.blanco@estudiantes.unileon.es', 'Sergio', 'Blanco', 'Estudiante'),
-('pass_vet', 'lucia.ruiz@estudiantes.unileon.es', 'Lucía', 'Ruiz', 'Estudiante'),
-('pass_der', 'pablo.cano@estudiantes.unileon.es', 'Pablo', 'Cano', 'Estudiante'),
-('pass_fil', 'ana.mendez@estudiantes.unileon.es', 'Ana', 'Méndez', 'Estudiante'),
-('pass_inf', 'javier.vazquez@estudiantes.unileon.es', 'Javier', 'Vázquez', 'Estudiante'),
+('1234', 'erodr00@estudiantes.unileon.es', 'Elena', 'Rodríguez Martínez', 'Estudiante'),
+('123', '123', 'Miguel', 'Gómez Pérez', 'Estudiante'),
+('pass_ing', 'smartm00@estudiantes.unileon.es', 'Sara', 'Martín Morales', 'Estudiante'),
+('pass_eco', 'dferns00@estudiantes.unileon.es', 'David', 'Fernández Silva', 'Estudiante'),
+('pass_arq', 'ldiazf00@estudiantes.unileon.es', 'Laura', 'Díaz Ferrer', 'Estudiante'),
+('pass_bio', 'sblang00@estudiantes.unileon.es', 'Sergio', 'Blanco García', 'Estudiante'),
+('pass_vet', 'lruizm00@estudiantes.unileon.es', 'Lucía', 'Ruiz Méndez', 'Estudiante'),
+('pass_der', 'pcanol00@estudiantes.unileon.es', 'Pablo', 'Cano López', 'Estudiante'),
+('pass_fil', 'amends00@estudiantes.unileon.es', 'Ana', 'Méndez Sánchez', 'Estudiante'),
+('pass_inf', 'jvazqh00@estudiantes.unileon.es', 'Javier', 'Vázquez Hernández', 'Estudiante'),
+('pass_ext', 'sblang01@estudiantes.unileon.es', 'Sandra', 'Blanco Gómez', 'Estudiante'),
 
 ('biblio_jefe', 'carlos.biblio@unileon.es', 'Carlos', 'López', 'Bibliotecario'),
 ('biblio_tarde', 'marta.biblio@unileon.es', 'Marta', 'Sánchez', 'Bibliotecario'),

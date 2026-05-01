@@ -65,6 +65,9 @@ class Logica():
 
     def contarPrestamosEstudiante(self, correo_estudiante):
         return PrestamoDaoJDBC().contarPrestamosEstudiante(correo_estudiante)
+    
+    def buscarPrestamosEstudiante(self, correo_estudiante, titulo='', tema='Ninguno'):
+        return PrestamoDaoJDBC().buscarPrestamosEstudiante(correo_estudiante, titulo, tema)
 
     def aplicarSancionRetraso(self, correo_estudiante, semanas_retraso):
         return SancionDaoJDBC().aplicarSancionRetraso(correo_estudiante, semanas_retraso)
@@ -96,8 +99,8 @@ class Logica():
     def obtenerReservaPorLibro(self, isbn):
         return ReservaDaoJDBC().obtenerReservaPorLibro(isbn)
     
-    def buscarPrestamosEstudiante(self, correo_estudiante, titulo='', tema='Ninguno'):
-        return PrestamoDaoJDBC().buscarPrestamosEstudiante(correo_estudiante, titulo, tema)
+    def buscarReservasEstudiante(self, correo_estudiante, titulo='', tema='Ninguno'):
+        return ReservaDaoJDBC().buscarReservasEstudiante(correo_estudiante, titulo, tema)
     
     def cambiarContrasena(self, correo, nueva_contrasena):
         return UserDaoJDBC().cambiarContrasena(correo, nueva_contrasena)
