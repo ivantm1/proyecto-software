@@ -1,5 +1,8 @@
 from PyQt5.QtWidgets import QDialog, QMessageBox, QTableWidgetItem
 from PyQt5 import uic
+from PyQt5.QtWidgets import QHeaderView, QSizePolicy, QAbstractItemView
+from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QColor
 
 Form, Window = uic.loadUiType("./src/vista/Ui/VistaMisPrestamos.ui")
 
@@ -30,6 +33,8 @@ class MisPrestamos(QDialog, Form):
 
     def mostrarPrestamos(self, lista_prestamos):
         self.tabla_libros.setRowCount(0)
+        self.tabla_libros.resizeColumnsToContents()
+
         self._prestamos = lista_prestamos  # guardamos para acceder por índice
 
         if not lista_prestamos:
@@ -42,6 +47,7 @@ class MisPrestamos(QDialog, Form):
             self.tabla_libros.setItem(fila, 1, QTableWidgetItem(str(prestamo.autor)))
             self.tabla_libros.setItem(fila, 2, QTableWidgetItem(str(prestamo.nombre_tema)))
             self.tabla_libros.setItem(fila, 3, QTableWidgetItem(str(prestamo.fecha_devolucion)))
+        self.tabla_libros.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
 
     def obtenerPrestamoPorFila(self, fila):
         if hasattr(self, '_prestamos') and 0 <= fila < len(self._prestamos):
