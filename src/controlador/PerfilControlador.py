@@ -20,10 +20,7 @@ class PerfilControlador:
             self._vista.lanzarAviso("Las contraseñas no coinciden.")
             return
  
-        if len(nueva) < 6:
-            self._vista.lanzarAviso("La contraseña debe tener al menos 6 caracteres.")
-            return
- 
+
         exito = self._modelo.cambiarContrasena(self._usuario.correo, nueva)
         if exito:
             self._vista.lanzarAviso("Contraseña actualizada correctamente.")
