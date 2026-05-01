@@ -211,6 +211,11 @@ INSERT INTO Prestamos (email, ISBN)
 VALUES ('123', '978-84-INF05');
 GO
 
+INSERT INTO Prestamos (email, ISBN)
+VALUES 
+('estudiante1@estudiantes.unileon.es', '978-84-IA02'),
+('sara.martin@estudiantes.unileon.es', '978-84-PSI08');
+
 
 USE BibliotecaDB;
 CREATE USER biblioteca_user FOR LOGIN biblioteca_user;
