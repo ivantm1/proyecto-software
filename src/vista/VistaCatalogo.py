@@ -68,8 +68,15 @@ class VistaCatalogo(QDialog, Form):
             self.tabla_libros.setItem(fila, 1, QTableWidgetItem(str(libro.autor)))
             self.tabla_libros.setItem(fila, 2, QTableWidgetItem(str(libro.nombre_tema)))
 
+
+
             estado = str(libro.disponibilidad).lower()
-            disp = QTableWidgetItem(str(libro.disponibilidad))
+            if estado == "prestado" and libro.fecha_devolucion:
+                texto_disp = f"Prestado hasta {str(libro.fecha_devolucion)[:10]}"
+            else:
+                texto_disp = str(libro.disponibilidad)
+
+            disp = QTableWidgetItem(texto_disp)
             if estado == "disponible":
                 disp.setBackground(QColor(200, 240, 200))
             elif "reservado" in estado or "prestado" in estado:
@@ -96,7 +103,12 @@ class VistaCatalogo(QDialog, Form):
             self.tabla_libros.setItem(fila, 2, QTableWidgetItem(str(libro.nombre_tema)))
 
             estado = str(libro.disponibilidad).lower()
-            disp = QTableWidgetItem(str(libro.disponibilidad))
+            if estado == "prestado" and libro.fecha_devolucion:
+                texto_disp = f"Prestado hasta {str(libro.fecha_devolucion)[:10]}"
+            else:
+                texto_disp = str(libro.disponibilidad)
+
+            disp = QTableWidgetItem(texto_disp)
             if estado == "disponible":
                 disp.setBackground(QColor(200, 240, 200))
             elif "reservado" in estado or "prestado" in estado:

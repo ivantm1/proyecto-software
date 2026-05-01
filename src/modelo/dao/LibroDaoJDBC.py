@@ -2,7 +2,13 @@ from src.modelo.conexion.Conexion import Conexion
 from src.modelo.vo.LibroVO import LibroVO
 
 class LibroDaoJDBC(Conexion):
-    SQL_SELECT_ALL  = "SELECT ISBN, titulo, autor, fecha_llegada, num_copias, disponibilidad, descripcion, nombre_tema FROM Libros"
+    SQL_SELECT_ALL = """
+    SELECT l.ISBN, l.titulo, l.autor, l.fecha_llegada, l.num_copias, 
+           l.disponibilidad, l.descripcion, l.nombre_tema,
+           p.fecha_devolucion
+    FROM Libros l
+    LEFT JOIN Prestamos p ON l.ISBN = p.ISBN AND p.estado = 'Activo'
+    """
     SQL_SELECT_ISBN = "SELECT ISBN, titulo, autor, fecha_llegada, num_copias, disponibilidad, descripcion, nombre_tema FROM Libros WHERE ISBN = ?"
     SQL_RESERVADOS  = "SELECT l.ISBN, l.titulo, l.autor, l.fecha_llegada, l.num_copias, l.disponibilidad, l.descripcion, l.nombre_tema FROM Libros l JOIN Reservas r ON l.ISBN = r.ISBN WHERE r.estado = 'Pendiente'"
     SQL_CHECK_LIBRE = "SELECT COUNT(*) FROM Libros WHERE ISBN = ? AND disponibilidad = 'Disponible'"
@@ -13,8 +19,14 @@ class LibroDaoJDBC(Conexion):
     SQL_DELETE = "DELETE FROM Libros WHERE ISBN = ?"
 
     def _fila_a_vo(self, row):
-        isbn, titulo, autor, fecha_llegada, num_copias, disponibilidad, descripcion, nombre_tema = row
-        return LibroVO(isbn, titulo, autor, fecha_llegada, num_copias, disponibilidad, descripcion, nombre_tema)
+        if len(row) == 9:
+            isbn, titulo, autor, fecha_llegada, num_copias, disponibilidad, descripcion, nombre_tema, fecha_devolucion = row
+        else:
+            isbn, titulo, autor, fecha_llegada, num_copias, disponibilidad, descripcion, nombre_tema = row
+            fecha_devolucion = None
+        vo = LibroVO(isbn, titulo, autor, fecha_llegada, num_copias, disponibilidad, descripcion, nombre_tema)
+        vo._fecha_devolucion = fecha_devolucion
+        return vo
 
     def obtenerCatalogo(self):
         cursor = self.getCursor()
@@ -31,10 +43,17 @@ class LibroDaoJDBC(Conexion):
         cursor = self.getCursor()
         libros_vo = []
         titulo_like = f"%{titulo}%"
-        sql = "SELECT ISBN, titulo, autor, fecha_llegada, num_copias, disponibilidad, descripcion, nombre_tema FROM Libros WHERE titulo LIKE ?"
+        sql = """
+            SELECT l.ISBN, l.titulo, l.autor, l.fecha_llegada, l.num_copias, 
+                l.disponibilidad, l.descripcion, l.nombre_tema,
+                p.fecha_devolucion
+            FROM Libros l
+            LEFT JOIN Prestamos p ON l.ISBN = p.ISBN AND p.estado = 'Activo'
+            WHERE l.titulo LIKE ?
+        """
         params = [titulo_like]
         if tema != "Ninguno":
-            sql += " AND nombre_tema = ?"
+            sql += " AND l.nombre_tema = ?"
             params.append(tema)
         try:
             cursor.execute(sql, params)

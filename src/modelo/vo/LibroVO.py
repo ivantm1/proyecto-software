@@ -8,6 +8,7 @@ class LibroVO:
         self._disponibilidad = disponibilidad
         self._descripcion = descripcion
         self._nombre_tema = nombre_tema
+        self._fecha_devolucion = None
 
     @property
     def isbn(self): return self._isbn
@@ -25,3 +26,6 @@ class LibroVO:
     def descripcion(self): return self._descripcion
     @property
     def nombre_tema(self): return self._nombre_tema
+    @property
+    def fecha_devolucion(self):
+        return self._fecha_devolucion

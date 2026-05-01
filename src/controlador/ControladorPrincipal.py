@@ -125,6 +125,7 @@ class ControladorPrincipal:
         self._vistaCatalogo.controlador = ctrl
         self._vistaEstudiante.close()
         self._vistaCatalogo.showMaximized()
+        ctrl.cargarCatalogo()
     
         libros = self._modelo.buscarLibro("", "Ninguno")
         if self._usuario_activo.tipo == "Estudiante":
