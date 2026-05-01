@@ -1,3 +1,2 @@
-poner fecha expiracion del prestamo vistaprestado
+
 fecha maxima para ir a por un libro reservado
-vista y logica ver mi perfil
