@@ -1,4 +1,3 @@
 poner fecha expiracion del prestamo vistaprestado
 fecha maxima para ir a por un libro reservado
-boton de realizar prestamo en catalogo
 vista y logica ver mi perfil

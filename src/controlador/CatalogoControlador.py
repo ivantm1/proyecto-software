@@ -2,10 +2,11 @@ from src.vista.VistaLibroDisponible import VistaLibroDisponible
 from src.vista.VistaLibroPrestado import VistaLibroPrestado
 
 class CatalogoControlador:
-    def __init__(self, ref_modelo, ref_vista_catalogo, ref_vista_estudiante, correo_usuario=None, tipo_usuario=None):
+    def __init__(self, ref_modelo, ref_vista_catalogo, ref_vista_estudiante, ref_vista_bibliotecario, correo_usuario=None, tipo_usuario=None):
         self._modelo          = ref_modelo
         self._vista_catalogo  = ref_vista_catalogo
         self._vista_estudiante = ref_vista_estudiante
+        self._vista_bibliotecario = ref_vista_bibliotecario
         self._correo_usuario  = correo_usuario
         self._tipo_usuario    = tipo_usuario
         self._libroDisponible         = VistaLibroDisponible()
@@ -87,4 +88,9 @@ class CatalogoControlador:
 
     def registroAtras(self):
         self._vista_catalogo.close()
-        self._vista_estudiante.showMaximized()
+        if self._tipo_usuario == "Bibliotecario":
+            self._vista_bibliotecario.showMaximized()
+        elif self._tipo_usuario == "Administrador":
+            self._vista_administrador.showMaximized()
+        else:
+            self._vista_estudiante.showMaximized()

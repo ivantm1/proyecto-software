@@ -118,6 +118,7 @@ class ControladorPrincipal:
             self._modelo,
             self._vistaCatalogo,
             self._vistaEstudiante,
+            self._vistaBibliotecario,
             correo_usuario=self._usuario_activo.correo,
             tipo_usuario=self._usuario_activo.tipo,
         )
@@ -138,7 +139,9 @@ class ControladorPrincipal:
             self._modelo,
             self._vistaMisPrestamos,
             self._vistaEstudiante,
+            self._vistaBibliotecario,
             self._usuario_activo.correo,
+            self._usuario_activo.tipo
         )
         self._vistaMisPrestamos.controlador = ctrl
         ctrl.actualizarPrestamos()
