@@ -31,21 +31,20 @@
 
 QFrame#frame_principal {
     background-color: white;
-    border: 2px solid #e5e7eb; /* El borde que pediste */
-    border-radius: 15px;       /* Esquinas redondeadas para el catálogo */
+    border: 2px solid #e5e7eb;
+    border-radius: 15px;
 }
 QTableWidget::item:selected {
-    background-color: #dbeafe; /* Azul muy suave */
-    color: #1e40af;            /* Texto azul oscuro */
+    background-color: #dbeafe; 
+    color: #1e40af;
 }
 
 QComboBox QAbstractItemView {
     background-color: white;
-    selection-background-color: #1f2937; /* Color oscuro al seleccionar */
-    selection-color: white;             /* Texto blanco para contrastar */
+    selection-background-color: #1f2937; 
+    selection-color: white; 
 }
 
-/* Mejora el aspecto general del buscador */
 QLineEdit, QComboBox {
     border: 1px solid #ced4da;
     border-radius: 5px;
@@ -54,10 +53,9 @@ QLineEdit, QComboBox {
     color: #333;
 }
 
-/* Redondear el buscador */
 QLineEdit {
     border: 2px solid #bdc3c7;
-    border-radius: 15px; /* Aquí está el redondeo */
+    border-radius: 15px; 
     padding: 5px 15px;
     background: white;
     selection-background-color: #34495e;
@@ -69,7 +67,6 @@ QLabel {
     background: white;
     selection-background-color: #34495e;
 }
-/* Redondear la tabla */
 QTableWidget {
     border: 1px solid #d1d5db;
     border-radius: 10px; 
@@ -84,12 +81,20 @@ QHeaderView::section {
     font-weight: bold;
 }
 
-/* Botón de búsqueda redondeado */
+
 QPushButton#boton_buscar {
     background-color: #bdc3c7;
     color: white;
     border-radius: 10px;
     padding: 5px;
+}
+
+QPushButton#boton_buscar:hover {
+    background-color: #d5dbdb;
+}
+
+QPushButton#boton_buscar:pressed {
+    background-color: #7f8c8d;
 }
 
 QHeaderView::section:last {
