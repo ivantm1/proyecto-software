@@ -4,6 +4,17 @@ from src.modelo.vo.UsuarioVO import UsuarioVO
 class UserDaoJDBC(Conexion):
     SQL_CHECK_LOGIN = "SELECT nombre, apellidos, email, contrasena, tipo FROM Usuarios WHERE email = ? AND contrasena = ?"
     SQL_REGISTRO = "INSERT INTO Usuarios (nombre, apellidos, email, contrasena, tipo) VALUES (?, ?, ?, ?, 'Estudiante')"
+    SQL_CAMBIAR_CONTRASENA = "UPDATE Usuarios SET contrasena = ? WHERE email = ?"
+ 
+    def cambiarContrasena(self, correo, nueva_contrasena):
+        cursor = self.getCursor()
+        try:
+            cursor.execute(self.SQL_CAMBIAR_CONTRASENA, (nueva_contrasena, correo))
+            self.conexion.commit()
+            return cursor.rowcount > 0
+        except Exception as e:
+            print(f"Error al cambiar contraseña: {e}")
+            return False
 
     def comprobarLogin(self, loginVO):
         cursor = self.getCursor()

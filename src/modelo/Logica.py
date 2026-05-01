@@ -98,4 +98,7 @@ class Logica():
     
     def buscarPrestamosEstudiante(self, correo_estudiante, titulo='', tema='Ninguno'):
         return PrestamoDaoJDBC().buscarPrestamosEstudiante(correo_estudiante, titulo, tema)
+    
+    def cambiarContrasena(self, correo, nueva_contrasena):
+        return UserDaoJDBC().cambiarContrasena(correo, nueva_contrasena)
 

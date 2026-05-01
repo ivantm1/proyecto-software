@@ -6,6 +6,7 @@ from src.controlador.MisPrestamosControlador import MisPrestamosControlador
 from src.controlador.SancionesControlador import SancionesControlador
 from src.controlador.DevolucionControlador import DevolucionControlador
 from src.controlador.PrestamoControlador import PrestamoControlador
+from src.controlador.PerfilControlador import PerfilControlador
 
 
 class ControladorPrincipal:
@@ -19,7 +20,6 @@ class ControladorPrincipal:
                  ref_vista_prestamo=None,
                  ref_vista_sanciones=None,
                  ref_vista_devolucion=None):
-        
 
         self._modelo             = ref_modelo
         self._vistaLogin         = ref_login
@@ -33,7 +33,7 @@ class ControladorPrincipal:
         self._vistaSanciones     = ref_vista_sanciones
         self._vistaDevolucion    = ref_vista_devolucion
 
-        self._usuario_activo = None  
+        self._usuario_activo = None
 
     def ventanaIniciarSesion(self):
         self._vistaLogin.Linea_usuario.clear()
@@ -69,15 +69,15 @@ class ControladorPrincipal:
         if not all([nombre, apellidos, correo, contrasena, confirmar]):
             self._vistaRegistro.lanzarAviso("Rellena todos los campos.")
             return
- 
+
         if "@estudiantes.unileon.es" not in correo:
             self._vistaRegistro.lanzarAviso("Usa un correo institucional @estudiantes.unileon.es")
             return
- 
+
         if contrasena != confirmar:
             self._vistaRegistro.lanzarAviso("Las contraseñas no coinciden.")
             return
- 
+
         registro = RegistroVO(nombre, apellidos, correo, contrasena)
         if self._modelo.registrarUsuario(registro):
             self._vistaRegistro.lanzarAviso("Usuario registrado con éxito. Vuelve al login.")
@@ -103,13 +103,31 @@ class ControladorPrincipal:
     def ventanaVerPerfil(self):
         if not self._vistaPerfil or not self._usuario_activo:
             return
+
+        # Determinar la vista desde la que se abre el perfil
+        if self._usuario_activo.tipo == "Estudiante":
+            vista_anterior = self._vistaEstudiante
+        else:
+            vista_anterior = self._vistaBibliotecario
+
+        # Crear el controlador de perfil con la vista anterior para poder volver
+        ctrl = PerfilControlador(
+            self._modelo,
+            self._vistaPerfil,
+            vista_anterior,
+            self._usuario_activo
+        )
+        self._vistaPerfil.controlador = ctrl
         self._vistaPerfil.mostrarUsuario(
-            correo=self._usuario_activo.correo,
-            tipo=self._usuario_activo.tipo,
             nombre=self._usuario_activo.nombre,
             apellidos=self._usuario_activo.apellidos,
+            correo=self._usuario_activo.correo,
+            tipo=self._usuario_activo.tipo,
         )
-        self._vistaPerfil.show()
+
+        # Cerrar la vista anterior y abrir el perfil
+        vista_anterior.close()
+        self._vistaPerfil.showMaximized()
 
     def ventanaCatalogo(self):
         if not self._vistaCatalogo or not self._usuario_activo:
@@ -126,7 +144,7 @@ class ControladorPrincipal:
         self._vistaEstudiante.close()
         self._vistaCatalogo.showMaximized()
         ctrl.cargarCatalogo()
-    
+
         libros = self._modelo.buscarLibro("", "Ninguno")
         if self._usuario_activo.tipo == "Estudiante":
             self._vistaCatalogo.cargar_lista_libros_estudiante(libros)
@@ -170,10 +188,7 @@ class ControladorPrincipal:
         self._vistaSanciones.controlador = ctrl
         self._vistaSanciones.show()
 
-
-
     def CerrarPerfil(self):
         if self._vistaRegistro:
             QApplication.closeAllWindows()
             self.ventanaIniciarSesion()
-
