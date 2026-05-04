@@ -10,6 +10,31 @@ class ReservaDaoJDBC(Conexion):
     SQL_CUENTA_RESERVAS = "SELECT COUNT(*) FROM Reservas WHERE email = ? AND estado = 'Pendiente'"
     SQL_EXISTE          = "SELECT COUNT(*) FROM Reservas WHERE ISBN = ? AND estado = 'Pendiente'"
 
+    # JOIN con Libros para obtener título, autor y tema
+    SQL_MIS_RESERVAS = """
+        SELECT p.ISBN, l.titulo, l.autor, l.nombre_tema, l.descripcion, p.fecha_reserva, p.estado
+        FROM Reservas p
+        JOIN Libros l ON p.ISBN = l.ISBN
+        WHERE p.email = ?
+    """
+ 
+    SQL_BUSCAR_RESERVAS = """
+        SELECT p.ISBN, l.titulo, l.autor, l.nombre_tema, l.descripcion, p.fecha_reserva, p.estado
+        FROM Reservas p
+        JOIN Libros l ON p.ISBN = l.ISBN
+        WHERE p.email = ?
+        AND l.titulo LIKE ?
+    """
+ 
+    SQL_BUSCAR_RESERVAS_TEMA = """
+        SELECT p.ISBN, l.titulo, l.autor, l.nombre_tema, l.descripcion, p.fecha_reserva, p.estado
+        FROM Reservas p
+        JOIN Libros l ON p.ISBN = l.ISBN
+        WHERE p.email = ?
+        AND l.titulo LIKE ?
+        AND l.nombre_tema = ?
+    """
+
     def crearReserva(self, isbn, correo_estudiante):
         cursor = self.getCursor()
         try:
@@ -41,10 +66,15 @@ class ReservaDaoJDBC(Conexion):
         cursor = self.getCursor()
         reservas = []
         try:
-            cursor.execute(self.SQL_RESERVAS_EST, (correo_estudiante,))
+            cursor.execute(self.SQL_MIS_RESERVAS, (correo_estudiante,))
             for row in cursor.fetchall():
-                isbn, correo, fecha_reserva = row
-                reservas.append(ReservaVO(isbn, correo, fecha_reserva))
+                isbn, titulo, autor, tema, descripcion, fecha_reserva, estado = row
+                vo = ReservaVO(isbn, correo_estudiante, fecha_reserva, estado)
+                vo._titulo     = titulo
+                vo._autor      = autor
+                vo._nombre_tema = tema
+                vo._descripcion = descripcion
+                reservas.append(vo)
         except Exception as e:
             print(f"Error en obtenerReservasEstudiante: {e}")
         return reservas
@@ -70,6 +100,27 @@ class ReservaDaoJDBC(Conexion):
         except Exception as e:
             print(f"Error en contarReservasEstudiante: {e}")
             return 0
+        
+    def buscarReservasEstudiante(self, correo_estudiante, titulo='', tema='Ninguno'):
+        cursor = self.getCursor()
+        reservas = []
+        try:
+            if tema != 'Ninguno':
+                cursor.execute(self.SQL_BUSCAR_RESERVAS_TEMA, (correo_estudiante, f'%{titulo}%', tema))
+            else:
+                cursor.execute(self.SQL_BUSCAR_RESERVAS, (correo_estudiante, f'%{titulo}%'))
+ 
+            for row in cursor.fetchall():
+                isbn, titulo_libro, autor, tema_libro, descripcion, fecha_reserva, estado = row
+                vo = ReservaVO(isbn, correo_estudiante, fecha_reserva, estado)
+                vo._titulo      = titulo_libro
+                vo._autor       = autor
+                vo._nombre_tema = tema_libro
+                vo._descripcion = descripcion
+                reservas.append(vo)
+        except Exception as e:
+            print(f"Error en buscarReservasEstudiante: {e}")
+        return reservas
 
     def reservaExpirada(self, isbn):
         reserva = self.obtenerReservaPorLibro(isbn)
