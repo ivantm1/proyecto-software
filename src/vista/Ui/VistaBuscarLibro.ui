@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Dialog</class>
+ <widget class="QDialog" name="Dialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1040</width>
+    <height>921</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">#Dialog {
+    background-color: #89ABA7;
+}
+
+* {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 13px;
+}
+
+QFrame#frame_principal {
+    background-color: white;
+    border: 2px solid #e5e7eb; /* El borde que pediste */
+    border-radius: 15px;       /* Esquinas redondeadas para el catálogo */
+}
+QTableWidget::item:selected {
+    background-color: #dbeafe; /* Azul muy suave */
+    color: #1e40af;            /* Texto azul oscuro */
+}
+
+QComboBox QAbstractItemView {
+    background-color: white;
+    selection-background-color: #1f2937; /* Color oscuro al seleccionar */
+    selection-color: white;             /* Texto blanco para contrastar */
+}
+
+/* Mejora el aspecto general del buscador */
+QLineEdit, QComboBox {
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    padding: 5px;
+    background-color: white;
+    color: #333;
+}
+
+/* Redondear el buscador */
+QLineEdit {
+    border: 2px solid #bdc3c7;
+    border-radius: 15px; /* Aquí está el redondeo */
+    padding: 5px 15px;
+    background: white;
+    selection-background-color: #34495e;
+}
+
+QLabel {
+    border: 2px solid #bdc3c7;
+    border-radius: 15px; /* Aquí está el redondeo */
+    background: white;
+    selection-background-color: #34495e;
+}
+/* Redondear la tabla */
+QTableWidget {
+    border: 1px solid #d1d5db;
+    border-radius: 10px; 
+    gridline-color: #f3f4f6;
+}
+/* Estilo para las cabeceras de la tabla */
+QHeaderView::section {
+    background-color: #2c3e50;
+    color: white;
+    padding: 5px;
+    border: none;
+    font-weight: bold;
+}
+
+QPushButton#boton_buscar {
+    background-color: #bdc3c7;
+    color: white;
+    border-radius: 10px;
+    padding: 5px;
+}
+
+QPushButton#boton_buscar:hover {
+    background-color: #d5dbdb;
+}
+
+QPushButton#boton_buscar:pressed {
+    background-color: #7f8c8d;
+}
+
+QHeaderView::section:last {
+    border-top-right-radius: 5px;
+}
+
+QHeaderView::section:first {
+    border-top-left-radius: 5px;
+}
+
+QHeaderView::section {
+    background-color: #1f2937; 
+    color: #ffffff; /* Texto blanco */
+    font-family: &quot;Segoe UI&quot;, Arial, sans-serif;
+    font-size: 15px;
+    font-weight: bold; /* Negrita */
+    padding: 6px;
+    border: none;
+    border-right: 1px solid #374151; /* Una pequeña línea divisoria entre títulos */
+}
+
+</string>
+  </property>
+  <layout class="QHBoxLayout" name="horizontalLayout_5">
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_4"/>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <property name="spacing">
+        <number>8</number>
+       </property>
+       <property name="leftMargin">
+        <number>8</number>
+       </property>
+       <property name="topMargin">
+        <number>8</number>
+       </property>
+       <property name="rightMargin">
+        <number>8</number>
+       </property>
+       <property name="bottomMargin">
+        <number>8</number>
+       </property>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout">
+           <item>
+            <widget class="QLineEdit" name="linea_busqueda">
+             <property name="text">
+              <string/>
+             </property>
+             <property name="placeholderText">
+              <string>ISBN</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="QPushButton" name="boton_buscar">
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normaloff>recursos/Lupa.png</normaloff>recursos/Lupa.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>25</width>
+             <height>25</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QPushButton" name="boton_volver">
+         <property name="styleSheet">
+          <string notr="true">QPushButton {
+    background-color: #1B4332; 
+    color: white; 
+    border-radius: 5px;  
+    padding: 8px;  
+    font-weight: bold;
+}
+
+QPushButton:hover {
+    background-color: #2D6A4F; 
+}
+
+QPushButton:pressed {
+    background-color: #081C15;
+}</string>
+         </property>
+         <property name="text">
+          <string>Volver</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_2">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

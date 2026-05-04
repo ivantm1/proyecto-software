@@ -143,7 +143,7 @@ QPushButton:pressed {
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="boton_prestamo">
+      <widget class="QPushButton" name="boton_busqueda">
        <property name="styleSheet">
         <string notr="true">QPushButton {
     background-color: #1B4332; 
@@ -162,31 +162,7 @@ QPushButton:pressed {
 }</string>
        </property>
        <property name="text">
-        <string>Hacer préstamo</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="boton_devolucion">
-       <property name="styleSheet">
-        <string notr="true">QPushButton {
-    background-color: #1B4332; 
-    color: white;  
-    border-radius: 5px; 
-    padding: 8px;  
-    font-weight: bold;
-}
-
-QPushButton:hover {
-    background-color: #2D6A4F; 
-}
-
-QPushButton:pressed {
-    background-color: #081C15; 
-}</string>
-       </property>
-       <property name="text">
-        <string>Hacer devolución</string>
+        <string>Buscar libro</string>
        </property>
       </widget>
      </item>
