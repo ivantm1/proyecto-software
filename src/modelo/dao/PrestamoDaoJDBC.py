@@ -8,6 +8,8 @@ class PrestamoDaoJDBC(Conexion):
     SQL_DATOS_PRESTAMO   = "SELECT p.ISBN, p.email, p.fecha_prestamo, p.fecha_devolucion, p.estado, p.prorroga FROM Prestamos p WHERE p.ISBN = ? AND p.estado = 'Activo'"
     SQL_PRORROGAR        = "UPDATE Prestamos SET fecha_devolucion = ?, prorroga = 1 WHERE ISBN = ? AND estado = 'Activo' AND prorroga = 0 AND NOT EXISTS (SELECT 1 FROM Reservas WHERE ISBN = ? AND estado = 'Pendiente')"
     SQL_CUENTA_PRESTAMOS = "SELECT COUNT(*) FROM Prestamos WHERE email = ? AND estado = 'Activo'"
+    SQL_VERIFICAR_LIBRO_DISPONIBLE = "SELECT disponibilidad FROM Libros WHERE ISBN = ?"
+    SQL_ACTUALIZAR_DISPONIBILIDAD_LIBRO = "UPDATE Libros SET disponibilidad = ? WHERE ISBN = ?"
  
     # JOIN con Libros para obtener título, autor y tema
     SQL_MIS_PRESTAMOS = """
@@ -37,11 +39,18 @@ class PrestamoDaoJDBC(Conexion):
     def registrarPrestamo(self, isbn, correo_estudiante):
         cursor = self.getCursor()
         try:
+            cursor.execute(self.SQL_VERIFICAR_LIBRO_DISPONIBLE, (isbn,))
+            disponibilidad = cursor.fetchone()
+            if disponibilidad is None or disponibilidad[0] != 'Disponible':
+                print(f"Error en registrarPrestamo: libro {isbn} no disponible")
+                return None
+
             hoy = datetime.date.today()
             fecha_devolucion = hoy + datetime.timedelta(days=14)
             hoy_str = hoy.strftime('%Y-%m-%d')
             fecha_devolucion_str = fecha_devolucion.strftime('%Y-%m-%d')
             cursor.execute(self.SQL_REGISTRAR, (correo_estudiante, isbn, hoy_str, fecha_devolucion_str))
+            cursor.execute(self.SQL_ACTUALIZAR_DISPONIBILIDAD_LIBRO, ('Prestado', isbn))
             self.conexion.commit()
             return PrestamoVO(isbn, correo_estudiante, hoy, fecha_devolucion, 'Activo')
         except Exception as e:
@@ -56,6 +65,7 @@ class PrestamoDaoJDBC(Conexion):
             if row is None:
                 return False
             cursor.execute(self.SQL_DEVOLVER, (isbn,))
+            cursor.execute(self.SQL_ACTUALIZAR_DISPONIBILIDAD_LIBRO, ('Disponible', isbn))
             self.conexion.commit()
             return True
         except Exception as e:

@@ -175,7 +175,7 @@ INSERT INTO Usuarios (contrasena, email, nombre, apellidos, tipo) VALUES
 
 ('biblio_jefe', 'carlos.biblio@unileon.es', 'Carlos', 'López', 'Bibliotecario'),
 ('biblio_tarde', 'marta.biblio@unileon.es', 'Marta', 'Sánchez', 'Bibliotecario'),
-('12', 'pepe.biblio@unileon.es', 'Pepe', 'Pepín', 'Bibliotecario'),
+('12', '12', 'Pepe', 'Pepín', 'Bibliotecario'),
 
 ('admin_root', 'sistemas.biblioteca@unileon.es', 'Admin', 'Sistemas IT', 'Admin'),
 ('1', 'admin2.biblioteca@unileon.es', 'Admin2', 'Sistemas IT2', 'Admin');
@@ -190,7 +190,7 @@ WHERE tipo = 'Estudiante';
 INSERT INTO Libros (ISBN, titulo, autor, fecha_llegada, num_copias, disponibilidad, descripcion, nombre_tema) VALUES 
 ('978-84-MAT01', 'Cálculo Infinitesimal', 'Michael Spivak', '2024-01-15', 1, 'Disponible', 'Texto fundamental de análisis matemático para ingenierías.', 'Matemáticas'),
 
-('978-84-IA02', 'Inteligencia Artificial: Un Enfoque Moderno', 'Stuart Russell', '2025-05-10', 1, 'Prestado', 'El estándar mundial en enseñanza de IA y agentes inteligentes.', 'IA'),
+('978-84-IA02', 'Inteligencia Artificial: Un Enfoque Moderno', 'Stuart Russell', '2025-05-10', 1, 'Disponible', 'El estándar mundial en enseñanza de IA y agentes inteligentes.', 'IA'),
 
 ('978-84-FIS03', 'Física para la ciencia y la tecnología', 'Paul A. Tipler', '2024-02-20', 1, 'Disponible', 'Volumen 1: Mecánica, oscilaciones y ondas, termodinámica.', 'Física'),
 
@@ -202,7 +202,7 @@ INSERT INTO Libros (ISBN, titulo, autor, fecha_llegada, num_copias, disponibilid
 
 ('978-84-LIT07', 'Cien años de soledad', 'Gabriel García Márquez', '2022-03-20', 1, 'Disponible', 'Obra cumbre del realismo mágico y la literatura hispana.', 'Literatura'),
 
-('978-84-PSI08', 'Psicología Social', 'David G. Myers', '2025-01-05', 1, 'Prestado', 'Estudio científico de cómo las personas piensan unas de otras.', 'Psicología'),
+('978-84-PSI08', 'Psicología Social', 'David G. Myers', '2025-01-05', 1, 'Disponible', 'Estudio científico de cómo las personas piensan unas de otras.', 'Psicología'),
 
 ('978-84-HIS09', 'Sapiens: De animales a dioses', 'Yuval Noah Harari', '2024-08-12', 1, 'Disponible', 'Una breve historia de la evolución de la humanidad.', 'Historia'),
 
