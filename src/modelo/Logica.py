@@ -3,6 +3,7 @@ from src.modelo.dao.LibroDaoJDBC import LibroDaoJDBC
 from src.modelo.dao.PrestamoDaoJDBC import PrestamoDaoJDBC
 from src.modelo.dao.ReservaDaoJDBC import ReservaDaoJDBC
 from src.modelo.dao.SancionDaoJDBC import SancionDaoJDBC
+from src.modelo.dao.BuscarEstudianteDaoJDBC import BuscarEstudianteDaoJDBC
 
 class Logica():
     def pruebaSelect(self):
@@ -105,3 +106,5 @@ class Logica():
     def cambiarContrasena(self, correo, nueva_contrasena):
         return UserDaoJDBC().cambiarContrasena(correo, nueva_contrasena)
 
+    def buscarEstudiante(self, correo):
+        return BuscarEstudianteDaoJDBC().buscarEstudiante(correo)

@@ -37,6 +37,8 @@ class PrestamoDaoJDBC(Conexion):
     def registrarPrestamo(self, isbn, correo_estudiante):
         cursor = self.getCursor()
         try:
+            hoy = datetime.date.today()
+            fecha_devolucion = hoy + datetime.timedelta(days=14)
             hoy_str = hoy.strftime('%Y-%m-%d')
             fecha_devolucion_str = fecha_devolucion.strftime('%Y-%m-%d')
             cursor.execute(self.SQL_REGISTRAR, (correo_estudiante, isbn, hoy_str, fecha_devolucion_str))

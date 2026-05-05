@@ -8,6 +8,7 @@ from src.controlador.SancionesControlador import SancionesControlador
 from src.controlador.DevolucionControlador import DevolucionControlador
 from src.controlador.PrestamoControlador import PrestamoControlador
 from src.controlador.PerfilControlador import PerfilControlador
+from src.controlador.ControladorBuscarEstudiante import ControladorBuscarEstudiante
 
 
 class ControladorPrincipal:
@@ -21,7 +22,8 @@ class ControladorPrincipal:
                  ref_vista_perfil=None,
                  ref_vista_prestamo=None,
                  ref_vista_sanciones=None,
-                 ref_vista_devolucion=None):
+                 ref_vista_devolucion=None,
+                 ref_vista_buscar_estudiante=None):
 
         self._modelo             = ref_modelo
         self._vistaLogin         = ref_login
@@ -35,7 +37,7 @@ class ControladorPrincipal:
         self._vistaPrestamo      = ref_vista_prestamo
         self._vistaSanciones     = ref_vista_sanciones
         self._vistaDevolucion    = ref_vista_devolucion
-
+        self._vistaBuscarEstudiante = ref_vista_buscar_estudiante
         self._usuario_activo = None
 
     def ventanaIniciarSesion(self):
@@ -145,6 +147,7 @@ class ControladorPrincipal:
         )
         self._vistaCatalogo.controlador = ctrl
         self._vistaEstudiante.close()
+        self._vistaBibliotecario.close()
         self._vistaCatalogo.showMaximized()
         ctrl.cargarCatalogo()
 
@@ -211,3 +214,16 @@ class ControladorPrincipal:
         if self._vistaRegistro:
             QApplication.closeAllWindows()
             self.ventanaIniciarSesion()
+
+    def ventanaBuscarEstudiante(self):
+        if not self._vistaBuscarEstudiante:
+            return
+        ctrl = ControladorBuscarEstudiante(self._modelo, self._vistaBuscarEstudiante, self._vistaBibliotecario)
+        self._vistaBuscarEstudiante.controlador = ctrl
+        self._vistaBibliotecario.close()
+        self._vistaBuscarEstudiante.showMaximized()
+
+    def volverBuscarEstudiante(self):
+        if self._vistaBuscarEstudiante and self._vistaBibliotecario:
+            self._vistaBuscarEstudiante.close()
+            self._vistaBibliotecario.showMaximized()

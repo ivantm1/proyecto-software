@@ -8,6 +8,7 @@ from src.vista.MisPrestamos import MisPrestamos
 from src.vista.MisReservas import MisReservas
 from src.vista.VistaPerfil import VistaPerfil
 from src.vista.Devolucion import Devolucion
+from src.vista.VistaBuscarEstudiante import VistaBuscarEstudiante
 from src.modelo.Logica import Logica
 from src.controlador.ControladorPrincipal import ControladorPrincipal
 
@@ -23,6 +24,7 @@ if __name__ == "__main__":
     devolucion = Devolucion()
     vistaCatalogo = VistaCatalogo()
     perfil = VistaPerfil()
+    buscarEstudiante = VistaBuscarEstudiante()
 
     controlador = ControladorPrincipal(
         modelo, login, registro, estudiante, bibliotecario,
@@ -31,6 +33,7 @@ if __name__ == "__main__":
         mis_reservas,
         ref_vista_perfil=perfil,
         ref_vista_devolucion=devolucion,
+        ref_vista_buscar_estudiante=buscarEstudiante
     )
 
     login.controlador = controlador

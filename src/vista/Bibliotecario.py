@@ -29,7 +29,7 @@ class Bibliotecario(QDialog, Form):
 
     def on_buscar_estudiante_click(self):
         if self.controlador:
-            self.controlador.ventana_buscar_estudiante()
+            self.controlador.ventanaBuscarEstudiante()
 
     def on_cerrar_perfil_click(self):
         if self.controlador:
