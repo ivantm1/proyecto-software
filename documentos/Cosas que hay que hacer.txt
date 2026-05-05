@@ -1,4 +1,3 @@
-
 fecha maxima para ir a por un libro reservado
 limite de reservas
 no poder reservar el libro que tienes tu prestado
@@ -6,3 +5,8 @@ cooldown para volver a prestar un libro que acabas de devolver
 logica de sanciones
 boton ver prestamos de buscar estudiante lleve a mis prestamos del estudiante
 boton ver reservas del buscar estudiante
+logica de añadir libro
+logica de vista libro bibliotecario 
+logica de vista libro retirada
+en el sql crear tabla retirados(alvaro)
+en vista libro prestado poner hasta cuando
