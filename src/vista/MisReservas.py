@@ -16,9 +16,9 @@ class MisReservas(QDialog, Form):
         self.boton_buscar.clicked.connect(self.on_buscar_click)
         self.boton_volver.clicked.connect(self.on_volver_click)
 
-        self.tableWidget.setSelectionMode(QtWidgets.QAbstractItemView.NoSelection)
-        self.tableWidget.setFocusPolicy(QtCore.Qt.NoFocus)
-        self.tableWidget.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
+        self.tabla_libros.setSelectionMode(QtWidgets.QAbstractItemView.NoSelection)
+        self.tabla_libros.setFocusPolicy(QtCore.Qt.NoFocus)
+        self.tabla_libros.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
     def on_buscar_click(self):
         if self.controlador:
             titulo = self.linea_busqueda.text()
