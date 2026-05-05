@@ -120,6 +120,15 @@
      </item>
      <item>
       <widget class="QLineEdit" name="Linea_usuario">
+       <property name="styleSheet">
+        <string notr="true">QLineEdit {
+    border: 2px solid #bdc3c7;
+    border-radius: 15px; 
+    padding: 5px 15px;
+    background: white;
+    selection-background-color: #34495e;
+}</string>
+       </property>
        <property name="text">
         <string/>
        </property>
@@ -130,6 +139,15 @@
      </item>
      <item>
       <widget class="QLineEdit" name="Linea_contrasena">
+       <property name="styleSheet">
+        <string notr="true">QLineEdit {
+    border: 2px solid #bdc3c7;
+    border-radius: 15px; 
+    padding: 5px 15px;
+    background: white;
+    selection-background-color: #34495e;
+}</string>
+       </property>
        <property name="echoMode">
         <enum>QLineEdit::Password</enum>
        </property>

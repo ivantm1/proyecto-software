@@ -191,6 +191,30 @@ QPushButton:pressed {
       </widget>
      </item>
      <item>
+      <widget class="QPushButton" name="pushButton">
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+    background-color: #1B4332; 
+    color: white;  
+    border-radius: 5px; 
+    padding: 8px;  
+    font-weight: bold;
+}
+
+QPushButton:hover {
+    background-color: #2D6A4F; 
+}
+
+QPushButton:pressed {
+    background-color: #081C15; 
+}</string>
+       </property>
+       <property name="text">
+        <string>Añadir libro</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QPushButton" name="boton_perfil">
        <property name="styleSheet">
         <string notr="true">QPushButton {

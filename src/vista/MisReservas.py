@@ -14,7 +14,6 @@ class MisReservas(QDialog, Form):
         self.controlador = None
 
         self.boton_buscar.clicked.connect(self.on_buscar_click)
-        self.tabla_libros.cellDoubleClicked.connect(self.on_fila_doble_click)
         self.boton_volver.clicked.connect(self.on_volver_click)
 
     def on_buscar_click(self):
@@ -23,10 +22,6 @@ class MisReservas(QDialog, Form):
             tema   = self.opcion_buscador.currentText()
             self.controlador.buscarReservas(titulo, tema)
 
-    def on_fila_doble_click(self, fila, columna):
-        """Al hacer doble clic en una fila, abre el detalle de la reserva"""
-        if self.controlador:
-            self.controlador.abrirDetalleReserva(fila)
 
     def on_volver_click(self):
         self.controlador.registroAtras()
