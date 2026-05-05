@@ -9,3 +9,4 @@ logica de añadir libro
 logica de vista libro bibliotecario 
 logica de vista libro retirada
 en el sql crear tabla retirados(alvaro)
+en vista libro prestado poner hasta cuando
