@@ -13,7 +13,7 @@ class Estudiante(QDialog, Form):
         self.boton_catalogo.clicked.connect(self.on_ver_catalogo_click)
         self.boton_prestamos.clicked.connect(self.on_mis_prestamos_click)
         self.boton_reservas.clicked.connect(self.on_mis_reservas_click)
-        self.boton_cerrar.clicked.connect(self.on_cerrar_perfil_click)
+        self.boton_cerrar.clicked.connect(self.on_cerrar_sesion_click)
 
     def on_ver_perfil_click(self):
         if self.controlador:
@@ -31,9 +31,9 @@ class Estudiante(QDialog, Form):
         if self.controlador:
             self.controlador.ventanaMisReservas()
 
-    def on_cerrar_perfil_click(self):
+    def on_cerrar_sesion_click(self):
         if self.controlador:
-            self.controlador.CerrarPerfil()
+            self.controlador.cerrarSesion()
 
 
     @property

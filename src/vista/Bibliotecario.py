@@ -13,7 +13,7 @@ class Bibliotecario(QDialog, Form):
         self.boton_catalogo.clicked.connect(self.on_ver_catalogo_click)
         self.boton_devolucion.clicked.connect(self.on_devolucion_click)
         self.boton_estudiante.clicked.connect(self.on_buscar_estudiante_click)
-        self.boton_cerrar.clicked.connect(self.on_cerrar_perfil_click)
+        self.boton_cerrar.clicked.connect(self.on_cerrar_sesion_click)
 
     def on_ver_perfil_click(self):
         if self.controlador:
@@ -31,9 +31,9 @@ class Bibliotecario(QDialog, Form):
         if self.controlador:
             self.controlador.ventanaBuscarEstudiante()
 
-    def on_cerrar_perfil_click(self):
+    def on_cerrar_sesion_click(self):
         if self.controlador:
-            self.controlador.CerrarPerfil()
+            self.controlador.cerrarSesion()
 
 
 
