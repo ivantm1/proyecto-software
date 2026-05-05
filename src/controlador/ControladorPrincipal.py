@@ -25,18 +25,18 @@ class ControladorPrincipal:
                  ref_vista_devolucion=None,
                  ref_vista_buscar_estudiante=None):
 
-        self._modelo             = ref_modelo
-        self._vistaLogin         = ref_login
-        self._vistaRegistro      = ref_vista_registro
-        self._vistaEstudiante    = ref_vista_estudiante
-        self._vistaBibliotecario = ref_vista_bibliotecario
-        self._vistaCatalogo      = ref_vista_catalogo
-        self._vistaMisPrestamos  = ref_vista_mis_prestamos
-        self._vistaMisReservas   = ref_vista_mis_reservas
-        self._vistaPerfil        = ref_vista_perfil
-        self._vistaPrestamo      = ref_vista_prestamo
-        self._vistaSanciones     = ref_vista_sanciones
-        self._vistaDevolucion    = ref_vista_devolucion
+        self._modelo                = ref_modelo
+        self._vistaLogin            = ref_login
+        self._vistaRegistro         = ref_vista_registro
+        self._vistaEstudiante       = ref_vista_estudiante
+        self._vistaBibliotecario    = ref_vista_bibliotecario
+        self._vistaCatalogo         = ref_vista_catalogo
+        self._vistaMisPrestamos     = ref_vista_mis_prestamos
+        self._vistaMisReservas      = ref_vista_mis_reservas
+        self._vistaPerfil           = ref_vista_perfil
+        self._vistaPrestamo         = ref_vista_prestamo
+        self._vistaSanciones        = ref_vista_sanciones
+        self._vistaDevolucion       = ref_vista_devolucion
         self._vistaBuscarEstudiante = ref_vista_buscar_estudiante
         self._usuario_activo = None
 
@@ -109,13 +109,11 @@ class ControladorPrincipal:
         if not self._vistaPerfil or not self._usuario_activo:
             return
 
-        # Determinar la vista desde la que se abre el perfil
         if self._usuario_activo.tipo == "Estudiante":
             vista_anterior = self._vistaEstudiante
         else:
             vista_anterior = self._vistaBibliotecario
 
-        # Crear el controlador de perfil con la vista anterior para poder volver
         ctrl = PerfilControlador(
             self._modelo,
             self._vistaPerfil,
@@ -129,8 +127,6 @@ class ControladorPrincipal:
             correo=self._usuario_activo.correo,
             tipo=self._usuario_activo.tipo,
         )
-
-        # Cerrar la vista anterior y abrir el perfil
         vista_anterior.close()
         self._vistaPerfil.showMaximized()
 
@@ -199,9 +195,15 @@ class ControladorPrincipal:
     def ventanaDevolucion(self):
         if not self._vistaDevolucion:
             return
-        ctrl = DevolucionControlador(self._modelo, self._vistaDevolucion)
+        # Pasar la vista del bibliotecario para poder volver tras la devolución
+        ctrl = DevolucionControlador(
+            self._modelo,
+            self._vistaDevolucion,
+            self._vistaBibliotecario
+        )
         self._vistaDevolucion.controlador = ctrl
-        self._vistaDevolucion.show()
+        self._vistaBibliotecario.close()
+        self._vistaDevolucion.showMaximized()
 
     def ventanaSanciones(self):
         if not self._vistaSanciones or not self._usuario_activo:
@@ -211,7 +213,11 @@ class ControladorPrincipal:
         self._vistaSanciones.show()
 
     def cerrarSesion(self):
-        respuesta = QMessageBox.question(self._vistaLogin, "Cerrar sesión", "¿Estás seguro de que quieres cerrar sesión?", QMessageBox.Yes | QMessageBox.No)
+        respuesta = QMessageBox.question(
+            self._vistaLogin, "Cerrar sesión",
+            "¿Estás seguro de que quieres cerrar sesión?",
+            QMessageBox.Yes | QMessageBox.No
+        )
         if respuesta == QMessageBox.Yes:
             if self._vistaRegistro:
                 QApplication.closeAllWindows()
@@ -220,7 +226,12 @@ class ControladorPrincipal:
     def ventanaBuscarEstudiante(self):
         if not self._vistaBuscarEstudiante:
             return
-        ctrl = ControladorBuscarEstudiante(self._modelo, self._vistaBuscarEstudiante, self._vistaBibliotecario)
+        self._vistaBuscarEstudiante.linea_busqueda.clear()
+        ctrl = ControladorBuscarEstudiante(
+            self._modelo,
+            self._vistaBuscarEstudiante,
+            self._vistaBibliotecario
+        )
         self._vistaBuscarEstudiante.controlador = ctrl
         self._vistaBibliotecario.close()
         self._vistaBuscarEstudiante.showMaximized()

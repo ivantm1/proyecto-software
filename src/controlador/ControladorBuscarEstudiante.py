@@ -87,13 +87,14 @@ class ControladorBuscarEstudiante:
     def volverGestionarEstudiante(self):
         """Cierra la vista de gestión y vuelve a la vista de búsqueda"""
         self._vista_gestion.close()
+        self._vista_buscar.linea_busqueda.clear()
         self._vista_buscar.showMaximized()
 
     def verPrestamosEstudiante(self, correo_estudiante):
         prestamos = self._modelo.obtenerPrestamosEstudiante(correo_estudiante)
         if prestamos:
             prestamos_str = "\n".join([
-                f"{p.titulo} (ISBN: {p.isbn_libro}) - {'Activo' if p.estado == 'Activo' else 'Devuelto'}"
+                f"{p.titulo} (ISBN: {p.isbn_libro}) - {'Activo' if p.estado == 'Activo' else 'Devuelto'} (Vence: {p.fecha_devolucion})"
                 for p in prestamos
             ])
             QMessageBox.information(self._vista_gestion, "Préstamos del Estudiante", prestamos_str)
