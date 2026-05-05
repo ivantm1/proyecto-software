@@ -14,15 +14,7 @@
    <string>Dialog</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">QLineEdit {
-    border: 2px solid #bdc3c7;
-    border-radius: 15px; 
-    padding: 5px 15px;
-    background: white;
-    selection-background-color: #34495e;
-}
-
-#Dialog {
+   <string notr="true">#Dialog {
     background-color: #89ABA7;
 }</string>
   </property>
@@ -134,9 +126,7 @@
     padding: 5px 15px;
     background: white;
     selection-background-color: #34495e;
-}
-
-</string>
+}</string>
        </property>
        <property name="placeholderText">
         <string> Nombre</string>
@@ -144,36 +134,69 @@
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="Linea_apellidos">
+      <widget class="QLineEdit" name="Linea_confirmar_contrasena">
+       <property name="styleSheet">
+        <string notr="true">QLineEdit {
+    border: 2px solid #bdc3c7;
+    border-radius: 15px; 
+    padding: 5px 15px;
+    background: white;
+    selection-background-color: #34495e;
+}</string>
+       </property>
+       <property name="echoMode">
+        <enum>QLineEdit::Normal</enum>
+       </property>
        <property name="placeholderText">
-        <string> Apellidos</string>
+        <string>ISBN</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="Linea_apellidos">
+       <property name="styleSheet">
+        <string notr="true">QLineEdit {
+    border: 2px solid #bdc3c7;
+    border-radius: 15px; 
+    padding: 5px 15px;
+    background: white;
+    selection-background-color: #34495e;
+}</string>
+       </property>
+       <property name="placeholderText">
+        <string>Autor</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QLineEdit" name="Linea_correo">
+       <property name="styleSheet">
+        <string notr="true">QLineEdit {
+    border: 2px solid #bdc3c7;
+    border-radius: 15px; 
+    padding: 5px 15px;
+    background: white;
+    selection-background-color: #34495e;
+}</string>
+       </property>
        <property name="placeholderText">
-        <string> Correo electrónico institucional</string>
+        <string>Tema</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="Linea_contrasena">
-       <property name="echoMode">
-        <enum>QLineEdit::Normal</enum>
+      <widget class="QTextEdit" name="linea_descripcion">
+       <property name="styleSheet">
+        <string notr="true">QTextEdit {
+    border: 2px solid #bdc3c7;
+    border-radius: 15px; 
+    padding: 5px 15px;
+    background: white;
+    selection-background-color: #34495e;
+}</string>
        </property>
        <property name="placeholderText">
-        <string> Contraseña</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLineEdit" name="Linea_confirmar_contrasena">
-       <property name="echoMode">
-        <enum>QLineEdit::Normal</enum>
-       </property>
-       <property name="placeholderText">
-        <string> Confirmar contraseña</string>
+        <string>Descripción</string>
        </property>
       </widget>
      </item>
@@ -197,7 +220,7 @@ QPushButton:pressed {
 }</string>
        </property>
        <property name="text">
-        <string>Registrarse</string>
+        <string>Añadir libro</string>
        </property>
       </widget>
      </item>
