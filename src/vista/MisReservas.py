@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import QDialog, QMessageBox, QTableWidgetItem
-from PyQt5 import uic
+from PyQt5 import uic, QtWidgets, QtCore
 from PyQt5.QtWidgets import QHeaderView, QSizePolicy, QAbstractItemView
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QColor
@@ -16,6 +16,9 @@ class MisReservas(QDialog, Form):
         self.boton_buscar.clicked.connect(self.on_buscar_click)
         self.boton_volver.clicked.connect(self.on_volver_click)
 
+        self.tableWidget.setSelectionMode(QtWidgets.QAbstractItemView.NoSelection)
+        self.tableWidget.setFocusPolicy(QtCore.Qt.NoFocus)
+        self.tableWidget.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
     def on_buscar_click(self):
         if self.controlador:
             titulo = self.linea_busqueda.text()
@@ -28,6 +31,7 @@ class MisReservas(QDialog, Form):
 
     def mostrarReservas(self, lista_reservas):
         self.tabla_libros.setRowCount(0)
+        
         self.tabla_libros.resizeColumnsToContents()
 
         self._reservas = lista_reservas  # guardamos para acceder por índice
