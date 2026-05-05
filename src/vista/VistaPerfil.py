@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QDialog, QMessageBox, QInputDialog, QLineEdit
+from PyQt5.QtWidgets import QDialog, QMessageBox, QLineEdit, QLabel, QPushButton, QVBoxLayout, QHBoxLayout
 from PyQt5 import uic
 
 Form, Window = uic.loadUiType("./src/vista/Ui/VistaPerfil.ui")
@@ -24,17 +24,49 @@ class VistaPerfil(QDialog, Form):
 
     def on_cambiar_contrasena_click(self):
         if self._controlador:
-            nueva, ok1 = QInputDialog.getText(
-                self, "Cambiar contraseña", "Nueva contraseña:", QLineEdit.Password
-            )
-            if not ok1 or not nueva:
+            actual, nueva, confirmar = self.pedir_contrasenas()
+            if actual is None:
                 return
-            confirmar, ok2 = QInputDialog.getText(
-                self, "Cambiar contraseña", "Confirmar contraseña:", QLineEdit.Password
-            )
-            if not ok2 or not confirmar:
-                return
-            self._controlador.cambiarContrasena(nueva, confirmar)
+            self._controlador.cambiarContrasena(actual, nueva, confirmar)
+
+    def pedir_contrasenas(self):
+        dialog = QDialog(self)
+        dialog.setWindowTitle("Cambiar contraseña")
+        dialog.setModal(True)
+
+        layout = QVBoxLayout(dialog)
+
+        input_actual = QLineEdit()
+        input_actual.setEchoMode(QLineEdit.Password)
+        input_nueva = QLineEdit()
+        input_nueva.setEchoMode(QLineEdit.Password)
+        input_confirmar = QLineEdit()
+        input_confirmar.setEchoMode(QLineEdit.Password)
+
+        for label_text, widget in [
+            ("Contraseña actual:", input_actual),
+            ("Nueva contraseña:", input_nueva),
+            ("Repetir nueva contraseña:", input_confirmar),
+        ]:
+            row_layout = QVBoxLayout()
+            row_layout.addWidget(QLabel(label_text))
+            row_layout.addWidget(widget)
+            layout.addLayout(row_layout)
+
+        buttons_layout = QHBoxLayout()
+        aceptar = QPushButton("Aceptar")
+        cancelar = QPushButton("Cancelar")
+        buttons_layout.addStretch()
+        buttons_layout.addWidget(aceptar)
+        buttons_layout.addWidget(cancelar)
+        layout.addLayout(buttons_layout)
+
+        aceptar.clicked.connect(dialog.accept)
+        cancelar.clicked.connect(dialog.reject)
+
+        if dialog.exec_() == QDialog.Accepted:
+            return input_actual.text(), input_nueva.text(), input_confirmar.text()
+        return None, None, None
 
     def lanzarAviso(self, aviso):
         QMessageBox.information(self, "Información", aviso)

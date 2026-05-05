@@ -1,6 +1,6 @@
 from src.modelo.vo.LoginVO import LoginVO
 from src.modelo.vo.RegistroVO import RegistroVO
-from PyQt5.QtWidgets import QApplication
+from PyQt5.QtWidgets import QApplication, QMessageBox
 from src.controlador.CatalogoControlador import CatalogoControlador
 from src.controlador.MisPrestamosControlador import MisPrestamosControlador
 from src.controlador.ControladorMisReservas import ControladorMisReservas
@@ -210,10 +210,12 @@ class ControladorPrincipal:
         self._vistaSanciones.controlador = ctrl
         self._vistaSanciones.show()
 
-    def CerrarPerfil(self):
-        if self._vistaRegistro:
-            QApplication.closeAllWindows()
-            self.ventanaIniciarSesion()
+    def cerrarSesion(self):
+        respuesta = QMessageBox.question(self._vistaLogin, "Cerrar sesión", "¿Estás seguro de que quieres cerrar sesión?", QMessageBox.Yes | QMessageBox.No)
+        if respuesta == QMessageBox.Yes:
+            if self._vistaRegistro:
+                QApplication.closeAllWindows()
+                self.ventanaIniciarSesion()
 
     def ventanaBuscarEstudiante(self):
         if not self._vistaBuscarEstudiante:
