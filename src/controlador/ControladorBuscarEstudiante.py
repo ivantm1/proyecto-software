@@ -57,6 +57,22 @@ class ControladorBuscarEstudiante:
                               "Este estudiante tiene una sanción activa y no puede realizar préstamos.")
             return
 
+        # Comprobar estado actual del libro
+        libro = self._modelo.buscarPorISBN(isbn)
+        if libro is None:
+            QMessageBox.warning(self._vista_gestion, "Error", "No se encontró el libro con ese ISBN.")
+            return
+
+        if str(libro.disponibilidad).lower() == 'prestado':
+            QMessageBox.warning(self._vista_gestion, "Error", "No es posible prestar el libro porque ya está prestado.")
+            return
+        elif str(libro.disponibilidad).lower() == 'reservado':
+            QMessageBox.warning(self._vista_gestion, "Error", "No es posible prestar el libro porque está reservado.")
+            return
+        elif str(libro.disponibilidad).lower() != 'disponible':
+            QMessageBox.warning(self._vista_gestion, "Error", "No es posible prestar el libro porque no está disponible.")
+            return
+
         # Realizar el préstamo
         exito = self._modelo.registrarPrestamo(isbn, correo_estudiante)
         
