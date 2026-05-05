@@ -1,2 +1,6 @@
 
 fecha maxima para ir a por un libro reservado
+limite de reservas
+no poder reservar el libro que tienes tu prestado
+cooldown para volver a prestar un libro que acabas de devolver
+logica de sanciones
