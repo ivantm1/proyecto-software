@@ -85,6 +85,9 @@ class Logica():
     def crearReserva(self, isbn, correo_estudiante):
         return ReservaDaoJDBC().crearReserva(isbn, correo_estudiante)
 
+    def tienePrestamoActivo(self, isbn, correo_estudiante):
+        return PrestamoDaoJDBC().tienePrestamoActivo(isbn, correo_estudiante)
+
     def cancelarReserva(self, isbn):
         return ReservaDaoJDBC().cancelarReserva(isbn)
 

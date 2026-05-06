@@ -1,11 +1,8 @@
 fecha maxima para ir a por un libro reservado
-limite de reservas
-no poder reservar el libro que tienes tu prestado
 cooldown para volver a prestar un libro que acabas de devolver
 logica de sanciones
 boton ver prestamos de buscar estudiante lleve a mis prestamos del estudiante
 boton ver reservas del buscar estudiante
 logica de vista libro bibliotecario 
 logica de vista libro retirada
-en vista libro prestado poner hasta cuando
-en vista de añadir libros poner tema como deplegable y cambiar codigo cnd este
+en perfil ver el tiempo de sancion si hay (marcos, cuando esten las sanciones)

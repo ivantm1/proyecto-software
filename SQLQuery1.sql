@@ -168,7 +168,7 @@ INSERT INTO Tema (nombre_tema, descripcion) VALUES
 
 
 INSERT INTO Usuarios (contrasena, email, nombre, apellidos, tipo) VALUES 
-('1234', 'erodr00@estudiantes.unileon.es', 'Elena', 'Rodríguez Martínez', 'Estudiante'),
+('1234', '1234', 'Elena', 'Rodríguez Martínez', 'Estudiante'),
 ('123', '123', 'Miguel', 'Gómez Pérez', 'Estudiante'),
 ('pass_ing', 'smartm00@estudiantes.unileon.es', 'Sara', 'Martín Morales', 'Estudiante'),
 ('pass_eco', 'dferns00@estudiantes.unileon.es', 'David', 'Fernández Silva', 'Estudiante'),

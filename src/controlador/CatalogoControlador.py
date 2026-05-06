@@ -52,6 +52,10 @@ class CatalogoControlador:
             self._libroPrestado.lanzarAviso("Tienes una sanción activa y no puedes realizar reservas.")
             return
 
+        if self._modelo.tienePrestamoActivo(isbn, self._correo_usuario):
+            self._libroPrestado.lanzarAviso("No puedes reservar un libro que ya tienes prestado.")
+            return
+
         exito = self._modelo.crearReserva(isbn, self._correo_usuario)
         if exito:
             self._libroPrestado.lanzarAviso("Reserva realizada con éxito.")
@@ -59,7 +63,7 @@ class CatalogoControlador:
         else:
             self._libroPrestado.lanzarAviso(
                 "No se pudo reservar el libro. "
-                "Puede que ya tengas una reserva activa."
+                "Verifica que no excedas el límite de 3 reservas activas o que el libro esté disponible."
             )
 
     def bajaLibro(self, isbn):

@@ -204,10 +204,10 @@ QHeaderView::section {
          <item>
           <widget class="QComboBox" name="opcion_buscador">
            <property name="currentText">
-            <string>Ninguno</string>
+            <string/>
            </property>
            <property name="currentIndex">
-            <number>0</number>
+            <number>-1</number>
            </property>
            <property name="placeholderText">
             <string>Seleccionar un tema</string>
