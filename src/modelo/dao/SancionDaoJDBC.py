@@ -9,6 +9,7 @@ class SancionDaoJDBC(Conexion):
     SQL_INSERT     = "INSERT INTO Sanciones (email, tipo, estado, fecha_inicio, duracion) VALUES (?, ?, 'Activa', ?, ?)"
     SQL_SELECT_EST = "SELECT email, tipo, estado, fecha_inicio, duracion FROM Sanciones WHERE email = ?"
     SQL_ACTIVA     = "SELECT COUNT(*) FROM Sanciones WHERE email = ? AND estado = 'Activa' AND DATEADD(day, duracion, fecha_inicio) > ?"
+    SQL_DELETE     = "DELETE FROM Sanciones WHERE email = ? AND tipo = ? AND fecha_inicio = ? AND duracion = ?"
 
     def aplicarSancionRetraso(self, correo_estudiante, semanas_retraso):
         semanas = _TABLA_RETRASO.get(semanas_retraso, _SANCION_MAX_RETRASO)
@@ -45,6 +46,16 @@ class SancionDaoJDBC(Conexion):
         except Exception as e:
             print(f"Error en obtenerSancionesEstudiante: {e}")
         return sanciones
+
+    def eliminarSancion(self, correo_estudiante, tipo, fecha_inicio, duracion):
+        cursor = self.getCursor()
+        try:
+            cursor.execute(self.SQL_DELETE, (correo_estudiante, tipo, fecha_inicio, duracion))
+            self.conexion.commit()
+            return cursor.rowcount > 0
+        except Exception as e:
+            print(f"Error en eliminarSancion: {e}")
+            return False
 
     def tieneSancionActiva(self, correo_estudiante):
         cursor = self.getCursor()

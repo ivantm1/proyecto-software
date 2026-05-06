@@ -113,123 +113,149 @@ QHeaderView::section {
 
 </string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_2">
-   <property name="sizeConstraint">
-    <enum>QLayout::SetMaximumSize</enum>
-   </property>
+  <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="0,0">
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_9">
+    <layout class="QHBoxLayout" name="horizontalLayout_3"/>
+   </item>
+   <item>
+    <layout class="QVBoxLayout" name="verticalLayout">
      <item>
-      <layout class="QVBoxLayout" name="verticalLayout">
-       <property name="spacing">
-        <number>8</number>
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string/>
        </property>
-       <property name="leftMargin">
-        <number>8</number>
-       </property>
-       <property name="topMargin">
-        <number>8</number>
-       </property>
-       <property name="rightMargin">
-        <number>8</number>
-       </property>
-       <property name="bottomMargin">
-        <number>8</number>
-       </property>
-       <item>
-        <widget class="QLabel" name="linea_tiempo">
-         <property name="styleSheet">
-          <string notr="true">QLabel{
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="linea_tiempo">
+       <property name="styleSheet">
+        <string notr="true">QLabel{
     font-weight: bold;
     text-transform: uppercase;
     font-size: 22px;
     letter-spacing: 1px;
     color: #1D433A;
 }</string>
-         </property>
-         <property name="text">
-          <string>Dias restantes de sancion</string>
+       </property>
+       <property name="text">
+        <string>Dias restantes de sancion</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_4">
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QTableWidget" name="tabla_sanciones">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <property name="editTriggers">
+        <set>QAbstractItemView::NoEditTriggers</set>
+       </property>
+       <property name="alternatingRowColors">
+        <bool>true</bool>
+       </property>
+       <property name="selectionMode">
+        <enum>QAbstractItemView::SingleSelection</enum>
+       </property>
+       <property name="selectionBehavior">
+        <enum>QAbstractItemView::SelectRows</enum>
+       </property>
+       <property name="showGrid">
+        <bool>false</bool>
+       </property>
+       <attribute name="horizontalHeaderCascadingSectionResizes">
+        <bool>false</bool>
+       </attribute>
+       <attribute name="horizontalHeaderDefaultSectionSize">
+        <number>100</number>
+       </attribute>
+       <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
+        <bool>false</bool>
+       </attribute>
+       <attribute name="horizontalHeaderStretchLastSection">
+        <bool>true</bool>
+       </attribute>
+       <attribute name="verticalHeaderVisible">
+        <bool>false</bool>
+       </attribute>
+       <attribute name="verticalHeaderCascadingSectionResizes">
+        <bool>false</bool>
+       </attribute>
+       <attribute name="verticalHeaderStretchLastSection">
+        <bool>false</bool>
+       </attribute>
+       <column>
+        <property name="text">
+         <string>Fecha</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Dias totales</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Motivo</string>
+        </property>
+       </column>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="QLineEdit" name="linea_motivo">
+         <property name="placeholderText">
+          <string>Motivo de la sanción</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QTableWidget" name="tabla_sanciones">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>0</height>
-          </size>
-         </property>
+        <widget class="QLineEdit" name="linea_dias">
          <property name="maximumSize">
           <size>
-           <width>16777215</width>
+           <width>150</width>
            <height>16777215</height>
           </size>
          </property>
-         <property name="styleSheet">
-          <string notr="true"/>
+         <property name="placeholderText">
+          <string>Días de sanción</string>
          </property>
-         <property name="editTriggers">
-          <set>QAbstractItemView::NoEditTriggers</set>
-         </property>
-         <property name="alternatingRowColors">
-          <bool>true</bool>
-         </property>
-         <property name="selectionMode">
-          <enum>QAbstractItemView::SingleSelection</enum>
-         </property>
-         <property name="selectionBehavior">
-          <enum>QAbstractItemView::SelectRows</enum>
-         </property>
-         <property name="showGrid">
-          <bool>false</bool>
-         </property>
-         <attribute name="horizontalHeaderCascadingSectionResizes">
-          <bool>false</bool>
-         </attribute>
-         <attribute name="horizontalHeaderDefaultSectionSize">
-          <number>100</number>
-         </attribute>
-         <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
-          <bool>false</bool>
-         </attribute>
-         <attribute name="horizontalHeaderStretchLastSection">
-          <bool>true</bool>
-         </attribute>
-         <attribute name="verticalHeaderVisible">
-          <bool>false</bool>
-         </attribute>
-         <attribute name="verticalHeaderCascadingSectionResizes">
-          <bool>false</bool>
-         </attribute>
-         <attribute name="verticalHeaderStretchLastSection">
-          <bool>false</bool>
-         </attribute>
-         <column>
-          <property name="text">
-           <string>Fecha</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Dias totales</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Motivo</string>
-          </property>
-         </column>
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="boton_volver">
+        <widget class="QPushButton" name="pushButton">
          <property name="styleSheet">
           <string notr="true">QPushButton {
     background-color: #1B4332; 
@@ -248,16 +274,44 @@ QPushButton:pressed {
 }</string>
          </property>
          <property name="text">
-          <string>Volver</string>
+          <string>Aplicar Sanción</string>
          </property>
         </widget>
        </item>
       </layout>
      </item>
+     <item>
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="boton_volver">
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+    background-color: #1B4332; 
+    color: white; 
+    border-radius: 5px;  
+    padding: 8px;  
+    font-weight: bold;
+}
+
+QPushButton:hover {
+    background-color: #2D6A4F; 
+}
+
+QPushButton:pressed {
+    background-color: #081C15;
+}</string>
+       </property>
+       <property name="text">
+        <string>Volver</string>
+       </property>
+      </widget>
+     </item>
     </layout>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_3"/>
    </item>
   </layout>
  </widget>
