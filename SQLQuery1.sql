@@ -66,7 +66,7 @@ CREATE TABLE Sanciones (
     tipo VARCHAR(100) NOT NULL,
 	estado VARCHAR(40) CHECK (estado IN ('Activa', 'Cumplida')),
     fecha_inicio DATE NOT NULL,
-    fecha_fin DATE,
+    duracion INT,
     email VARCHAR(100) NOT NULL, 
     FOREIGN KEY (email) REFERENCES Estudiantes(email) ON DELETE CASCADE
 );
@@ -214,6 +214,15 @@ INSERT INTO Libros (ISBN, titulo, autor, fecha_llegada, num_copias, disponibilid
 ('978-84-HIS09', 'Sapiens: De animales a dioses', 'Yuval Noah Harari', '2024-08-12', 1, 'Disponible', 'Una breve historia de la evolución de la humanidad.', 'Historia'),
 
 ('978-84-MUS10', 'Teoría Completa de la Música', 'Dionisio de Pedro', '2023-04-14', 1, 'Disponible', 'Manual técnico avanzado de solfeo, armonía y composición.', 'Música');
+
+
+
+
+INSERT INTO Prestamos (email, ISBN)
+VALUES 
+('estudiante1@estudiantes.unileon.es', '978-84-IA02'),
+('sara.martin@estudiantes.unileon.es', '978-84-PSI08');
+
 
 USE BibliotecaDB;
 CREATE USER biblioteca_user FOR LOGIN biblioteca_user;
