@@ -6,7 +6,7 @@ class DevolucionControlador:
         self._vista       = ref_vista_devolucion
         self._vista_anterior = ref_vista_bibliotecario
 
-    def registrarDevolucion(self, isbn, estado_libro='Buen estado'):
+    def registrarDevolucion(self, isbn, estado_libro):
         # 1. Buscar el préstamo activo por ISBN
         prestamo = self._modelo.buscarPrestamoActivoPorISBN(isbn)
         if prestamo is None:
@@ -29,14 +29,10 @@ class DevolucionControlador:
             mensajes.append(f"Devolución registrada con {semanas_retraso} semana(s) de retraso.")
             mensajes.append("Se ha aplicado una sanción por retraso al estudiante.")
 
-        # 5. Aplicar sanción por daño o rotura si corresponde
-        if estado_libro == "Dañado":
-            self._modelo.aplicarSancionDanio(prestamo.correo_estudiante, 1)
-            mensajes.append("El libro está dañado: se ha aplicado una sanción de 7 días.")
-        elif estado_libro == "Roto":
-            self._modelo.aplicarSancionDanio(prestamo.correo_estudiante, 2)
-            mensajes.append("El libro está roto: se ha aplicado una sanción de 10 días.")
-
+        if estado_libro in ["Dañado", "Roto"]:
+            self._modelo.aplicarSancionDanio(prestamo.correo_estudiante, estado_libro)
+            mensajes.append(f"El libro está {estado_libro.lower()}: se ha aplicado una sanción por daño al estudiante.")
+            
         if not mensajes:
             mensaje = "Devolución registrada correctamente."
         else:

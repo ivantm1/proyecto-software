@@ -13,8 +13,10 @@ class Devolucion(QDialog):
         if not isbn:
             self.lanzarAviso("Introduce el ISBN del libro.")
             return
+        estado = self.opcion_buscador.currentText()
+
         if self._controlador:
-            self._controlador.registrarDevolucion(isbn)
+            self._controlador.registrarDevolucion(isbn, estado)
 
     def mostrarResultado(self, mensaje):
         self.lbl_resultado.setText(mensaje)

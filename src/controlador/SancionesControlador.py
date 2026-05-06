@@ -12,11 +12,11 @@ class SancionesControlador:
         sanciones = self._modelo.obtenerSancionesEstudiante(correo_estudiante)
         self._vista.mostrarSanciones(sanciones)
 
-    def aplicarSancionDanio(self, correo_estudiante, semanas):
-        resultado = self._modelo.aplicarSancionDanio(correo_estudiante, semanas)
+    def aplicarSancionDanio(self, correo_estudiante, tipo_danio):
+        resultado = self._modelo.aplicarSancionDanio(correo_estudiante, tipo_danio)
         if resultado:
             self._vista.lanzarAviso(
-                f"Sanción de {semanas} semana(s) aplicada correctamente."
+                f"Se ha aplicado una sanción por {tipo_danio.lower()}"
             )
             self.cargarSanciones(correo_estudiante)
         else:

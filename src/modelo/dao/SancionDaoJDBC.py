@@ -14,8 +14,8 @@ class SancionDaoJDBC(Conexion):
         semanas = _TABLA_RETRASO.get(semanas_retraso, _SANCION_MAX_RETRASO)
         return self._insertarSancion(correo_estudiante, "retraso", semanas, unidad='weeks')
 
-    def aplicarSancionDanio(self, correo_estudiante, dias_sancion=7):
-        return self._insertarSancion(correo_estudiante, "danio", dias_sancion, unidad='days')
+    def aplicarSancionDanio(self, correo_estudiante, tipo, dias_sancion=7):
+        return self._insertarSancion(correo_estudiante, tipo, dias_sancion, unidad='days')
 
     def _insertarSancion(self, correo_estudiante, tipo, cantidad, unidad='weeks'):
         cursor = self.getCursor()
