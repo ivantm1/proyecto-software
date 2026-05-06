@@ -7,4 +7,3 @@ boton ver reservas del buscar estudiante
 logica de vista libro bibliotecario 
 logica de vista libro retirada
 en vista libro prestado poner hasta cuando
-en vista de añadir libros poner tema como deplegable y cambiar codigo cnd este

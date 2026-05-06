@@ -129,12 +129,12 @@
 }</string>
        </property>
        <property name="placeholderText">
-        <string> Nombre</string>
+        <string>Nombre</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="Linea_confirmar_contrasena">
+      <widget class="QLineEdit" name="linea_isbn">
        <property name="styleSheet">
         <string notr="true">QLineEdit {
     border: 2px solid #bdc3c7;
@@ -153,7 +153,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="Linea_apellidos">
+      <widget class="QLineEdit" name="linea_autor">
        <property name="styleSheet">
         <string notr="true">QLineEdit {
     border: 2px solid #bdc3c7;
@@ -169,19 +169,149 @@
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="Linea_correo">
+      <widget class="QComboBox" name="opcion_buscador">
        <property name="styleSheet">
-        <string notr="true">QLineEdit {
+        <string notr="true">QComboBox QAbstractItemView {
+    background-color: white;
+    selection-background-color: #34495e;
+    selection-color: white;
+}
+
+QComboBox {
     border: 2px solid #bdc3c7;
     border-radius: 15px; 
     padding: 5px 15px;
-    background: white;
-    selection-background-color: #34495e;
-}</string>
+    background-color: white;
+    color: #333;
+}
+
+QComboBox::placeholder {
+    color: #34495e; 
+}
+
+</string>
+       </property>
+       <property name="currentIndex">
+        <number>-1</number>
        </property>
        <property name="placeholderText">
         <string>Tema</string>
        </property>
+       <item>
+        <property name="text">
+         <string>Matemáticas</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Física</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Química</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Bilogía</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Geología</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Medicina</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Enfermería</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Veterinaria</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Psicología</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Dibujo técnico</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>IA</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Informática</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Economía</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Historia</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Filosofía</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Derecho</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Literatura</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Música</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Arte</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Electrónica</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Mecánica</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Diseño</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Deporte</string>
+        </property>
+       </item>
       </widget>
      </item>
      <item>

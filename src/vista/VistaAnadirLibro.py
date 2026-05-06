@@ -15,10 +15,14 @@ class VistaAnadirLibro(QDialog, Form):
 
     def on_anadir_click(self):
         titulo      = self.Linea_nombre.text().strip()
-        isbn        = self.Linea_confirmar_contrasena.text().strip()
-        autor       = self.Linea_apellidos.text().strip()
-        tema        = self.Linea_correo.text().strip()
+        isbn        = self.linea_isbn.text().strip()
+        autor       = self.linea_autor.text().strip()
+        tema        = self.opcion_buscador.currentText().strip()
         descripcion = self.linea_descripcion.toPlainText().strip()
+
+        if not titulo or not isbn or not autor or not tema or not descripcion:
+            QMessageBox.warning(self, "Campo faltante", "Por favor completa todos los campos antes de continuar.")
+            return
 
         if self._controlador:
             self._controlador.anadirLibro(titulo, isbn, autor, tema, descripcion)
@@ -29,9 +33,8 @@ class VistaAnadirLibro(QDialog, Form):
 
     def limpiarFormulario(self):
         self.Linea_nombre.clear()
-        self.Linea_confirmar_contrasena.clear()
-        self.Linea_apellidos.clear()
-        self.Linea_correo.clear()
+        self.linea_isbn.clear()
+        self.linea_autor.clear()
         self.linea_descripcion.clear()
         self.label.setText("")
 
