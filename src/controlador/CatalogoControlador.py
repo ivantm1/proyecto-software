@@ -63,7 +63,7 @@ class CatalogoControlador:
         else:
             self._libroPrestado.lanzarAviso(
                 "No se pudo reservar el libro. "
-                "Puede que ya tengas una reserva activa."
+                "Verifica que no excedas el límite de 3 reservas activas o que el libro esté disponible."
             )
 
     def bajaLibro(self, isbn):
