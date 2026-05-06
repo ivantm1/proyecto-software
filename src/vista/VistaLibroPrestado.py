@@ -31,7 +31,14 @@ class VistaLibroPrestado(QDialog, Form):
         self.linea_autor.setText(str(libro.autor))
         self.linea_tema.setText(str(libro.nombre_tema))
         self.linea_resumen.setText(str(libro.descripcion) if libro.descripcion else "Sin descripción")
-        self.linea_estado.setText(str(libro.disponibilidad))
+
+        estado = str(libro.disponibilidad).lower()
+        if estado == "prestado" and libro.fecha_devolucion:
+            texto_disp = f"Prestado hasta {str(libro.fecha_devolucion)[:10]}"
+        else:
+            texto_disp = str(libro.disponibilidad)
+
+        self.linea_estado.setText(str(texto_disp))
 
     def on_cerrar_click(self):
         self.controlador.cerrarLibroPrestado()
