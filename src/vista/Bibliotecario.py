@@ -7,36 +7,38 @@ class Bibliotecario(QDialog, Form):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
-        self.controlador = None
-        # Conectar el botón a la función
+        self._controlador = None
+
         self.boton_perfil.clicked.connect(self.on_ver_perfil_click)
         self.boton_catalogo.clicked.connect(self.on_ver_catalogo_click)
         self.boton_devolucion.clicked.connect(self.on_devolucion_click)
         self.boton_estudiante.clicked.connect(self.on_buscar_estudiante_click)
         self.boton_cerrar.clicked.connect(self.on_cerrar_sesion_click)
+        self.pushButton.clicked.connect(self.on_anadir_libro_click)
 
     def on_ver_perfil_click(self):
-        if self.controlador:
-            self.controlador.ventanaVerPerfil()
+        if self._controlador:
+            self._controlador.ventanaVerPerfil()
 
     def on_ver_catalogo_click(self):
-        if self.controlador:
-            self.controlador.ventanaCatalogo()
+        if self._controlador:
+            self._controlador.ventanaCatalogo()
 
     def on_devolucion_click(self):
-        if self.controlador:
-            self.controlador.ventanaDevolucion()
+        if self._controlador:
+            self._controlador.ventanaDevolucion()
 
     def on_buscar_estudiante_click(self):
-        if self.controlador:
-            self.controlador.ventanaBuscarEstudiante()
+        if self._controlador:
+            self._controlador.ventanaBuscarEstudiante()
 
     def on_cerrar_sesion_click(self):
-        if self.controlador:
-            self.controlador.cerrarSesion()
+        if self._controlador:
+            self._controlador.cerrarSesion()
 
-
-
+    def on_anadir_libro_click(self):
+        if self._controlador:
+            self._controlador.ventanaAnadirLibro()
 
     @property
     def controlador(self):

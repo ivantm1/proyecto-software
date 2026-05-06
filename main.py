@@ -8,23 +8,25 @@ from src.vista.MisPrestamos import MisPrestamos
 from src.vista.MisReservas import MisReservas
 from src.vista.VistaPerfil import VistaPerfil
 from src.vista.VistaDevolverLibro import VistaDevolverLibro
+from src.vista.VistaAnadirLibro import VistaAnadirLibro
 from src.vista.VistaBuscarEstudiante import VistaBuscarEstudiante
 from src.modelo.Logica import Logica
 from src.controlador.ControladorPrincipal import ControladorPrincipal
 
 if __name__ == "__main__":
     app = QApplication([])
-    login = Login()
-    registro = VistaRegistro()
-    modelo = Logica()
-    estudiante = Estudiante()
-    bibliotecario = Bibliotecario()
-    mis_prestamos = MisPrestamos()
-    mis_reservas = MisReservas()
-    perfil = VistaPerfil()
-    devolucion = VistaDevolverLibro()
+    login            = Login()
+    registro         = VistaRegistro()
+    modelo           = Logica()
+    estudiante       = Estudiante()
+    bibliotecario    = Bibliotecario()
+    mis_prestamos    = MisPrestamos()
+    mis_reservas     = MisReservas()
+    perfil           = VistaPerfil()
+    devolucion       = VistaDevolverLibro()
+    anadirLibro      = VistaAnadirLibro()
     buscarEstudiante = VistaBuscarEstudiante()
-    vistaCatalogo = VistaCatalogo()
+    vistaCatalogo    = VistaCatalogo()
 
     controlador = ControladorPrincipal(
         modelo, login,
@@ -37,6 +39,7 @@ if __name__ == "__main__":
         ref_vista_perfil=perfil,
         ref_vista_devolucion=devolucion,
         ref_vista_buscar_estudiante=buscarEstudiante,
+        ref_vista_anadir_libro=anadirLibro,
     )
 
     login.controlador = controlador

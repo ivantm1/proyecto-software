@@ -9,6 +9,7 @@ from src.controlador.DevolucionControlador import DevolucionControlador
 from src.controlador.PrestamoControlador import PrestamoControlador
 from src.controlador.PerfilControlador import PerfilControlador
 from src.controlador.ControladorBuscarEstudiante import ControladorBuscarEstudiante
+from src.controlador.AnadirLibroControlador import AnadirLibroControlador
 
 
 class ControladorPrincipal:
@@ -23,7 +24,8 @@ class ControladorPrincipal:
                  ref_vista_prestamo=None,
                  ref_vista_sanciones=None,
                  ref_vista_devolucion=None,
-                 ref_vista_buscar_estudiante=None):
+                 ref_vista_buscar_estudiante=None,
+                 ref_vista_anadir_libro=None):
 
         self._modelo                = ref_modelo
         self._vistaLogin            = ref_login
@@ -38,6 +40,7 @@ class ControladorPrincipal:
         self._vistaSanciones        = ref_vista_sanciones
         self._vistaDevolucion       = ref_vista_devolucion
         self._vistaBuscarEstudiante = ref_vista_buscar_estudiante
+        self._vistaAnadirLibro      = ref_vista_anadir_libro
         self._usuario_activo = None
 
     def ventanaIniciarSesion(self):
@@ -49,15 +52,12 @@ class ControladorPrincipal:
         if not loginVO.nombre or not loginVO.contrasena:
             self._vistaLogin.lanzarAviso("Introduce usuario y contraseña.")
             return
-
         usuario = self._modelo.comprobarLogin(loginVO)
         if usuario is None:
             self._vistaLogin.lanzarAviso("Usuario o contraseña incorrectos.")
             return
-
         self._usuario_activo = usuario
         self._vistaLogin.close()
-
         if usuario.tipo == "Estudiante":
             self.ventanaEstudiante()
         elif usuario.tipo == "Bibliotecario":
@@ -74,15 +74,12 @@ class ControladorPrincipal:
         if not all([nombre, apellidos, correo, contrasena, confirmar]):
             self._vistaRegistro.lanzarAviso("Rellena todos los campos.")
             return
-
         if "@estudiantes.unileon.es" not in correo:
             self._vistaRegistro.lanzarAviso("Usa un correo institucional @estudiantes.unileon.es")
             return
-
         if contrasena != confirmar:
             self._vistaRegistro.lanzarAviso("Las contraseñas no coinciden.")
             return
-
         registro = RegistroVO(nombre, apellidos, correo, contrasena)
         if self._modelo.registrarUsuario(registro):
             self._vistaRegistro.lanzarAviso("Usuario registrado con éxito. Vuelve al login.")
@@ -108,18 +105,11 @@ class ControladorPrincipal:
     def ventanaVerPerfil(self):
         if not self._vistaPerfil or not self._usuario_activo:
             return
-
         if self._usuario_activo.tipo == "Estudiante":
             vista_anterior = self._vistaEstudiante
         else:
             vista_anterior = self._vistaBibliotecario
-
-        ctrl = PerfilControlador(
-            self._modelo,
-            self._vistaPerfil,
-            vista_anterior,
-            self._usuario_activo
-        )
+        ctrl = PerfilControlador(self._modelo, self._vistaPerfil, vista_anterior, self._usuario_activo)
         self._vistaPerfil.controlador = ctrl
         self._vistaPerfil.mostrarUsuario(
             nombre=self._usuario_activo.nombre,
@@ -134,10 +124,8 @@ class ControladorPrincipal:
         if not self._vistaCatalogo or not self._usuario_activo:
             return
         ctrl = CatalogoControlador(
-            self._modelo,
-            self._vistaCatalogo,
-            self._vistaEstudiante,
-            self._vistaBibliotecario,
+            self._modelo, self._vistaCatalogo,
+            self._vistaEstudiante, self._vistaBibliotecario,
             correo_usuario=self._usuario_activo.correo,
             tipo_usuario=self._usuario_activo.tipo,
         )
@@ -146,7 +134,6 @@ class ControladorPrincipal:
         self._vistaBibliotecario.close()
         self._vistaCatalogo.showMaximized()
         ctrl.cargarCatalogo()
-
         libros = self._modelo.buscarLibro("", "Ninguno")
         if self._usuario_activo.tipo == "Estudiante":
             self._vistaCatalogo.cargar_lista_libros_estudiante(libros)
@@ -157,12 +144,9 @@ class ControladorPrincipal:
         if not self._vistaMisPrestamos or not self._usuario_activo:
             return
         ctrl = MisPrestamosControlador(
-            self._modelo,
-            self._vistaMisPrestamos,
-            self._vistaEstudiante,
-            self._vistaBibliotecario,
-            self._usuario_activo.correo,
-            self._usuario_activo.tipo
+            self._modelo, self._vistaMisPrestamos,
+            self._vistaEstudiante, self._vistaBibliotecario,
+            self._usuario_activo.correo, self._usuario_activo.tipo
         )
         self._vistaMisPrestamos.controlador = ctrl
         ctrl.actualizarPrestamos()
@@ -173,12 +157,9 @@ class ControladorPrincipal:
         if not self._vistaMisReservas or not self._usuario_activo:
             return
         ctrl = ControladorMisReservas(
-            self._modelo,
-            self._vistaMisReservas,
-            self._vistaEstudiante,
-            self._vistaBibliotecario,
-            self._usuario_activo.correo,
-            self._usuario_activo.tipo
+            self._modelo, self._vistaMisReservas,
+            self._vistaEstudiante, self._vistaBibliotecario,
+            self._usuario_activo.correo, self._usuario_activo.tipo
         )
         self._vistaMisReservas.controlador = ctrl
         ctrl.actualizarReservas()
@@ -195,15 +176,18 @@ class ControladorPrincipal:
     def ventanaDevolucion(self):
         if not self._vistaDevolucion:
             return
-        # Pasar la vista del bibliotecario para poder volver tras la devolución
-        ctrl = DevolucionControlador(
-            self._modelo,
-            self._vistaDevolucion,
-            self._vistaBibliotecario
-        )
+        ctrl = DevolucionControlador(self._modelo, self._vistaDevolucion, self._vistaBibliotecario)
         self._vistaDevolucion.controlador = ctrl
         self._vistaBibliotecario.close()
         self._vistaDevolucion.showMaximized()
+
+    def ventanaAnadirLibro(self):
+        if not self._vistaAnadirLibro:
+            return
+        ctrl = AnadirLibroControlador(self._modelo, self._vistaAnadirLibro, self._vistaBibliotecario)
+        self._vistaAnadirLibro.controlador = ctrl
+        self._vistaBibliotecario.close()
+        self._vistaAnadirLibro.showMaximized()
 
     def ventanaSanciones(self):
         if not self._vistaSanciones or not self._usuario_activo:
@@ -227,11 +211,7 @@ class ControladorPrincipal:
         if not self._vistaBuscarEstudiante:
             return
         self._vistaBuscarEstudiante.linea_busqueda.clear()
-        ctrl = ControladorBuscarEstudiante(
-            self._modelo,
-            self._vistaBuscarEstudiante,
-            self._vistaBibliotecario
-        )
+        ctrl = ControladorBuscarEstudiante(self._modelo, self._vistaBuscarEstudiante, self._vistaBibliotecario)
         self._vistaBuscarEstudiante.controlador = ctrl
         self._vistaBibliotecario.close()
         self._vistaBuscarEstudiante.showMaximized()
