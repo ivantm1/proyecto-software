@@ -6,9 +6,9 @@ _TABLA_RETRASO = {1: 1, 2: 3, 3: 6, 4: 10}
 _SANCION_MAX_RETRASO = 15
 
 class SancionDaoJDBC(Conexion):
-    SQL_INSERT     = "INSERT INTO Sanciones (email, tipo, estado, fecha_inicio, fecha_fin) VALUES (?, ?, 'Activa', ?, ?)"
-    SQL_SELECT_EST = "SELECT email, tipo, estado, fecha_inicio, fecha_fin FROM Sanciones WHERE email = ?"
-    SQL_ACTIVA     = "SELECT COUNT(*) FROM Sanciones WHERE email = ? AND estado = 'Activa' AND (fecha_fin IS NULL OR fecha_fin > ?)"
+    SQL_INSERT     = "INSERT INTO Sanciones (email, tipo, estado, fecha_inicio, duracion) VALUES (?, ?, 'Activa', ?, ?)"
+    SQL_SELECT_EST = "SELECT email, tipo, estado, fecha_inicio, duracion FROM Sanciones WHERE email = ?"
+    SQL_ACTIVA     = "SELECT COUNT(*) FROM Sanciones WHERE email = ? AND estado = 'Activa' AND DATEADD(day, duracion, fecha_inicio) > ?"
 
     def aplicarSancionRetraso(self, correo_estudiante, semanas_retraso):
         semanas = _TABLA_RETRASO.get(semanas_retraso, _SANCION_MAX_RETRASO)
@@ -27,9 +27,9 @@ class SancionDaoJDBC(Conexion):
                 fecha_fin = hoy + datetime.timedelta(weeks=cantidad)
             hoy_str      = hoy.strftime('%Y-%m-%d')
             fecha_fin_str = fecha_fin.strftime('%Y-%m-%d')
-            cursor.execute(self.SQL_INSERT, (correo_estudiante, tipo, hoy_str, fecha_fin_str))
+            cursor.execute(self.SQL_INSERT, (correo_estudiante, tipo, hoy_str, cantidad))
             self.conexion.commit()
-            return SancionVO(correo_estudiante, tipo, cantidad, hoy)
+            return SancionVO(correo_estudiante, tipo, cantidad, hoy, "Activa")
         except Exception as e:
             print(f"Error en _insertarSancion: {e}")
             return None
@@ -40,8 +40,8 @@ class SancionDaoJDBC(Conexion):
         try:
             cursor.execute(self.SQL_SELECT_EST, (correo_estudiante,))
             for row in cursor.fetchall():
-                correo, tipo, estado, fecha_inicio, fecha_fin = row
-                sanciones.append(SancionVO(correo, tipo, estado, fecha_inicio))
+                correo, tipo, estado, fecha_inicio, duracion = row
+                sanciones.append(SancionVO(correo, tipo, duracion, fecha_inicio, estado))
         except Exception as e:
             print(f"Error en obtenerSancionesEstudiante: {e}")
         return sanciones

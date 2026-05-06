@@ -1,5 +1,6 @@
 from PyQt5.QtWidgets import QMessageBox
 from src.vista.VistaGestionarEstudiante import VistaGestionarEstudiante
+from src.vista.VistaSanciones import VistaSanciones
 
 class ControladorBuscarEstudiante:
     def __init__(self, ref_modelo, ref_vista_buscar, ref_vista_bibliotecario):
@@ -7,6 +8,7 @@ class ControladorBuscarEstudiante:
         self._vista_buscar = ref_vista_buscar
         self._vista_bibliotecario = ref_vista_bibliotecario
         self._vista_gestion = VistaGestionarEstudiante()
+        self._vista_sanciones = VistaSanciones()
         self._estudiante_actual = None
 
     def buscarEstudiante(self, correo):
@@ -100,3 +102,16 @@ class ControladorBuscarEstudiante:
             QMessageBox.information(self._vista_gestion, "Préstamos del Estudiante", prestamos_str)
         else:
             QMessageBox.information(self._vista_gestion, "Préstamos del Estudiante", "No hay préstamos activos para este estudiante.")
+
+    def gestionarSanciones(self, correo_estudiante):
+        """Abre la vista de sanciones para el estudiante"""
+        sanciones = self._modelo.obtenerSancionesEstudiante(correo_estudiante)
+        self._vista_sanciones.mostrarSanciones(sanciones)
+        self._vista_sanciones.controlador = self
+        self._vista_gestion.close()
+        self._vista_sanciones.showMaximized()
+
+    def volverASanciones(self):
+        """Cierra la vista de sanciones y vuelve a la vista de gestión"""
+        self._vista_sanciones.close()
+        self._vista_gestion.showMaximized()

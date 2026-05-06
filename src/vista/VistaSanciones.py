@@ -27,10 +27,9 @@ class VistaSanciones(QDialog, Form):
         for sancion in lista_sanciones:
             fila = self.tabla_sanciones.rowCount()
             self.tabla_sanciones.insertRow(fila)
-            self.tabla_sanciones.setItem(fila, 0, QTableWidgetItem(str(sancion.tipo)))
-            self.tabla_sanciones.setItem(fila, 1, QTableWidgetItem(str(sancion.estado)))
-            self.tabla_sanciones.setItem(fila, 2, QTableWidgetItem(str(sancion.fecha_inicio)))
-            self.tabla_sanciones.setItem(fila, 3, QTableWidgetItem(str(sancion.fecha_fin) if sancion.fecha_fin else "Indefinida"))
+            self.tabla_sanciones.setItem(fila, 0, QTableWidgetItem(str(sancion.fecha_inicio)))
+            self.tabla_sanciones.setItem(fila, 1, QTableWidgetItem(str(sancion.duracion_sancion)))
+            self.tabla_sanciones.setItem(fila, 2, QTableWidgetItem(str(sancion.tipo)))
         self.tabla_sanciones.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
 
     def lanzarAviso(self, aviso):

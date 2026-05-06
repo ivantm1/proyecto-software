@@ -49,8 +49,8 @@ class VistaGestionarEstudiante(QDialog, Form):
         pass
 
     def on_gestionar_sanciones_click(self):
-        # Lógica futura para gestionar sanciones
-        pass
+        if self._controlador and self._correo_estudiante:
+            self._controlador.gestionarSanciones(self._correo_estudiante)
 
     @property
     def controlador(self):
