@@ -5,4 +5,4 @@ boton ver prestamos de buscar estudiante lleve a mis prestamos del estudiante
 boton ver reservas del buscar estudiante
 logica de vista libro bibliotecario 
 logica de vista libro retirada
-en vista libro prestado poner hasta cuando
+en perfil ver el tiempo de sancion si hay (marcos, cuando esten las sanciones)
