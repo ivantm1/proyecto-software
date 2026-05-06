@@ -44,6 +44,11 @@ class ReservaDaoJDBC(Conexion):
                 print("No se puede reservar: el libro ya tiene una reserva activa.")
                 return False
 
+            # Comprobar que el estudiante no tenga más de 3 reservas activas
+            if self.contarReservasEstudiante(correo_estudiante) >= 3:
+                print("No se puede reservar: el estudiante ya tiene 3 reservas activas.")
+                return False
+
             hoy = datetime.date.today().strftime('%Y-%m-%d')
             cursor.execute(self.SQL_CREAR, (correo_estudiante, isbn, hoy))
             self.conexion.commit()
