@@ -66,7 +66,7 @@ CREATE TABLE Sanciones (
     tipo VARCHAR(100) NOT NULL,
 	estado VARCHAR(40) CHECK (estado IN ('Activa', 'Cumplida')),
     fecha_inicio DATE NOT NULL,
-    fecha_fin DATE,
+    duracion INT,
     email VARCHAR(100) NOT NULL, 
     FOREIGN KEY (email) REFERENCES Estudiantes(email) ON DELETE CASCADE
 );
@@ -217,9 +217,6 @@ INSERT INTO Libros (ISBN, titulo, autor, fecha_llegada, num_copias, disponibilid
 
 
 
-INSERT INTO Prestamos (email, ISBN) 
-VALUES ('123', '978-84-INF05');
-GO
 
 INSERT INTO Prestamos (email, ISBN)
 VALUES 
