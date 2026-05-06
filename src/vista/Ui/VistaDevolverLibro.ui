@@ -88,6 +88,45 @@ QLineEdit {
       </layout>
      </item>
      <item>
+      <widget class="QComboBox" name="opcion_buscador">
+       <property name="styleSheet">
+        <string notr="true">QComboBox QAbstractItemView {
+    background-color: white;
+    selection-background-color: #34495e;
+    selection-color: white;
+}
+
+QComboBox {
+    border: 2px solid #bdc3c7;
+    border-radius: 15px; 
+    padding: 5px 15px;
+    background-color: white;
+    color: #333;
+}
+
+QComboBox::placeholder {
+    color: #34495e; 
+}
+</string>
+       </property>
+       <item>
+        <property name="text">
+         <string>Buen estado</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Dañado</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Roto</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item>
       <widget class="QPushButton" name="boton_devolver">
        <property name="styleSheet">
         <string notr="true">QPushButton {

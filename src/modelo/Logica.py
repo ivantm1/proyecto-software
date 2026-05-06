@@ -48,6 +48,9 @@ class Logica():
 
     def buscarPorISBN(self, isbn):
         return LibroDaoJDBC().buscarPorISBN(isbn)
+
+    def buscarPrestamoActivoPorISBN(self, isbn):
+        return PrestamoDaoJDBC().buscarPrestamoActivoPorISBN(isbn)
     
     def registrarPrestamo(self, isbn, correo_estudiante):
         return PrestamoDaoJDBC().registrarPrestamo(isbn, correo_estudiante)
@@ -73,8 +76,8 @@ class Logica():
     def aplicarSancionRetraso(self, correo_estudiante, semanas_retraso):
         return SancionDaoJDBC().aplicarSancionRetraso(correo_estudiante, semanas_retraso)
 
-    def aplicarSancionDanio(self, correo_estudiante, semanas_sancion=3):
-        return SancionDaoJDBC().aplicarSancionDanio(correo_estudiante, semanas_sancion)
+    def aplicarSancionDanio(self, correo_estudiante, dias_sancion=7):
+        return SancionDaoJDBC().aplicarSancionDanio(correo_estudiante, dias_sancion)
 
     def obtenerSancionesEstudiante(self, correo_estudiante):
         return SancionDaoJDBC().obtenerSancionesEstudiante(correo_estudiante)

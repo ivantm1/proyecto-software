@@ -18,8 +18,12 @@ class VistaDevolverLibro(QDialog, Form):
         if not isbn:
             self.lanzarAviso("Introduce el ISBN del libro.")
             return
+
+        estado = self.opcion_buscador.currentText().strip()
         if self._controlador:
-            self._controlador.registrarDevolucion(isbn)
+            self._controlador.registrarDevolucion(isbn, estado)
+
+
 
     def on_volver_click(self):
         if self._controlador:
