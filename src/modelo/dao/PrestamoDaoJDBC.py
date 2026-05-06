@@ -6,6 +6,7 @@ class PrestamoDaoJDBC(Conexion):
     SQL_REGISTRAR        = "INSERT INTO Prestamos (email, ISBN, estado, fecha_prestamo, fecha_devolucion, prorroga) VALUES (?, ?, 'Activo', ?, ?, 0)"
     SQL_DEVOLVER         = "UPDATE Prestamos SET estado = 'Devuelto' WHERE ISBN = ? AND estado = 'Activo'"
     SQL_DATOS_PRESTAMO   = "SELECT p.ISBN, p.email, p.fecha_prestamo, p.fecha_devolucion, p.estado, p.prorroga FROM Prestamos p WHERE p.ISBN = ? AND p.estado = 'Activo'"
+    SQL_PRESTAMO_ACTIVO_ISBN = SQL_DATOS_PRESTAMO
     SQL_PRORROGAR        = "UPDATE Prestamos SET fecha_devolucion = ?, prorroga = 1 WHERE ISBN = ? AND estado = 'Activo' AND prorroga = 0 AND NOT EXISTS (SELECT 1 FROM Reservas WHERE ISBN = ? AND estado = 'Pendiente')"
     SQL_CUENTA_PRESTAMOS = "SELECT COUNT(*) FROM Prestamos WHERE email = ? AND estado = 'Activo'"
     SQL_EXISTE_PRESTAMO_ACTIVO = "SELECT COUNT(*) FROM Prestamos WHERE email = ? AND ISBN = ? AND estado = 'Activo'"
@@ -72,6 +73,19 @@ class PrestamoDaoJDBC(Conexion):
         except Exception as e:
             print(f"Error en registrarDevolucion: {e}")
             return False
+
+    def buscarPrestamoActivoPorISBN(self, isbn):
+        cursor = self.getCursor()
+        try:
+            cursor.execute(self.SQL_PRESTAMO_ACTIVO_ISBN, (isbn,))
+            row = cursor.fetchone()
+            if not row:
+                return None
+            isbn_libro, correo_estudiante, fecha_prestamo, fecha_devolucion, estado, prorroga = row
+            return PrestamoVO(isbn_libro, correo_estudiante, fecha_prestamo, fecha_devolucion, estado)
+        except Exception as e:
+            print(f"Error en buscarPrestamoActivoPorISBN: {e}")
+            return None
  
     def obtenerPrestamosEstudiante(self, correo_estudiante):
         cursor = self.getCursor()

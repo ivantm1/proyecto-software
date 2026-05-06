@@ -12,21 +12,24 @@ class SancionDaoJDBC(Conexion):
 
     def aplicarSancionRetraso(self, correo_estudiante, semanas_retraso):
         semanas = _TABLA_RETRASO.get(semanas_retraso, _SANCION_MAX_RETRASO)
-        return self._insertarSancion(correo_estudiante, "retraso", semanas)
+        return self._insertarSancion(correo_estudiante, "retraso", semanas, unidad='weeks')
 
-    def aplicarSancionDanio(self, correo_estudiante, semanas_sancion=3):
-        return self._insertarSancion(correo_estudiante, "danio", semanas_sancion)
+    def aplicarSancionDanio(self, correo_estudiante, dias_sancion=7):
+        return self._insertarSancion(correo_estudiante, "danio", dias_sancion, unidad='days')
 
-    def _insertarSancion(self, correo_estudiante, tipo, semanas):
+    def _insertarSancion(self, correo_estudiante, tipo, cantidad, unidad='weeks'):
         cursor = self.getCursor()
         try:
             hoy = datetime.date.today()
-            fecha_fin = hoy + datetime.timedelta(weeks=semanas)
+            if unidad == 'days':
+                fecha_fin = hoy + datetime.timedelta(days=cantidad)
+            else:
+                fecha_fin = hoy + datetime.timedelta(weeks=cantidad)
             hoy_str      = hoy.strftime('%Y-%m-%d')
             fecha_fin_str = fecha_fin.strftime('%Y-%m-%d')
             cursor.execute(self.SQL_INSERT, (correo_estudiante, tipo, hoy_str, fecha_fin_str))
             self.conexion.commit()
-            return SancionVO(correo_estudiante, tipo, semanas, hoy)
+            return SancionVO(correo_estudiante, tipo, cantidad, hoy)
         except Exception as e:
             print(f"Error en _insertarSancion: {e}")
             return None
