@@ -1,0 +1,45 @@
+from PyQt5.QtWidgets import QDialog, QMessageBox, QTableWidgetItem
+from PyQt5 import uic
+from PyQt5.QtWidgets import QHeaderView
+
+Form, Window = uic.loadUiType("./src/vista/Ui/VistaSanciones.ui")
+
+class VistaSanciones(QDialog, Form):
+    def __init__(self):
+        super().__init__()
+        self.setupUi(self)
+        self.setWindowTitle("Sanciones — BiblioULE")
+        self._controlador = None
+
+        self.boton_volver.clicked.connect(self.on_volver_click)
+
+    def on_volver_click(self):
+        if self._controlador:
+            self._controlador.volverASanciones()
+
+    def mostrarSanciones(self, lista_sanciones):
+        self.tabla_sanciones.setRowCount(0)
+        self.tabla_sanciones.resizeColumnsToContents()
+
+        if not lista_sanciones:
+            return
+
+        for sancion in lista_sanciones:
+            fila = self.tabla_sanciones.rowCount()
+            self.tabla_sanciones.insertRow(fila)
+            self.tabla_sanciones.setItem(fila, 0, QTableWidgetItem(str(sancion.tipo)))
+            self.tabla_sanciones.setItem(fila, 1, QTableWidgetItem(str(sancion.estado)))
+            self.tabla_sanciones.setItem(fila, 2, QTableWidgetItem(str(sancion.fecha_inicio)))
+            self.tabla_sanciones.setItem(fila, 3, QTableWidgetItem(str(sancion.fecha_fin) if sancion.fecha_fin else "Indefinida"))
+        self.tabla_sanciones.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+
+    def lanzarAviso(self, aviso):
+        QMessageBox.information(self, "Información", aviso)
+
+    @property
+    def controlador(self):
+        return self._controlador
+
+    @controlador.setter
+    def controlador(self, ref_controlador):
+        self._controlador = ref_controlador
