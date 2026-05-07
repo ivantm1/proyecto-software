@@ -13,6 +13,9 @@ class VistaLogin(QDialog, Form):
         # Conectar el botón a la función
         self.boton_inicio_sesion.clicked.connect(self.on_login_click)
         self.boton_registro.clicked.connect(self.on_register_click)
+        # Conectar Enter en los campos de texto al login
+        self.Linea_usuario.returnPressed.connect(self.on_login_click)
+        self.Linea_contrasena.returnPressed.connect(self.on_login_click)
 
     def on_login_click(self):
         usuario = self.Linea_usuario.text() #Obtener el texto del campo nombre
