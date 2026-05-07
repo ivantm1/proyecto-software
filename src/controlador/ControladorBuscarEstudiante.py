@@ -86,8 +86,11 @@ class ControladorBuscarEstudiante:
             QMessageBox.warning(self._vista_gestion, "Error", "No es posible prestar el libro porque ya está prestado.")
             return
         elif str(libro.disponibilidad).lower() == 'reservado':
-            QMessageBox.warning(self._vista_gestion, "Error", "No es posible prestar el libro porque está reservado.")
-            return
+            if self._modelo.reservaExpirada(isbn):
+                self._modelo.liberarReservaExpirada(isbn)
+            else:
+                QMessageBox.warning(self._vista_gestion, "Error", "No es posible prestar el libro porque está reservado.")
+                return
         elif str(libro.disponibilidad).lower() != 'disponible':
             QMessageBox.warning(self._vista_gestion, "Error", "No es posible prestar el libro porque no está disponible.")
             return

@@ -106,6 +106,10 @@ class Logica():
 
     def cancelarReserva(self, isbn):
         return ReservaDaoJDBC().cancelarReserva(isbn)
+    
+    def liberarReservaExpirada(self, isbn):
+        ReservaDaoJDBC().cancelarReserva(isbn)
+        LibroDaoJDBC().restaurarLibro(isbn)
 
     def obtenerReservasEstudiante(self, correo_estudiante):
         return ReservaDaoJDBC().obtenerReservasEstudiante(correo_estudiante)

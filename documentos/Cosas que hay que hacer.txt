@@ -1,4 +1,3 @@
-fecha maxima para ir a por un libro reservado
 logica de sanciones
 vista de admin
 logica de admin
