@@ -112,18 +112,21 @@ class ControladorPrincipal:
         ctrl = ControladorPerfil(self._modelo, self._vistaPerfil, vista_anterior, self._usuario_activo)
         self._vistaPerfil.controlador = ctrl
 
-        sancion_texto = None
+        total_dias = 0
         if self._usuario_activo.tipo == "Estudiante":
             sanciones = self._modelo.obtenerSancionesEstudiante(self._usuario_activo.correo)
             activas = [s for s in sanciones if s.estado == "Activa"]
+
             if activas:
-                sancion_texto = str(activas[0].fecha_fin)
+                for sancion in activas:
+                    total_dias += int(sancion.duracion_sancion)
                 
         self._vistaPerfil.mostrarUsuario(
             nombre=self._usuario_activo.nombre,
             apellidos=self._usuario_activo.apellidos,
             correo=self._usuario_activo.correo,
             tipo=self._usuario_activo.tipo,
+            total_dias=total_dias
         )
         vista_anterior.close()
         self._vistaPerfil.showMaximized()

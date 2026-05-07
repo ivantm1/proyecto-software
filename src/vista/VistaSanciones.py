@@ -123,6 +123,7 @@ class VistaSanciones(QDialog, Form):
             self.linea_tiempo.setText("El estudiante no tiene sanciones activas.")
         else:   
             self.linea_tiempo.setText(f"Total sanciones: {total_dias} días")
+            self.linea_tiempo.setStyleSheet("font-weight: bold; text-transform: uppercase; font-size: 22px; letter-spacing: 1px; color: #B22222")
 
     def lanzarAviso(self, aviso):
         QMessageBox.information(self, "Información", aviso)

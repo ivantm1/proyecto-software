@@ -13,14 +13,15 @@ class VistaPerfil(QDialog, Form):
         self.boton_volver.clicked.connect(self.on_volver_click)
         self.boton_cambiar.clicked.connect(self.on_cambiar_contrasena_click)
 
-    def mostrarUsuario(self, nombre, apellidos, correo, tipo, sancion=None):
+    def mostrarUsuario(self, nombre, apellidos, correo, tipo, total_dias=0):
         self.linea_nombre.setText(nombre)
         self.linea_apellidos.setText(apellidos)
         self.linea_email.setText(correo)
         if tipo=="Bibliotecario" or tipo=="Admin":
             self.label_6.setText("")
-        elif sancion:
-            self.label_6.setText(f"⚠️ Sanción activa hasta: {sancion}")
+        elif total_dias !=0:
+            self.label_6.setText(f"⚠️ Sanción activa durante {total_dias} días ⚠️")
+            self.label_6.setStyleSheet("font-weight: bold; text-transform: uppercase; font-size: 22px; letter-spacing: 1px; color: #B22222")
         else:
             self.label_6.setText("Sin sanciones activas.")
 
