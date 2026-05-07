@@ -2,3 +2,10 @@ logica de sanciones
 vista de admin
 logica de admin
 buscar llibro por estado
+arreglar vista gestionar sanciones
+boton eliminar en gestionar sanciones
+actualizar numero de sanciones activas automaticamente
+poner predeterminado ninguno en catalogo
+en registro ocultar contraseña
+poner minimo de caracteres y restringir caracteres en las contraseñas
+quitar emoji y centrar linea en sanciones del perfil
