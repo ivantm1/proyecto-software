@@ -57,9 +57,17 @@ class ControladorBuscarEstudiante:
             return
 
         # Verificar si el estudiante tiene sanciones activas
+        # Verificar si el estudiante tiene sanciones activas
         if self._modelo.tieneSancionActiva(correo_estudiante):
             QMessageBox.warning(self._vista_gestion, "Aviso", 
-                              "Este estudiante tiene una sanción activa y no puede realizar préstamos.")
+                            "Este estudiante tiene una sanción activa y no puede realizar préstamos.")
+            return
+
+        # Verificar máximo de préstamos
+        num_prestamos = self._modelo.contarPrestamosEstudiante(correo_estudiante)
+        if num_prestamos >= 7:
+            QMessageBox.warning(self._vista_gestion, "Aviso",
+                            f"Este estudiante ya tiene {num_prestamos} préstamos activos. No puede tener más de 7 a la vez.")
             return
 
         # Comprobar estado actual del libro

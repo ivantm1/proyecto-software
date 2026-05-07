@@ -77,6 +77,18 @@ class ControladorCatalogo:
             self._libroPrestado.lanzarAviso("Tienes una sanción activa y no puedes realizar reservas.")
             return
 
+        # Verificar máximo de préstamos
+        num_prestamos = self._modelo.contarPrestamosEstudiante(self._correo_usuario)
+        if num_prestamos >= 3:
+            self._libroPrestado.lanzarAviso("Ya tienes 3 préstamos activos. No puedes tener más de 3 a la vez.")
+            return
+
+        # Verificar máximo de reservas
+        num_reservas = self._modelo.contarReservasEstudiante(self._correo_usuario)
+        if num_reservas >= 3:
+            self._libroPrestado.lanzarAviso("Ya tienes 3 reservas activas. No puedes tener más de 3 a la vez.")
+            return
+
         if self._modelo.tienePrestamoActivo(isbn, self._correo_usuario):
             self._libroPrestado.lanzarAviso("No puedes reservar un libro que ya tienes prestado.")
             return
