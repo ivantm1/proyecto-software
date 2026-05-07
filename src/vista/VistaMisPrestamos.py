@@ -35,11 +35,12 @@ class VistaMisPrestamos(QDialog, Form):
         self.tabla_libros.setRowCount(0)
         self.tabla_libros.resizeColumnsToContents()
 
-        self._prestamos = lista_prestamos  # guardamos para acceder por índice
+        self._prestamos = lista_prestamos
 
         if not lista_prestamos:
             return
 
+        import datetime
         for prestamo in lista_prestamos:
             fila = self.tabla_libros.rowCount()
             self.tabla_libros.insertRow(fila)
@@ -47,6 +48,17 @@ class VistaMisPrestamos(QDialog, Form):
             self.tabla_libros.setItem(fila, 1, QTableWidgetItem(str(prestamo.autor)))
             self.tabla_libros.setItem(fila, 2, QTableWidgetItem(str(prestamo.nombre_tema)))
             self.tabla_libros.setItem(fila, 3, QTableWidgetItem(str(prestamo.fecha_devolucion)))
+
+            try:
+                fecha = prestamo.fecha_devolucion
+                if isinstance(fecha, str):
+                    fecha = datetime.date.fromisoformat(str(fecha)[:10])
+                if fecha < datetime.date.today():
+                    for col in range(4):
+                        self.tabla_libros.item(fila, col).setBackground(QColor(240, 150, 150))
+            except Exception:
+                pass
+
         self.tabla_libros.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
 
     def obtenerPrestamoPorFila(self, fila):
