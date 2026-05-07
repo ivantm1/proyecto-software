@@ -49,8 +49,18 @@ class ControladorCatalogo:
         libro = self._vista_catalogo.obtenerLibroPorFila(fila)
         if libro is None:
             return
+        
+        # Obtener el estudiante que tiene el libro prestado
+        estudiante = None
+        if self._tipo_usuario in ["Bibliotecario", "Administrador"]:
+            prestamo = self._modelo.buscarPrestamoActivoPorISBN(libro.isbn)
+            if prestamo:
+                estudiante_vo = self._modelo.buscarEstudiante(prestamo.correo_estudiante)
+                if estudiante_vo:
+                    estudiante = f"{estudiante_vo.nombre} {estudiante_vo.apellidos}"
+        
         self._libroPrestado.controlador = self
-        self._libroPrestado.mostrarLibro(libro)
+        self._libroPrestado.mostrarLibro(libro, estudiante, self._tipo_usuario)
         if self._tipo_usuario == "Bibliotecario":
             self._libroPrestado.boton_reserva.setVisible(False)
         else:

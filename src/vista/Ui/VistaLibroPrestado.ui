@@ -184,6 +184,13 @@ QLabel {
       </widget>
      </item>
      <item>
+      <widget class="QLabel" name="linea_estudiante">
+       <property name="text">
+        <string>Reservado por</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QPushButton" name="boton_reserva">
        <property name="styleSheet">
         <string notr="true">QPushButton {
