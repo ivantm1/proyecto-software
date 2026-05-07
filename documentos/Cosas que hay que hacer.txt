@@ -1,5 +1,3 @@
 fecha maxima para ir a por un libro reservado
 cooldown para volver a prestar un libro que acabas de devolver
 logica de sanciones
-logica de vista libro bibliotecario 
-logica de vista libro retirada

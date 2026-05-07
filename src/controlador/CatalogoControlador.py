@@ -1,5 +1,8 @@
 from src.vista.VistaLibroDisponible import VistaLibroDisponible
 from src.vista.VistaLibroPrestado import VistaLibroPrestado
+from PyQt5.QtWidgets import QMessageBox
+from src.vista.VistaLibroRetirado import VistaLibroRetirado
+from PyQt5.QtWidgets import QMessageBox, QInputDialog
 
 class CatalogoControlador:
     def __init__(self, ref_modelo, ref_vista_catalogo, ref_vista_estudiante, ref_vista_bibliotecario, correo_usuario=None, tipo_usuario=None):
@@ -11,6 +14,7 @@ class CatalogoControlador:
         self._tipo_usuario    = tipo_usuario
         self._libroDisponible         = VistaLibroDisponible()
         self._libroPrestado        = VistaLibroPrestado()
+        self._libroRetirado = VistaLibroRetirado()
 
     def cargarCatalogo(self):
         libros = self._modelo.obtenerCatalogo()
@@ -32,6 +36,7 @@ class CatalogoControlador:
             return
         self._libroDisponible.controlador = self
         self._libroDisponible.mostrarLibro(libro)
+        self._libroDisponible.configurarParaBibliotecario(self._tipo_usuario == "Bibliotecario")
         self._libroDisponible.show()
 
     def abrirDetalleLibroPrestado(self, fila):
@@ -40,6 +45,10 @@ class CatalogoControlador:
             return
         self._libroPrestado.controlador = self
         self._libroPrestado.mostrarLibro(libro)
+        if self._tipo_usuario == "Bibliotecario":
+            self._libroPrestado.boton_reserva.setVisible(False)
+        else:
+            self._libroPrestado.boton_reserva.setVisible(True)
         self._libroPrestado.show()
 
 
@@ -66,8 +75,8 @@ class CatalogoControlador:
                 "Verifica que no excedas el límite de 3 reservas activas o que el libro esté disponible."
             )
 
-    def bajaLibro(self, isbn):
-        exito = self._modelo.bajaLibro(isbn)
+    def bajaLibro(self, isbn, motivo="Retirado por el bibliotecario"):
+        exito = self._modelo.bajaLibro(isbn, motivo)
         if exito:
             self._vista_catalogo.lanzarAviso("Libro retirado del catálogo.")
             self.cargarCatalogo()
@@ -98,3 +107,22 @@ class CatalogoControlador:
             self._vista_administrador.showMaximized()
         else:
             self._vista_estudiante.showMaximized()
+            
+    def abrirDetalleLibroRetirado(self, fila):
+        libro = self._vista_catalogo.obtenerLibroPorFila(fila)
+        if libro is None:
+            return
+        self._libroRetirado.controlador = self
+        self._libroRetirado.mostrarLibro(libro)
+        self._libroRetirado.show()
+
+    def restaurarLibro(self, isbn):
+        exito = self._modelo.restaurarLibro(isbn)
+        if exito:
+            self._vista_catalogo.lanzarAviso("Libro restaurado al catálogo correctamente.")
+            self.cargarCatalogo()
+        else:
+            self._vista_catalogo.lanzarAviso("Error al restaurar el libro.")
+
+    def cerrarLibroRetirado(self):
+        self._libroRetirado.close()

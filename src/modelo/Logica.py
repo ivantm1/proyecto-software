@@ -40,8 +40,11 @@ class Logica():
     def altaLibro(self, libroVO):
         return LibroDaoJDBC().altaLibro(libroVO)
 
-    def bajaLibro(self, isbn):
-        return LibroDaoJDBC().bajaLibro(isbn)
+    def bajaLibro(self, isbn, motivo="Retirado por el bibliotecario"):
+        return LibroDaoJDBC().bajaLibro(isbn, motivo)
+    
+    def restaurarLibro(self, isbn):
+        return LibroDaoJDBC().restaurarLibro(isbn)
 
     def obtenerReservados(self):
         return LibroDaoJDBC().obtenerReservados()

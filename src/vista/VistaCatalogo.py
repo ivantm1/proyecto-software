@@ -39,11 +39,12 @@ class VistaCatalogo(QDialog, Form):
         fila = seleccion[0].row()
         estado = self.tabla_libros.item(fila, 3).text()
         if self.controlador:
-            if estado=="Disponible":
+            if estado == "Disponible":
                 self.controlador.abrirDetalleLibroDisponible(fila)
+            elif "Retirado" in estado:
+                self.controlador.abrirDetalleLibroRetirado(fila)
             else:
                 self.controlador.abrirDetalleLibroPrestado(fila)
-
     def obtenerLibroPorFila(self, fila):
         if 0 <= fila < len(self._libros):
             return self._libros[fila]

@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QDialog, QMessageBox
+from PyQt5.QtWidgets import QDialog, QMessageBox, QInputDialog
 from PyQt5 import uic
 from PyQt5.QtCore import Qt
 
@@ -24,6 +24,29 @@ class VistaLibroDisponible(QDialog, Form):
 
     def on_cerrar_click(self):
         self.controlador.cerrarLibroDisponible()
+
+    def configurarParaBibliotecario(self, es_bibliotecario):
+        if es_bibliotecario:
+            if not hasattr(self, '_boton_baja') or self._boton_baja is None:
+                from PyQt5.QtWidgets import QPushButton
+                self._boton_baja = QPushButton("Dar de baja")
+                self._boton_baja.clicked.connect(self.on_dar_baja_click)
+                layout = self.boton_cerrar.parentWidget().layout()
+                idx = layout.indexOf(self.boton_cerrar)
+                layout.insertWidget(idx, self._boton_baja)
+            self._boton_baja.setVisible(True)
+        else:
+            if hasattr(self, '_boton_baja') and self._boton_baja:
+                self._boton_baja.setVisible(False)
+
+    def on_dar_baja_click(self):
+        if self.controlador and self._isbn_actual:
+            motivo, ok = QInputDialog.getText(self, "Motivo de baja", "Introduce el motivo de retirada:")
+            if ok and motivo.strip():
+                self.controlador.bajaLibro(self._isbn_actual, motivo.strip())
+                self.close()
+            elif ok:
+                QMessageBox.warning(self, "Aviso", "Debes introducir un motivo.")
 
     @property
     def controlador(self):
