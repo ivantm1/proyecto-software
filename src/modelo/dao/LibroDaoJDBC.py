@@ -57,7 +57,7 @@ class LibroDaoJDBC(Conexion):
             WHERE l.titulo LIKE ?
         """
         params = [titulo_like]
-        if tema != "Ninguno":
+        if tema != "Ninguno" and tema != "":
             sql += " AND l.nombre_tema = ?"
             params.append(tema)
         try:

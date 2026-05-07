@@ -159,8 +159,11 @@
      </item>
      <item>
       <widget class="QLineEdit" name="Linea_contrasena">
+       <property name="text">
+        <string/>
+       </property>
        <property name="echoMode">
-        <enum>QLineEdit::Normal</enum>
+        <enum>QLineEdit::Password</enum>
        </property>
        <property name="placeholderText">
         <string> Contraseña</string>
@@ -170,7 +173,7 @@
      <item>
       <widget class="QLineEdit" name="Linea_confirmar_contrasena">
        <property name="echoMode">
-        <enum>QLineEdit::Normal</enum>
+        <enum>QLineEdit::Password</enum>
        </property>
        <property name="placeholderText">
         <string> Confirmar contraseña</string>

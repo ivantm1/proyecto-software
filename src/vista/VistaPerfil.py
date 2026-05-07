@@ -20,7 +20,7 @@ class VistaPerfil(QDialog, Form):
         if tipo=="Bibliotecario" or tipo=="Admin":
             self.label_6.setText("")
         elif total_dias !=0:
-            self.label_6.setText(f"⚠️ Sanción activa durante {total_dias} días ⚠️")
+            self.label_6.setText(f"Sanción activa durante {total_dias} días.")
             self.label_6.setStyleSheet("font-weight: bold; text-transform: uppercase; font-size: 22px; letter-spacing: 1px; color: #B22222")
         else:
             self.label_6.setText("Sin sanciones activas.")
