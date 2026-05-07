@@ -26,18 +26,10 @@ class VistaLibroDisponible(QDialog, Form):
         self.controlador.cerrarLibroDisponible()
 
     def configurarParaBibliotecario(self, es_bibliotecario):
-        if es_bibliotecario:
-            if not hasattr(self, '_boton_baja') or self._boton_baja is None:
-                from PyQt5.QtWidgets import QPushButton
-                self._boton_baja = QPushButton("Dar de baja")
-                self._boton_baja.clicked.connect(self.on_dar_baja_click)
-                layout = self.boton_cerrar.parentWidget().layout()
-                idx = layout.indexOf(self.boton_cerrar)
-                layout.insertWidget(idx, self._boton_baja)
-            self._boton_baja.setVisible(True)
-        else:
-            if hasattr(self, '_boton_baja') and self._boton_baja:
-                self._boton_baja.setVisible(False)
+        # La versión de bibliotecario usa una vista específica distinta
+        # en lugar de añadir un botón extra aquí.
+        if hasattr(self, '_boton_baja') and self._boton_baja:
+            self._boton_baja.setVisible(False)
 
     def on_dar_baja_click(self):
         if self.controlador and self._isbn_actual:

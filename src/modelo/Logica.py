@@ -52,6 +52,9 @@ class Logica():
     def buscarPorISBN(self, isbn):
         return LibroDaoJDBC().buscarPorISBN(isbn)
 
+    def buscarRetiradoPorISBN(self, isbn):
+        return LibroDaoJDBC().buscarRetiradoPorISBN(isbn)
+
     def buscarPrestamoActivoPorISBN(self, isbn):
         return PrestamoDaoJDBC().buscarPrestamoActivoPorISBN(isbn)
     

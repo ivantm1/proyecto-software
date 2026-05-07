@@ -21,6 +21,7 @@ class LibroDaoJDBC(Conexion):
     SQL_DELETE_RETIRADO = "DELETE FROM Retirados WHERE ISBN = ?"
     SQL_MARCAR_RETIRADO = "UPDATE Libros SET disponibilidad = 'Retirado' WHERE ISBN = ?"
     SQL_INSERT_RETIRADO = "INSERT INTO Retirados (ISBN, motivo) VALUES (?, ?)"
+    SQL_SELECT_RETIRADO = "SELECT l.ISBN, l.titulo, l.autor, l.fecha_llegada, l.num_copias, l.disponibilidad, l.descripcion, l.nombre_tema, r.motivo, r.fecha_retiro FROM Libros l JOIN Retirados r ON l.ISBN = r.ISBN WHERE l.ISBN = ?"
 
     def _fila_a_vo(self, row):
         if len(row) == 9:
@@ -118,6 +119,21 @@ class LibroDaoJDBC(Conexion):
             return self._fila_a_vo(row) if row else None
         except Exception as e:
             print(f"Error en buscarPorISBN: {e}")
+            return None
+
+    def buscarRetiradoPorISBN(self, isbn):
+        cursor = self.getCursor()
+        try:
+            cursor.execute(self.SQL_SELECT_RETIRADO, (isbn,))
+            row = cursor.fetchone()
+            if not row:
+                return None
+            libro = self._fila_a_vo(row[:8])
+            motivo = row[8]
+            fecha_retiro = row[9]
+            return libro, motivo, fecha_retiro
+        except Exception as e:
+            print(f"Error en buscarRetiradoPorISBN: {e}")
             return None
         
     def restaurarLibro(self, isbn):

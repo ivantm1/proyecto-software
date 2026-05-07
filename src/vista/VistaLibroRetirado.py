@@ -22,8 +22,8 @@ class VistaLibroRetirado(QDialog, Form):
         self.linea_tema.setText(str(libro.nombre_tema))
         self.linea_isbn.setText(str(libro.isbn))
         self.linea_resumen.setText(str(libro.descripcion) if libro.descripcion else "Sin descripción")
-        self.linea_motivo.setText(str(motivo) if motivo else "Sin motivo especificado")
-        self.linea_fecha.setText(str(fecha_retiro) if fecha_retiro else "Fecha no disponible")
+        self.linea_fecharetirada.setText(str(fecha_retiro) if fecha_retiro else "Fecha de retirada no disponible")
+        self.linea_motivo.setText(f"Motivo: {motivo}" if motivo else "Motivo: Sin motivo especificado")
 
     def on_devolver_click(self):
         if self._isbn_actual and self._controlador:

@@ -185,6 +185,13 @@ QLabel {
       </widget>
      </item>
      <item>
+      <widget class="QLabel" name="linea_fecharetirada">
+       <property name="text">
+        <string>TextLabel</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QLabel" name="linea_motivo">
        <property name="maximumSize">
         <size>

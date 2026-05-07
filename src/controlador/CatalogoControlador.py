@@ -1,6 +1,6 @@
 from src.vista.VistaLibroDisponible import VistaLibroDisponible
 from src.vista.VistaLibroPrestado import VistaLibroPrestado
-from PyQt5.QtWidgets import QMessageBox
+from src.vista.VistaLibroBibliotecario import VistaLibroBibliotecario
 from src.vista.VistaLibroRetirado import VistaLibroRetirado
 from PyQt5.QtWidgets import QMessageBox, QInputDialog
 
@@ -13,6 +13,7 @@ class CatalogoControlador:
         self._correo_usuario  = correo_usuario
         self._tipo_usuario    = tipo_usuario
         self._libroDisponible         = VistaLibroDisponible()
+        self._libroBibliotecario      = VistaLibroBibliotecario()
         self._libroPrestado        = VistaLibroPrestado()
         self._libroRetirado = VistaLibroRetirado()
 
@@ -34,10 +35,15 @@ class CatalogoControlador:
         libro = self._vista_catalogo.obtenerLibroPorFila(fila)
         if libro is None:
             return
-        self._libroDisponible.controlador = self
-        self._libroDisponible.mostrarLibro(libro)
-        self._libroDisponible.configurarParaBibliotecario(self._tipo_usuario == "Bibliotecario")
-        self._libroDisponible.show()
+
+        if self._tipo_usuario == "Bibliotecario":
+            self._libroBibliotecario.controlador = self
+            self._libroBibliotecario.mostrarLibro(libro)
+            self._libroBibliotecario.show()
+        else:
+            self._libroDisponible.controlador = self
+            self._libroDisponible.mostrarLibro(libro)
+            self._libroDisponible.show()
 
     def abrirDetalleLibroPrestado(self, fila):
         libro = self._vista_catalogo.obtenerLibroPorFila(fila)
@@ -85,6 +91,7 @@ class CatalogoControlador:
                 "No se pudo retirar el libro. "
                 "Comprueba que no tenga préstamos o reservas activas."
             )
+        return exito
 
     def ventanaAltaLibro(self):
         self._vista_catalogo.lanzarAviso("La ventana de Alta de libro aún no está implementada.")
@@ -95,6 +102,9 @@ class CatalogoControlador:
 
     def cerrarLibroDisponible(self):
         self._libroDisponible.close()
+
+    def cerrarLibroBibliotecario(self):
+        self._libroBibliotecario.close()
 
     def cerrarLibroPrestado(self):
         self._libroPrestado.close()
@@ -112,8 +122,15 @@ class CatalogoControlador:
         libro = self._vista_catalogo.obtenerLibroPorFila(fila)
         if libro is None:
             return
+
+        detalle = self._modelo.buscarRetiradoPorISBN(libro.isbn)
+        if detalle is None:
+            self._vista_catalogo.lanzarAviso("No se encontró información de retirada para este libro.")
+            return
+
+        libro_detalle, motivo, fecha_retiro = detalle
         self._libroRetirado.controlador = self
-        self._libroRetirado.mostrarLibro(libro)
+        self._libroRetirado.mostrarLibro(libro_detalle, motivo, fecha_retiro)
         self._libroRetirado.show()
 
     def restaurarLibro(self, isbn):
