@@ -17,7 +17,9 @@ class VistaPerfil(QDialog, Form):
         self.linea_nombre.setText(nombre)
         self.linea_apellidos.setText(apellidos)
         self.linea_email.setText(correo)
-        if sancion:
+        if tipo=="Bibliotecario" or tipo=="Admin":
+            self.label_6.setText("")
+        elif sancion:
             self.label_6.setText(f"⚠️ Sanción activa hasta: {sancion}")
         else:
             self.label_6.setText("Sin sanciones activas.")
