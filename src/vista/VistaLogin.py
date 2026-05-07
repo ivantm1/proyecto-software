@@ -5,7 +5,7 @@ from src.modelo.vo.LoginVO import LoginVO
 # Cargar la interfaz generada desde el archivo .ui
 Form, Window = uic.loadUiType("./src/vista/Ui/VistaLogin.ui")
 
-class Login(QDialog, Form):
+class VistaLogin(QDialog, Form):
     def __init__(self):
         super().__init__()
         self.setupUi(self)  # Inicializa los widgets

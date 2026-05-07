@@ -3,7 +3,7 @@ from PyQt5 import uic
 
 Form, Window = uic.loadUiType("./src/vista/Ui/VistaBibliotecario.ui")
 
-class Bibliotecario(QDialog, Form):
+class VistaBibliotecario(QDialog, Form):
     def __init__(self):
         super().__init__()
         self.setupUi(self)

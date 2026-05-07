@@ -3,7 +3,7 @@ from PyQt5 import uic
 
 Form, Window = uic.loadUiType("./src/vista/Ui/VistaEstudiante.ui")
 
-class Estudiante(QDialog, Form):
+class VistaEstudiante(QDialog, Form):
     def __init__(self):
         super().__init__()
         self.setupUi(self)

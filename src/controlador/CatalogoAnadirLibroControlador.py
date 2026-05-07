@@ -1,7 +1,7 @@
 import datetime
 from src.modelo.vo.LibroVO import LibroVO
 
-class AnadirLibroControlador:
+class CatalogoAnadirLibroControlador:
     def __init__(self, ref_modelo, ref_vista_anadir, ref_vista_bibliotecario):
         self._modelo             = ref_modelo
         self._vista              = ref_vista_anadir

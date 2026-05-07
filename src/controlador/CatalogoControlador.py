@@ -13,7 +13,7 @@ class CatalogoControlador:
         self._correo_usuario  = correo_usuario
         self._tipo_usuario    = tipo_usuario
         self._libroDisponible         = VistaLibroDisponible()
-        self._libroBibliotecario      = VistaLibroBibliotecario()
+        self._libroBibliotecario      = VistaLibroVistaBibliotecario()
         self._libroPrestado        = VistaLibroPrestado()
         self._libroRetirado = VistaLibroRetirado()
 

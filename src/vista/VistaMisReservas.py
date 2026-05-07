@@ -6,7 +6,7 @@ from PyQt5.QtGui import QColor
 
 Form, Window = uic.loadUiType("./src/vista/Ui/VistaMisReservas.ui")
 
-class MisReservas(QDialog, Form):
+class VistaMisReservas(QDialog, Form):
     def __init__(self):
         super().__init__()
         self.setupUi(self)

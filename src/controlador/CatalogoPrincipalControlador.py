@@ -2,17 +2,17 @@ from src.modelo.vo.LoginVO import LoginVO
 from src.modelo.vo.RegistroVO import RegistroVO
 from PyQt5.QtWidgets import QApplication, QMessageBox
 from src.controlador.CatalogoControlador import CatalogoControlador
-from src.controlador.MisPrestamosControlador import MisPrestamosControlador
-from src.controlador.ControladorMisReservas import ControladorMisReservas
-from src.controlador.SancionesControlador import SancionesControlador
-from src.controlador.DevolucionControlador import DevolucionControlador
-from src.controlador.PrestamoControlador import PrestamoControlador
-from src.controlador.PerfilControlador import PerfilControlador
-from src.controlador.ControladorBuscarEstudiante import ControladorBuscarEstudiante
-from src.controlador.AnadirLibroControlador import AnadirLibroControlador
+from src.controlador.CatalogoMisPrestamosControlador import CatalogoMisPrestamosControlador
+from src.controlador.CatalogoMisReservasControlador import CatalogoMisReservasControlador
+from src.controlador.CatalogoSancionesControlador import CatalogoSancionesControlador
+from src.controlador.CatalogoDevolucionControlador import CatalogoDevolucionControlador
+from src.controlador.CatalogoPrestamoControlador import CatalogoPrestamoControlador
+from src.controlador.CatalogoPerfilControlador import CatalogoPerfilControlador
+from src.controlador.CatalogoBuscarEstudianteControlador import CatalogoBuscarEstudianteControlador
+from src.controlador.CatalogoAnadirLibroControlador import CatalogoAnadirLibroControlador
 
 
-class ControladorPrincipal:
+class CatalogoPrincipalControlador:
     def __init__(self, ref_modelo, ref_login,
                  ref_vista_registro=None,
                  ref_vista_estudiante=None,
@@ -61,7 +61,7 @@ class ControladorPrincipal:
         if usuario.tipo == "Estudiante":
             self.ventanaEstudiante()
         elif usuario.tipo == "Bibliotecario":
-            self.ventanaBibliotecario()
+            self.ventanaVistaBibliotecario()
 
     def ventanaRegistro(self):
         if self._vistaRegistro:
@@ -109,7 +109,7 @@ class ControladorPrincipal:
             vista_anterior = self._vistaEstudiante
         else:
             vista_anterior = self._vistaBibliotecario
-        ctrl = PerfilControlador(self._modelo, self._vistaPerfil, vista_anterior, self._usuario_activo)
+        ctrl = CatalogoPerfilControlador(self._modelo, self._vistaPerfil, vista_anterior, self._usuario_activo)
         self._vistaPerfil.controlador = ctrl
 
         sancion_texto = None
@@ -151,7 +151,7 @@ class ControladorPrincipal:
     def ventanaMisPrestamos(self):
         if not self._vistaMisPrestamos or not self._usuario_activo:
             return
-        ctrl = MisPrestamosControlador(
+        ctrl = CatalogoMisPrestamosControlador(
             self._modelo, self._vistaMisPrestamos,
             self._vistaEstudiante, self._vistaBibliotecario,
             self._usuario_activo.correo, self._usuario_activo.tipo
@@ -164,7 +164,7 @@ class ControladorPrincipal:
     def ventanaMisReservas(self):
         if not self._vistaMisReservas or not self._usuario_activo:
             return
-        ctrl = ControladorMisReservas(
+        ctrl = CatalogoMisReservasControlador(
             self._modelo, self._vistaMisReservas,
             self._vistaEstudiante, self._vistaBibliotecario,
             self._usuario_activo.correo, self._usuario_activo.tipo
@@ -177,14 +177,14 @@ class ControladorPrincipal:
     def ventanaPrestamo(self):
         if not self._vistaPrestamo:
             return
-        ctrl = PrestamoControlador(self._vistaPrestamo)
+        ctrl = CatalogoPrestamoControlador(self._vistaPrestamo)
         self._vistaPrestamo.controlador = ctrl
         self._vistaPrestamo.show()
 
     def ventanaDevolucion(self):
         if not self._vistaDevolucion:
             return
-        ctrl = DevolucionControlador(self._modelo, self._vistaDevolucion, self._vistaBibliotecario)
+        ctrl = CatalogoDevolucionControlador(self._modelo, self._vistaDevolucion, self._vistaBibliotecario)
         self._vistaDevolucion.controlador = ctrl
         self._vistaBibliotecario.close()
         self._vistaDevolucion.showMaximized()
@@ -192,7 +192,7 @@ class ControladorPrincipal:
     def ventanaAnadirLibro(self):
         if not self._vistaAnadirLibro:
             return
-        ctrl = AnadirLibroControlador(self._modelo, self._vistaAnadirLibro, self._vistaBibliotecario)
+        ctrl = CatalogoAnadirLibroControlador(self._modelo, self._vistaAnadirLibro, self._vistaBibliotecario)
         self._vistaAnadirLibro.controlador = ctrl
         self._vistaBibliotecario.close()
         self._vistaAnadirLibro.showMaximized()
@@ -200,7 +200,7 @@ class ControladorPrincipal:
     def ventanaSanciones(self):
         if not self._vistaSanciones or not self._usuario_activo:
             return
-        ctrl = SancionesControlador(self._modelo, self._vistaSanciones)
+        ctrl = CatalogoSancionesControlador(self._modelo, self._vistaSanciones)
         self._vistaSanciones.controlador = ctrl
         self._vistaSanciones.show()
 
@@ -219,7 +219,7 @@ class ControladorPrincipal:
         if not self._vistaBuscarEstudiante:
             return
         self._vistaBuscarEstudiante.linea_busqueda.clear()
-        ctrl = ControladorBuscarEstudiante(self._modelo, self._vistaBuscarEstudiante, self._vistaBibliotecario)
+        ctrl = CatalogoBuscarEstudianteControlador(self._modelo, self._vistaBuscarEstudiante, self._vistaBibliotecario)
         self._vistaBuscarEstudiante.controlador = ctrl
         self._vistaBibliotecario.close()
         self._vistaBuscarEstudiante.showMaximized()

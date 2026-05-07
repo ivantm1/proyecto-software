@@ -1,13 +1,13 @@
 from src.modelo.vo.LoginVO import LoginVO
 from src.modelo.vo.RegistroVO import RegistroVO
 from src.controlador.CatalogoControlador import CatalogoControlador
-from src.controlador.MisPrestamosControlador import MisPrestamosControlador
-from src.controlador.SancionesControlador import SancionesControlador
-from src.controlador.DevolucionControlador import DevolucionControlador
-from src.controlador.PrestamoControlador import PrestamoControlador
+from src.controlador.CatalogoMisPrestamosControlador import CatalogoMisPrestamosControlador
+from src.controlador.CatalogoSancionesControlador import CatalogoSancionesControlador
+from src.controlador.CatalogoDevolucionControlador import CatalogoDevolucionControlador
+from src.controlador.CatalogoPrestamoControlador import CatalogoPrestamoControlador
 
 
-class ControladorBibliotecario:
+class CatalogoBibliotecarioControlador:
     def __init__(self, 
                  ref_vista_bibliotecario=None,
                  ref_vista_catalogo=None,

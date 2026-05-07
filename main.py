@@ -1,34 +1,34 @@
 from PyQt5.QtWidgets import QApplication
-from src.vista.Login import Login
+from src.vista.VistaLogin import VistaLogin
 from src.vista.VistaRegistro import VistaRegistro
-from src.vista.Estudiante import Estudiante
-from src.vista.Bibliotecario import Bibliotecario
+from src.vista.VistaEstudiante import VistaEstudiante
+from src.vista.VistaBibliotecario import VistaBibliotecario
 from src.vista.VistaCatalogo import VistaCatalogo
-from src.vista.MisPrestamos import MisPrestamos
-from src.vista.MisReservas import MisReservas
+from src.vista.VistaMisPrestamos import VistaMisPrestamos
+from src.vista.VistaMisReservas import VistaMisReservas
 from src.vista.VistaPerfil import VistaPerfil
 from src.vista.VistaDevolverLibro import VistaDevolverLibro
 from src.vista.VistaAnadirLibro import VistaAnadirLibro
 from src.vista.VistaBuscarEstudiante import VistaBuscarEstudiante
 from src.modelo.Logica import Logica
-from src.controlador.ControladorPrincipal import ControladorPrincipal
+from src.controlador.CatalogoPrincipalControlador import CatalogoPrincipalControlador
 
 if __name__ == "__main__":
     app = QApplication([])
-    login            = Login()
+    login            = VistaLogin()
     registro         = VistaRegistro()
     modelo           = Logica()
-    estudiante       = Estudiante()
-    bibliotecario    = Bibliotecario()
-    mis_prestamos    = MisPrestamos()
-    mis_reservas     = MisReservas()
+    estudiante       = VistaEstudiante()
+    bibliotecario    = VistaBibliotecario()
+    mis_prestamos    = VistaMisPrestamos()
+    mis_reservas     = VistaMisReservas()
     perfil           = VistaPerfil()
     devolucion       = VistaDevolverLibro()
     anadirLibro      = VistaAnadirLibro()
     buscarEstudiante = VistaBuscarEstudiante()
     vistaCatalogo    = VistaCatalogo()
 
-    controlador = ControladorPrincipal(
+    controlador = CatalogoPrincipalControlador(
         modelo, login,
         ref_vista_registro=registro,
         ref_vista_estudiante=estudiante,

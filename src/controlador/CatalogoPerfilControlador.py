@@ -1,7 +1,7 @@
 from src.modelo.dao.UserDaoJDBC import UserDaoJDBC
 from src.modelo.vo.LoginVO import LoginVO
  
-class PerfilControlador:
+class CatalogoPerfilControlador:
     def __init__(self, ref_modelo, ref_vista_perfil, ref_vista_anterior, usuario_activo):
         self._modelo          = ref_modelo
         self._vista           = ref_vista_perfil
