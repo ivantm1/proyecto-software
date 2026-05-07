@@ -1,7 +1,5 @@
 fecha maxima para ir a por un libro reservado
 cooldown para volver a prestar un libro que acabas de devolver
 logica de sanciones
-boton ver prestamos de buscar estudiante lleve a mis prestamos del estudiante
 logica de vista libro bibliotecario 
 logica de vista libro retirada
-en perfil ver el tiempo de sancion si hay

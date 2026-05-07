@@ -1,6 +1,8 @@
 from PyQt5.QtWidgets import QMessageBox
 from src.vista.VistaGestionarEstudiante import VistaGestionarEstudiante
 from src.vista.VistaSanciones import VistaSanciones
+from src.vista.MisPrestamos import MisPrestamos
+from src.controlador.MisPrestamosControlador import MisPrestamosControlador
 
 class ControladorBuscarEstudiante:
     def __init__(self, ref_modelo, ref_vista_buscar, ref_vista_bibliotecario):
@@ -9,6 +11,7 @@ class ControladorBuscarEstudiante:
         self._vista_bibliotecario = ref_vista_bibliotecario
         self._vista_gestion = VistaGestionarEstudiante()
         self._vista_sanciones = VistaSanciones()
+        self._vista_prestamos = MisPrestamos()
         self._estudiante_actual = None
 
     def buscarEstudiante(self, correo):
@@ -93,15 +96,18 @@ class ControladorBuscarEstudiante:
         self._vista_buscar.showMaximized()
 
     def verPrestamosEstudiante(self, correo_estudiante):
-        prestamos = self._modelo.obtenerPrestamosEstudiante(correo_estudiante)
-        if prestamos:
-            prestamos_str = "\n".join([
-                f"{p.titulo} (ISBN: {p.isbn_libro}) - {'Activo' if p.estado == 'Activo' else 'Devuelto'} (Vence: {p.fecha_devolucion})"
-                for p in prestamos
-            ])
-            QMessageBox.information(self._vista_gestion, "Préstamos del Estudiante", prestamos_str)
-        else:
-            QMessageBox.information(self._vista_gestion, "Préstamos del Estudiante", "No hay préstamos activos para este estudiante.")
+        ctrl = MisPrestamosControlador(
+            self._modelo,
+            self._vista_prestamos,
+            self._vista_gestion,
+            self._vista_gestion,
+            correo_estudiante,
+            "Bibliotecario"
+        )
+        self._vista_prestamos.controlador = ctrl
+        ctrl.actualizarPrestamos()
+        self._vista_gestion.close()
+        self._vista_prestamos.showMaximized()
         
     def verReservasEstudiante(self, correo_estudiante):
         reservas = self._modelo.obtenerReservasEstudiante(correo_estudiante)
