@@ -45,8 +45,8 @@ class VistaGestionarEstudiante(QDialog, Form):
         self._controlador.verPrestamosEstudiante(self._correo_estudiante)
 
     def on_ver_reservas_click(self):
-        # Lógica futura para ver detalles de reservas
-        pass
+        if self._controlador and self._correo_estudiante:
+            self._controlador.verReservasEstudiante(self._correo_estudiante)
 
     def on_gestionar_sanciones_click(self):
         if self._controlador and self._correo_estudiante:

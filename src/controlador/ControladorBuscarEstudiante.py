@@ -102,6 +102,17 @@ class ControladorBuscarEstudiante:
             QMessageBox.information(self._vista_gestion, "Préstamos del Estudiante", prestamos_str)
         else:
             QMessageBox.information(self._vista_gestion, "Préstamos del Estudiante", "No hay préstamos activos para este estudiante.")
+        
+    def verReservasEstudiante(self, correo_estudiante):
+        reservas = self._modelo.obtenerReservasEstudiante(correo_estudiante)
+        if reservas:
+            reservas_str = "\n".join([
+                f"{r.isbn} - Estado: {r.estado} - Fecha: {r.fecha_reserva}"
+                for r in reservas
+            ])
+            QMessageBox.information(self._vista_gestion, "Reservas del Estudiante", reservas_str)
+        else:
+            QMessageBox.information(self._vista_gestion, "Reservas del Estudiante", "No hay reservas activas para este estudiante.")
 
     def gestionarSanciones(self, correo_estudiante):
         """Abre la vista de sanciones para el estudiante"""
