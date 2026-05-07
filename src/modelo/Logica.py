@@ -61,6 +61,9 @@ class Logica():
     def registrarPrestamo(self, isbn, correo_estudiante):
         return PrestamoDaoJDBC().registrarPrestamo(isbn, correo_estudiante)
 
+    def tieneCooldown(self, correo_estudiante, isbn):
+        return PrestamoDaoJDBC().tieneCooldown(correo_estudiante, isbn)
+
     def registrarDevolucion(self, isbn):
         return PrestamoDaoJDBC().registrarDevolucion(isbn)
 

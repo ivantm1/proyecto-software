@@ -1,7 +1,5 @@
 fecha maxima para ir a por un libro reservado
-cooldown para volver a prestar un libro que acabas de devolver
 logica de sanciones
-poner maximo de libros prestados a la vez
 vista de admin
 logica de admin
 buscar llibro por estado

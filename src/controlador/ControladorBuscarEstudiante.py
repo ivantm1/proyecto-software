@@ -69,6 +69,12 @@ class ControladorBuscarEstudiante:
             QMessageBox.warning(self._vista_gestion, "Aviso",
                             f"Este estudiante ya tiene {num_prestamos} préstamos activos. No puede tener más de 7 a la vez.")
             return
+        
+        # Verificar cooldown
+        if self._modelo.tieneCooldown(correo_estudiante, isbn):
+            QMessageBox.warning(self._vista_gestion, "Aviso",
+                            "Este estudiante devolvió este libro hace menos de 7 días. Debe esperar antes de volver a pedirlo.")
+            return
 
         # Comprobar estado actual del libro
         libro = self._modelo.buscarPorISBN(isbn)
