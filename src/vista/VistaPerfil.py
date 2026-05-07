@@ -13,10 +13,14 @@ class VistaPerfil(QDialog, Form):
         self.boton_volver.clicked.connect(self.on_volver_click)
         self.boton_cambiar.clicked.connect(self.on_cambiar_contrasena_click)
 
-    def mostrarUsuario(self, nombre, apellidos, correo, tipo):
+    def mostrarUsuario(self, nombre, apellidos, correo, tipo, sancion=None):
         self.linea_nombre.setText(nombre)
         self.linea_apellidos.setText(apellidos)
         self.linea_email.setText(correo)
+        if sancion:
+            self.label_6.setText(f"⚠️ Sanción activa hasta: {sancion}")
+        else:
+            self.label_6.setText("Sin sanciones activas.")
 
     def on_volver_click(self):
         if self._controlador:

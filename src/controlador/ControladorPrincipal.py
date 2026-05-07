@@ -111,6 +111,14 @@ class ControladorPrincipal:
             vista_anterior = self._vistaBibliotecario
         ctrl = PerfilControlador(self._modelo, self._vistaPerfil, vista_anterior, self._usuario_activo)
         self._vistaPerfil.controlador = ctrl
+
+        sancion_texto = None
+        if self._usuario_activo.tipo == "Estudiante":
+            sanciones = self._modelo.obtenerSancionesEstudiante(self._usuario_activo.correo)
+            activas = [s for s in sanciones if s.estado == "Activa"]
+            if activas:
+                sancion_texto = str(activas[0].fecha_fin)
+                
         self._vistaPerfil.mostrarUsuario(
             nombre=self._usuario_activo.nombre,
             apellidos=self._usuario_activo.apellidos,
