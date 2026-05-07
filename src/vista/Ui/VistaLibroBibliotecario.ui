@@ -238,6 +238,9 @@ QPushButton:pressed {
        <property name="text">
         <string>Retirar del catálogo</string>
        </property>
+       <property name="autoDefault">
+        <bool>false</bool>
+       </property>
       </widget>
      </item>
      <item>
@@ -261,6 +264,9 @@ QPushButton:pressed {
        </property>
        <property name="text">
         <string>Cerrar</string>
+       </property>
+       <property name="autoDefault">
+        <bool>false</bool>
        </property>
       </widget>
      </item>

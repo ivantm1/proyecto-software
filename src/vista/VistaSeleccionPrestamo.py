@@ -12,6 +12,7 @@ class VistaSeleccionPrestamo(QDialog, Form):
         self._isbn_actual = None
 
         self.boton_extender.clicked.connect(self.on_extender_click)
+        self.boton_cerrar.clicked.connect(self.on_cerrar_click)
 
     def on_extender_click(self):
         if not self._isbn_actual:
@@ -19,6 +20,9 @@ class VistaSeleccionPrestamo(QDialog, Form):
             return
         if self.controlador:
             self.controlador.prorrogarPrestamo(self._isbn_actual)
+
+    def on_cerrar_click(self):
+        self.close()
 
     def mostrarPrestamo(self, prestamo):
         """Rellena los labels con los datos del préstamo seleccionado"""

@@ -4,3 +4,6 @@ logica de sanciones
 poner maximo de libros prestados a la vez
 vista de admin
 logica de admin
+cuando un libro se devuelve roto, poner sancion automatica
+buscar llibro por estado
+si un prestamos esta retrasado mostrar en rojo en la vista mis prestamos

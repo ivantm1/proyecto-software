@@ -180,6 +180,9 @@ QPushButton:pressed {
        <property name="text">
         <string>Cerrar</string>
        </property>
+       <property name="autoDefault">
+        <bool>false</bool>
+       </property>
       </widget>
      </item>
     </layout>

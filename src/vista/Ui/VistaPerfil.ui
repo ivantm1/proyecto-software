@@ -140,6 +140,9 @@ QPushButton:pressed {
        <property name="text">
         <string>Cambiar contraseña</string>
        </property>
+       <property name="autoDefault">
+        <bool>false</bool>
+       </property>
       </widget>
      </item>
      <item>
@@ -176,6 +179,9 @@ QPushButton:pressed {
        </property>
        <property name="text">
         <string>Volver</string>
+       </property>
+       <property name="autoDefault">
+        <bool>false</bool>
        </property>
       </widget>
      </item>

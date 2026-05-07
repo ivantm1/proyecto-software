@@ -163,6 +163,9 @@ QPushButton:pressed {
          <property name="text">
           <string>Volver</string>
          </property>
+         <property name="autoDefault">
+          <bool>false</bool>
+         </property>
         </widget>
        </item>
        <item>

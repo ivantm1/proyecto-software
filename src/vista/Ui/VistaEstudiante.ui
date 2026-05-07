@@ -140,6 +140,9 @@ QPushButton:pressed {
        <property name="text">
         <string>Catálogo</string>
        </property>
+       <property name="autoDefault">
+        <bool>false</bool>
+       </property>
       </widget>
      </item>
      <item>
@@ -163,6 +166,9 @@ QPushButton:pressed {
        </property>
        <property name="text">
         <string>Mis préstamos</string>
+       </property>
+       <property name="autoDefault">
+        <bool>false</bool>
        </property>
       </widget>
      </item>
@@ -188,6 +194,9 @@ QPushButton:pressed {
        <property name="text">
         <string>Mis reservas</string>
        </property>
+       <property name="autoDefault">
+        <bool>false</bool>
+       </property>
       </widget>
      </item>
      <item>
@@ -211,6 +220,9 @@ QPushButton:pressed {
        </property>
        <property name="text">
         <string>Ver perfil</string>
+       </property>
+       <property name="autoDefault">
+        <bool>false</bool>
        </property>
       </widget>
      </item>
@@ -236,6 +248,9 @@ QPushButton:pressed {
        </property>
        <property name="text">
         <string>Cerrar sesión</string>
+       </property>
+       <property name="autoDefault">
+        <bool>false</bool>
        </property>
       </widget>
      </item>
