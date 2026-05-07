@@ -4,7 +4,7 @@ from src.vista.VistaLibroBibliotecario import VistaLibroBibliotecario
 from src.vista.VistaLibroRetirado import VistaLibroRetirado
 from PyQt5.QtWidgets import QMessageBox, QInputDialog
 
-class CatalogoControlador:
+class ControladorCatalogo:
     def __init__(self, ref_modelo, ref_vista_catalogo, ref_vista_estudiante, ref_vista_bibliotecario, correo_usuario=None, tipo_usuario=None):
         self._modelo          = ref_modelo
         self._vista_catalogo  = ref_vista_catalogo
@@ -13,7 +13,7 @@ class CatalogoControlador:
         self._correo_usuario  = correo_usuario
         self._tipo_usuario    = tipo_usuario
         self._libroDisponible         = VistaLibroDisponible()
-        self._libroBibliotecario      = VistaLibroVistaBibliotecario()
+        self._libroBibliotecario      = VistaLibroBibliotecario()
         self._libroPrestado        = VistaLibroPrestado()
         self._libroRetirado = VistaLibroRetirado()
 

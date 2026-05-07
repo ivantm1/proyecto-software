@@ -11,7 +11,7 @@ from src.vista.VistaDevolverLibro import VistaDevolverLibro
 from src.vista.VistaAnadirLibro import VistaAnadirLibro
 from src.vista.VistaBuscarEstudiante import VistaBuscarEstudiante
 from src.modelo.Logica import Logica
-from src.controlador.CatalogoPrincipalControlador import CatalogoPrincipalControlador
+from src.controlador.ControladorPrincipal import ControladorPrincipal
 
 if __name__ == "__main__":
     app = QApplication([])
@@ -28,7 +28,7 @@ if __name__ == "__main__":
     buscarEstudiante = VistaBuscarEstudiante()
     vistaCatalogo    = VistaCatalogo()
 
-    controlador = CatalogoPrincipalControlador(
+    controlador = ControladorPrincipal(
         modelo, login,
         ref_vista_registro=registro,
         ref_vista_estudiante=estudiante,

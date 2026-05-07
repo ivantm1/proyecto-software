@@ -3,7 +3,7 @@ from src.modelo.dao.PrestamoDaoJDBC import PrestamoDaoJDBC
 
 LIMITE_PRESTAMOS = 3
 
-class CatalogoPrestamoControlador:
+class ControladorPrestamo:
     def __init__(self, ref_vista):
         self._vista = ref_vista
 

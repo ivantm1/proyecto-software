@@ -1,6 +1,6 @@
 from src.vista.VistaSeleccionPrestamo import VistaSeleccionPrestamo
 
-class CatalogoMisPrestamosControlador:
+class ControladorMisPrestamos:
     def __init__(self, ref_modelo, ref_vista, ref_vista_estudiante, ref_vista_bibliotecario, correo_estudiante, tipo_usuario):
         self._modelo  = ref_modelo
         self._vista   = ref_vista

@@ -44,7 +44,7 @@ class VistaLibroBibliotecario(QDialog, Form):
 
     def on_cerrar_click(self):
         if self.controlador:
-            self.controlador.cerrarLibroVistaBibliotecario()
+            self.controlador.cerrarLibroBibliotecario()
 
     def lanzarAviso(self, aviso):
         QMessageBox.information(self, "Información", aviso)

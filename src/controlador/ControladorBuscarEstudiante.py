@@ -2,9 +2,9 @@ from PyQt5.QtWidgets import QMessageBox
 from src.vista.VistaGestionarEstudiante import VistaGestionarEstudiante
 from src.vista.VistaSanciones import VistaSanciones
 from src.vista.VistaMisPrestamos import VistaMisPrestamos
-from src.controlador.CatalogoMisPrestamosControlador import CatalogoMisPrestamosControlador
+from src.controlador.ControladorMisPrestamos import ControladorMisPrestamos
 
-class CatalogoBuscarEstudianteControlador:
+class ControladorBuscarEstudiante:
     def __init__(self, ref_modelo, ref_vista_buscar, ref_vista_bibliotecario):
         self._modelo = ref_modelo
         self._vista_buscar = ref_vista_buscar
@@ -96,7 +96,7 @@ class CatalogoBuscarEstudianteControlador:
         self._vista_buscar.showMaximized()
 
     def verPrestamosEstudiante(self, correo_estudiante):
-        ctrl = CatalogoMisPrestamosControlador(
+        ctrl = ControladorMisPrestamos(
             self._modelo,
             self._vista_prestamos,
             self._vista_gestion,

@@ -1,4 +1,4 @@
-class CatalogoSancionesControlador:
+class ControladorSanciones:
     """
     Controlador para la vista Sanciones (rol Bibliotecario).
     Gestiona la consulta y aplicación de sanciones manuales.

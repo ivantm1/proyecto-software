@@ -1,13 +1,13 @@
 from src.modelo.vo.LoginVO import LoginVO
 from src.modelo.vo.RegistroVO import RegistroVO
-from src.controlador.CatalogoControlador import CatalogoControlador
-from src.controlador.CatalogoMisPrestamosControlador import CatalogoMisPrestamosControlador
-from src.controlador.CatalogoSancionesControlador import CatalogoSancionesControlador
-from src.controlador.CatalogoDevolucionControlador import CatalogoDevolucionControlador
-from src.controlador.CatalogoPrestamoControlador import CatalogoPrestamoControlador
+from src.controlador.ControladorCatalogo import ControladorCatalogo
+from src.controlador.ControladorMisPrestamos import ControladorMisPrestamos
+from src.controlador.ControladorSanciones import ControladorSanciones
+from src.controlador.ControladorDevolucion import ControladorDevolucion
+from src.controlador.ControladorPrestamo import ControladorPrestamo
 
 
-class CatalogoBibliotecarioControlador:
+class ControladorBibliotecario:
     def __init__(self, 
                  ref_vista_bibliotecario=None,
                  ref_vista_catalogo=None,
@@ -29,7 +29,7 @@ class CatalogoBibliotecarioControlador:
         if self._vistaRegistro:
             if not self._vistaCatalogo or not self._usuario_activo:
                 return
-        ctrl = CatalogoControlador(
+        ctrl = ControladorCatalogo(
             self._modelo,
             self._vistaCatalogo,
             correo_usuario=self._usuario_activo.correo,
