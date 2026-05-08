@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import QDialog, QLabel, QMessageBox, QTableWidgetItem
 from PyQt5 import uic
 from PyQt5.QtWidgets import QHeaderView
+from PyQt5.QtCore import Qt
 
 Form, Window = uic.loadUiType("./src/vista/Ui/VistaSanciones.ui")
 
@@ -103,7 +104,11 @@ class VistaSanciones(QDialog, Form):
 
     def mostrarSanciones(self, lista_sanciones):
         self.tabla_sanciones.setRowCount(0)
-        self.tabla_sanciones.resizeColumnsToContents()
+        self.tabla_sanciones.setColumnCount(3)
+        self.tabla_sanciones.setHorizontalHeaderLabels(["Fecha", "Dias totales", "Motivo"])
+        self.tabla_sanciones.horizontalHeader().setDefaultAlignment(Qt.AlignCenter)
+        self.tabla_sanciones.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        self.tabla_sanciones.horizontalHeader().setStretchLastSection(True)
 
         total_dias = 0
         if lista_sanciones:
@@ -117,17 +122,13 @@ class VistaSanciones(QDialog, Form):
                     total_dias += int(sancion.duracion_sancion)
                 except Exception:
                     pass
-            self.tabla_sanciones.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
 
         if total_dias == 0:
             self.linea_tiempo.setText("El estudiante no tiene sanciones activas.")
             self.linea_tiempo.setStyleSheet("font-weight: bold; text-transform: uppercase; font-size: 22px; letter-spacing: 1px; color: #1D433A")
-            self.tabla_sanciones.resizeColumnsToContents()
-
-        else:   
+        else:
             self.linea_tiempo.setText(f"Total sanciones: {total_dias} días")
             self.linea_tiempo.setStyleSheet("font-weight: bold; text-transform: uppercase; font-size: 22px; letter-spacing: 1px; color: #B22222")
-            self.tabla_sanciones.resizeColumnsToContents()
 
     def lanzarAviso(self, aviso):
         QMessageBox.information(self, "Información", aviso)

@@ -42,7 +42,7 @@ class VistaLibroPrestado(QDialog, Form):
         
         # Mostrar estudiante solo si es bibliotecario o administrador
         if tipo_usuario in ["Bibliotecario", "Administrador"] and estudiante:
-            self.linea_estudiante.setText(estudiante)
+            self.linea_estudiante.setText(f"Prestado a {estudiante}.")
         else:
             self.linea_estudiante.setText("")
 

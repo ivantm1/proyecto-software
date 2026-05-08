@@ -1,8 +1,5 @@
 logica de sanciones
 vista de admin
 logica de admin
-buscar llibro por estado
-arreglar vista gestionar sanciones
-boton eliminar en gestionar sanciones
-actualizar numero de sanciones activas automaticamente
 poner minimo de caracteres y restringir caracteres en las contraseñas
+en las alertas en vez de yes or no, si o no y quitar emojis

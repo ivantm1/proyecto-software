@@ -36,5 +36,7 @@ class ControladorBibliotecario:
             tipo_usuario=self._usuario_activo.tipo,
         )
         self._vistaCatalogo.controlador = ctrl
+        self._vistaCatalogo.opcion_disponibilidad.setCurrentIndex(0)
+        self._vistaCatalogo.opcion_buscador.setCurrentIndex(-1)
         self._vistaCatalogo.show()
     

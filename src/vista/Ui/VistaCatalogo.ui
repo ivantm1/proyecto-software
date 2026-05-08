@@ -337,6 +337,37 @@ QHeaderView::section {
            </item>
           </widget>
          </item>
+         <item>
+          <widget class="QComboBox" name="opcion_disponibilidad">
+           <property name="maximumSize">
+            <size>
+             <width>200</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="currentIndex">
+            <number>0</number>
+           </property>
+           <property name="placeholderText">
+            <string/>
+           </property>
+           <item>
+            <property name="text">
+             <string>Todos</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Disponibles</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Prestado</string>
+            </property>
+           </item>
+          </widget>
+         </item>
         </layout>
        </item>
        <item>
