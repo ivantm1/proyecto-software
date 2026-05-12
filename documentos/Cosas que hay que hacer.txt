@@ -1,5 +1,15 @@
-logica de sanciones
 vista de admin
 logica de admin
+
 poner minimo de caracteres y restringir caracteres en las contraseñas
 en las alertas en vez de yes or no, si o no y quitar emojis
+
+hacer varias logicas
+pasar todo lo posible de controlador a logica (que tenga sentido)
+comprobar si logica de sanciones esta bien
+
+en logica añadir temas favoritos 
+
+hacer historial con tema favoritos
+
+
