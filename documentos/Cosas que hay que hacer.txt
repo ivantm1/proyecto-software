@@ -1,7 +1,4 @@
-vista de admin
 logica de admin
-
-en las alertas en vez de yes or no, si o no y quitar emojis
 
 hacer varias logicas
 pasar todo lo posible de controlador a logica (que tenga sentido)
