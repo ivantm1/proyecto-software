@@ -38,17 +38,12 @@ class VistaSanciones(QDialog, Form):
             return
 
         correo = estudiante.correo
-        from src.modelo.dao.SancionDaoJDBC import SancionDaoJDBC
-
         dias = int(dias_texto)
-        resultado = SancionDaoJDBC().aplicarSancionDanio(correo, motivo, dias)
+        resultado = self._controlador.aplicarSancion(correo, motivo, dias)
 
         if resultado:
-            self.lanzarAviso("Sanción registrada correctamente.")
             self.linea_motivo.clear()
             self.linea_dias.clear()
-            sanciones = self._controlador._modelo.obtenerSancionesEstudiante(correo)
-            self.mostrarSanciones(sanciones)
         else:
             self.lanzarAviso("Error al aplicar la sanción.")
 
@@ -88,14 +83,8 @@ class VistaSanciones(QDialog, Form):
             return
 
         correo = estudiante.correo
-        from src.modelo.dao.SancionDaoJDBC import SancionDaoJDBC
-
-        eliminado = SancionDaoJDBC().eliminarSancion(correo, motivo, fecha_inicio, dias)
-        if eliminado:
-            self.lanzarAviso("Sanción eliminada correctamente.")
-            sanciones = self._controlador._modelo.obtenerSancionesEstudiante(correo)
-            self.mostrarSanciones(sanciones)
-        else:
+        eliminado = self._controlador.eliminarSancion(correo, motivo, fecha_inicio, dias)
+        if not eliminado:
             self.lanzarAviso("No se pudo eliminar la sanción seleccionada.")
 
     def on_volver_click(self):
@@ -119,15 +108,19 @@ class VistaSanciones(QDialog, Form):
                 self.tabla_sanciones.setItem(fila, 1, QTableWidgetItem(str(sancion.duracion_sancion)))
                 self.tabla_sanciones.setItem(fila, 2, QTableWidgetItem(str(sancion.tipo)))
                 try:
-                    total_dias += int(sancion.duracion_sancion)
+                    if sancion.estado == "Activa":
+                        total_dias += int(sancion.duracion_sancion)
                 except Exception:
                     pass
 
-        if total_dias == 0:
+        if not lista_sanciones:
+            self.linea_tiempo.setText("No hay sanciones registradas para este estudiante.")
+            self.linea_tiempo.setStyleSheet("font-weight: bold; text-transform: uppercase; font-size: 22px; letter-spacing: 1px; color: #1D433A")
+        elif total_dias == 0:
             self.linea_tiempo.setText("El estudiante no tiene sanciones activas.")
             self.linea_tiempo.setStyleSheet("font-weight: bold; text-transform: uppercase; font-size: 22px; letter-spacing: 1px; color: #1D433A")
         else:
-            self.linea_tiempo.setText(f"Total sanciones: {total_dias} días")
+            self.linea_tiempo.setText(f"Total sanciones activas: {total_dias} días")
             self.linea_tiempo.setStyleSheet("font-weight: bold; text-transform: uppercase; font-size: 22px; letter-spacing: 1px; color: #B22222")
 
     def lanzarAviso(self, aviso):

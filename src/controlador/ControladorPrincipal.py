@@ -70,7 +70,6 @@ class ControladorPrincipal:
             self._vistaRegistro.showMaximized()
 
     def registrarUsuario(self, nombre, apellidos, correo, contrasena, confirmar):
-        print("hola")
         if not all([nombre, apellidos, correo, contrasena, confirmar]):
             self._vistaRegistro.lanzarAviso("Rellena todos los campos.")
             return

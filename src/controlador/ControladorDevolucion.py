@@ -30,8 +30,7 @@ class ControladorDevolucion:
             mensajes.append("Se ha aplicado una sanción por retraso al estudiante.")
 
         if estado_libro in ["Dañado", "Roto"]:
-            self._modelo.aplicarSancionDanio(prestamo.correo_estudiante, estado_libro)
-            mensajes.append(f"El libro está {estado_libro.lower()}: se ha aplicado una sanción por daño al estudiante.")
+            mensajes.append(f"El libro está {estado_libro.lower()}: no se aplica sanción automática.")
             
         if not mensajes:
             mensaje = "Devolución registrada correctamente."

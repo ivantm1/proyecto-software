@@ -12,8 +12,8 @@ class SancionDaoJDBC(Conexion):
     SQL_DELETE     = "DELETE FROM Sanciones WHERE email = ? AND tipo = ? AND fecha_inicio = ? AND duracion = ?"
 
     def aplicarSancionRetraso(self, correo_estudiante, semanas_retraso):
-        semanas = _TABLA_RETRASO.get(semanas_retraso, _SANCION_MAX_RETRASO)
-        return self._insertarSancion(correo_estudiante, "retraso", semanas, unidad='weeks')
+        dias = _TABLA_RETRASO.get(semanas_retraso, _SANCION_MAX_RETRASO)
+        return self._insertarSancion(correo_estudiante, "retraso", dias, unidad='days')
 
     def aplicarSancionDanio(self, correo_estudiante, tipo, dias_sancion=7):
         return self._insertarSancion(correo_estudiante, tipo, dias_sancion, unidad='days')
@@ -26,8 +26,7 @@ class SancionDaoJDBC(Conexion):
                 fecha_fin = hoy + datetime.timedelta(days=cantidad)
             else:
                 fecha_fin = hoy + datetime.timedelta(weeks=cantidad)
-            hoy_str      = hoy.strftime('%Y-%m-%d')
-            fecha_fin_str = fecha_fin.strftime('%Y-%m-%d')
+            hoy_str = hoy.strftime('%Y-%m-%d')
             cursor.execute(self.SQL_INSERT, (correo_estudiante, tipo, hoy_str, cantidad))
             self.conexion.commit()
             return SancionVO(correo_estudiante, tipo, cantidad, hoy, "Activa")

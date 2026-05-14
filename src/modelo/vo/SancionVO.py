@@ -2,14 +2,14 @@ class SancionVO:
     def __init__(self, correo_estudiante, tipo, duracion_sancion, fecha_inicio, estado=None, fecha_fin=None):
         self._correo_estudiante = correo_estudiante
         self._tipo = tipo                     # "retraso" | "danio"
-        self._duracion_sancion = duracion_sancion
+        self._duracion_sancion = int(duracion_sancion) if duracion_sancion is not None else 0
         self._fecha_inicio = fecha_inicio
         self._estado = estado
         if fecha_fin is None and duracion_sancion is not None:
             from datetime import timedelta, date
             if isinstance(fecha_inicio, str):
                 fecha_inicio = date.fromisoformat(fecha_inicio)
-            self._fecha_fin = fecha_inicio + timedelta(days=duracion_sancion)
+            self._fecha_fin = fecha_inicio + timedelta(days=int(duracion_sancion))
         else:
             self._fecha_fin = fecha_fin
 

@@ -10,7 +10,7 @@ class Logica():
         userDao = UserDaoJDBC()
         usuarios = userDao.select()
         for user in usuarios:
-            print(user.nombre_user)
+            pass  # Método de prueba obsoleto
 
     def comprobarLogin(self, loginVO):                                               
         login_dao = UserDaoJDBC()                                                    
@@ -86,11 +86,14 @@ class Logica():
         return SancionDaoJDBC().aplicarSancionRetraso(correo_estudiante, semanas_retraso)
 
     def aplicarSancionDanio(self, correo_estudiante, estado_libro):
-        if estado_libro == "Dañado":
-            return SancionDaoJDBC().aplicarSancionDanio(correo_estudiante, "Librodañado", 10)
-        elif estado_libro == "Roto":
-            return SancionDaoJDBC().aplicarSancionDanio(correo_estudiante, "Libro roto", 30)
+        # No se aplica sanción automática por daño.
+        return None
 
+    def aplicarSancionManual(self, correo_estudiante, motivo, dias):
+        return SancionDaoJDBC().aplicarSancionDanio(correo_estudiante, motivo, dias)
+
+    def eliminarSancion(self, correo_estudiante, tipo, fecha_inicio, duracion):
+        return SancionDaoJDBC().eliminarSancion(correo_estudiante, tipo, fecha_inicio, duracion)
 
     def obtenerSancionesEstudiante(self, correo_estudiante):
         return SancionDaoJDBC().obtenerSancionesEstudiante(correo_estudiante)

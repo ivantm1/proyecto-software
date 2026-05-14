@@ -3,6 +3,7 @@ from src.vista.VistaGestionarEstudiante import VistaGestionarEstudiante
 from src.vista.VistaSanciones import VistaSanciones
 from src.vista.VistaMisPrestamos import VistaMisPrestamos
 from src.controlador.ControladorMisPrestamos import ControladorMisPrestamos
+from src.controlador.ControladorSanciones import ControladorSanciones
 
 class ControladorBuscarEstudiante:
     def __init__(self, ref_modelo, ref_vista_buscar, ref_vista_bibliotecario):
@@ -33,10 +34,11 @@ class ControladorBuscarEstudiante:
         # Obtener información adicional del estudiante
         num_prestamos = self._modelo.contarPrestamosEstudiante(correo)
         num_reservas = self._modelo.contarReservasEstudiante(correo)
-        num_sanciones = len(self._modelo.obtenerSancionesEstudiante(correo))
+        sanciones = self._modelo.obtenerSancionesEstudiante(correo)
+        num_sanciones_activas = len([s for s in sanciones if s.estado == "Activa"])
         
         # Cargar datos en la vista de gestión
-        self._vista_gestion.cargar_datos(estudiante, num_prestamos, num_reservas, num_sanciones)
+        self._vista_gestion.cargar_datos(estudiante, num_prestamos, num_reservas, num_sanciones_activas)
         self._vista_gestion.controlador = self
         
         # Mostrar la vista de gestión
@@ -140,8 +142,10 @@ class ControladorBuscarEstudiante:
     def gestionarSanciones(self, correo_estudiante):
         """Abre la vista de sanciones para el estudiante"""
         sanciones = self._modelo.obtenerSancionesEstudiante(correo_estudiante)
+        ctrl_sanciones = ControladorSanciones(self._modelo, self._vista_sanciones, self._vista_gestion)
+        ctrl_sanciones._estudiante_actual = self._estudiante_actual
+        self._vista_sanciones.controlador = ctrl_sanciones
         self._vista_sanciones.mostrarSanciones(sanciones)
-        self._vista_sanciones.controlador = self
         self._vista_gestion.close()
         self._vista_sanciones.showMaximized()
 
