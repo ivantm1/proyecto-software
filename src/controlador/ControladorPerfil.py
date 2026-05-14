@@ -21,6 +21,14 @@ class ControladorPerfil:
             self._vista.lanzarAviso("Las contraseñas no coinciden.")
             return
  
+        if len(nueva) < 8:
+            self._vista.lanzarAviso("La contraseña debe tener al menos 8 caracteres.")
+            return
+ 
+        if not nueva.isascii():
+            self._vista.lanzarAviso("La contraseña no debe contener caracteres extraños.")
+            return
+ 
         if actual == nueva:
             self._vista.lanzarAviso("La nueva contraseña debe ser diferente a la actual.")
             return

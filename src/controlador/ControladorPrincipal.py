@@ -80,6 +80,15 @@ class ControladorPrincipal:
         if contrasena != confirmar:
             self._vistaRegistro.lanzarAviso("Las contraseñas no coinciden.")
             return
+ 
+        if len(contrasena) < 8:
+            self._vistaRegistro.lanzarAviso("La contraseña debe tener al menos 8 caracteres.")
+            return
+ 
+        if not contrasena.isascii():
+            self._vistaRegistro.lanzarAviso("La contraseña no debe contener caracteres extraños.")
+            return
+        
         registro = RegistroVO(nombre, apellidos, correo, contrasena)
         if self._modelo.registrarUsuario(registro):
             self._vistaRegistro.lanzarAviso("Usuario registrado con éxito. Vuelve al login.")

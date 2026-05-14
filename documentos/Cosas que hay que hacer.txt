@@ -1,7 +1,6 @@
 vista de admin
 logica de admin
 
-poner minimo de caracteres y restringir caracteres en las contraseñas
 en las alertas en vez de yes or no, si o no y quitar emojis
 
 hacer varias logicas
