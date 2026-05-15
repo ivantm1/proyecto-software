@@ -4,6 +4,7 @@ from src.modelo.dao.PrestamoDaoJDBC import PrestamoDaoJDBC
 from src.modelo.dao.ReservaDaoJDBC import ReservaDaoJDBC
 from src.modelo.dao.SancionDaoJDBC import SancionDaoJDBC
 from src.modelo.dao.BuscarEstudianteDaoJDBC import BuscarEstudianteDaoJDBC
+from src.modelo.dao.TemaFavoritosDaoJDBC import TemaFavoritosDaoJDBC
 
 class Logica():
     def pruebaSelect(self):
@@ -86,8 +87,10 @@ class Logica():
         return SancionDaoJDBC().aplicarSancionRetraso(correo_estudiante, semanas_retraso)
 
     def aplicarSancionDanio(self, correo_estudiante, estado_libro):
-        # No se aplica sanción automática por daño.
-        return None
+        if estado_libro == "Dañado":
+            return SancionDaoJDBC().aplicarSancionDanio(correo_estudiante, "Dañado", 10)
+        elif estado_libro == "Roto":
+            return SancionDaoJDBC().aplicarSancionDanio(correo_estudiante, "Roto", 30)
 
     def aplicarSancionManual(self, correo_estudiante, motivo, dias):
         return SancionDaoJDBC().aplicarSancionDanio(correo_estudiante, motivo, dias)
@@ -137,3 +140,12 @@ class Logica():
     
     def buscarEstudiante(self, correo):
         return BuscarEstudianteDaoJDBC().buscarEstudiante(correo)
+    
+    def agregarTemaFavorito(self, correo, nombre_tema):
+        return TemaFavoritosDaoJDBC().agregarFavorito(correo, nombre_tema)
+
+    def eliminarTemaFavorito(self, correo, nombre_tema):
+        return TemaFavoritosDaoJDBC().eliminarFavorito(correo, nombre_tema)
+
+    def obtenerTemasFavoritos(self, correo):
+        return TemaFavoritosDaoJDBC().obtenerFavoritos(correo)

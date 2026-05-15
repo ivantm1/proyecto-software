@@ -3,8 +3,5 @@ copia de seguridad desde admin
 hacer varias logicas
 pasar todo lo posible de controlador a logica (que tenga sentido)
 
-en logica añadir temas favoritos 
-
-hacer historial con tema favoritos
 
 
