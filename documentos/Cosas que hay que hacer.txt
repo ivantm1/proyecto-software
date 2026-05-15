@@ -1,8 +1,7 @@
-logica de admin
+copia de seguridad desde admin
 
 hacer varias logicas
 pasar todo lo posible de controlador a logica (que tenga sentido)
-comprobar si logica de sanciones esta bien
 
 en logica añadir temas favoritos 
 

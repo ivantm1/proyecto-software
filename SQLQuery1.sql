@@ -185,7 +185,7 @@ INSERT INTO Usuarios (contrasena, email, nombre, apellidos, tipo) VALUES
 ('12', '12', 'Pepe', 'Pepín', 'Bibliotecario'),
 
 ('admin_root', 'sistemas.biblioteca@unileon.es', 'Admin', 'Sistemas IT', 'Admin'),
-('1', 'admin2.biblioteca@unileon.es', 'Admin2', 'Sistemas IT2', 'Admin');
+('1', '1', 'Admin2', 'Sistemas IT2', 'Admin');
 
 
 INSERT INTO Estudiantes (email, num_prestamos, num_reservas, sanciones)

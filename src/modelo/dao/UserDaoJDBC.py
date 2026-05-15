@@ -3,8 +3,9 @@ from src.modelo.vo.UsuarioVO import UsuarioVO
 
 class UserDaoJDBC(Conexion):
     SQL_CHECK_LOGIN = "SELECT nombre, apellidos, email, contrasena, tipo FROM Usuarios WHERE email = ? AND contrasena = ?"
-    SQL_REGISTRO = "INSERT INTO Usuarios (nombre, apellidos, email, contrasena, tipo) VALUES (?, ?, ?, ?, 'Estudiante')"
+    SQL_REGISTRO = "INSERT INTO Usuarios (nombre, apellidos, email, contrasena, tipo) VALUES (?, ?, ?, ?, ?)"
     SQL_CAMBIAR_CONTRASENA = "UPDATE Usuarios SET contrasena = ? WHERE email = ?"
+    SQL_ELIMINAR_USUARIO = "DELETE FROM Usuarios WHERE email = ?"
  
     def cambiarContrasena(self, correo, nueva_contrasena):
         cursor = self.getCursor()
@@ -29,10 +30,20 @@ class UserDaoJDBC(Conexion):
             print(f"Error en el login: {e}")
             return None
 
+    def eliminarUsuario(self, correo):
+        cursor = self.getCursor()
+        try:
+            cursor.execute(self.SQL_ELIMINAR_USUARIO, (correo,))
+            self.conexion.commit()
+            return cursor.rowcount > 0
+        except Exception as e:
+            print(f"Error al eliminar usuario: {e}")
+            return False
+
     def registrarUsuario(self, registroVO):
         cursor = self.getCursor()
         try:
-            cursor.execute(self.SQL_REGISTRO, (registroVO.nombre, registroVO.apellidos, registroVO.correo, registroVO.contrasena))
+            cursor.execute(self.SQL_REGISTRO, (registroVO.nombre, registroVO.apellidos, registroVO.correo, registroVO.contrasena, registroVO.tipo))
             self.conexion.commit()
             return True
         except Exception as e:

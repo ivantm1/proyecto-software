@@ -10,6 +10,7 @@ from src.controlador.ControladorPrestamo import ControladorPrestamo
 from src.controlador.ControladorPerfil import ControladorPerfil
 from src.controlador.ControladorBuscarEstudiante import ControladorBuscarEstudiante
 from src.controlador.ControladorAnadirLibro import ControladorAnadirLibro
+from src.controlador.ControladorGestionarCuentas import ControladorGestionarCuentas
 
 
 class ControladorPrincipal:
@@ -17,6 +18,9 @@ class ControladorPrincipal:
                  ref_vista_registro=None,
                  ref_vista_estudiante=None,
                  ref_vista_bibliotecario=None,
+                 ref_vista_admin=None,
+                 ref_vista_gestionar_cuentas=None,
+                 ref_vista_anadir_cuenta=None,
                  ref_vista_catalogo=None,
                  ref_vista_mis_prestamos=None,
                  ref_vista_mis_reservas=None,
@@ -32,6 +36,9 @@ class ControladorPrincipal:
         self._vistaRegistro         = ref_vista_registro
         self._vistaEstudiante       = ref_vista_estudiante
         self._vistaBibliotecario    = ref_vista_bibliotecario
+        self._vistaAdmin            = ref_vista_admin
+        self._vistaGestionarCuentas = ref_vista_gestionar_cuentas
+        self._vistaAnadirCuenta     = ref_vista_anadir_cuenta
         self._vistaCatalogo         = ref_vista_catalogo
         self._vistaMisPrestamos     = ref_vista_mis_prestamos
         self._vistaMisReservas      = ref_vista_mis_reservas
@@ -62,6 +69,8 @@ class ControladorPrincipal:
             self.ventanaEstudiante()
         elif usuario.tipo == "Bibliotecario":
             self.ventanaBibliotecario()
+        elif usuario.tipo == "Admin":
+            self.ventanaAdmin()
 
     def ventanaRegistro(self):
         if self._vistaRegistro:
@@ -110,13 +119,33 @@ class ControladorPrincipal:
             self._vistaBibliotecario.controlador = self
             self._vistaBibliotecario.showMaximized()
 
+    def ventanaAdmin(self):
+        if self._vistaAdmin:
+            self._vistaAdmin.controlador = self
+            self._vistaAdmin.showMaximized()
+
+    def ventanaGestionarCuentas(self):
+        if not self._vistaGestionarCuentas or not self._usuario_activo:
+            return
+        ctrl = ControladorGestionarCuentas(
+            self._modelo,
+            self._vistaGestionarCuentas,
+            self._vistaAdmin,
+            self._vistaAnadirCuenta,
+            self._usuario_activo.correo,
+        )
+        self._vistaAdmin.close()
+        ctrl.iniciar()
+
     def ventanaVerPerfil(self):
         if not self._vistaPerfil or not self._usuario_activo:
             return
         if self._usuario_activo.tipo == "Estudiante":
             vista_anterior = self._vistaEstudiante
-        else:
+        elif self._usuario_activo.tipo == "Bibliotecario":
             vista_anterior = self._vistaBibliotecario
+        elif self._usuario_activo.tipo == "Admin":
+            vista_anterior = self._vistaAdmin
         ctrl = ControladorPerfil(self._modelo, self._vistaPerfil, vista_anterior, self._usuario_activo)
         self._vistaPerfil.controlador = ctrl
 
@@ -144,13 +173,17 @@ class ControladorPrincipal:
             return
         ctrl = ControladorCatalogo(
             self._modelo, self._vistaCatalogo,
-            self._vistaEstudiante, self._vistaBibliotecario,
+            self._vistaEstudiante, self._vistaBibliotecario, self._vistaAdmin,
             correo_usuario=self._usuario_activo.correo,
             tipo_usuario=self._usuario_activo.tipo,
         )
         self._vistaCatalogo.controlador = ctrl
-        self._vistaEstudiante.close()
-        self._vistaBibliotecario.close()
+        if self._vistaEstudiante:
+            self._vistaEstudiante.close()
+        if self._vistaBibliotecario:
+            self._vistaBibliotecario.close()
+        if self._vistaAdmin:
+            self._vistaAdmin.close()
         self._vistaCatalogo.showMaximized()
         ctrl.cargarCatalogo()
         libros = self._modelo.buscarLibro("", "Ninguno")
@@ -216,11 +249,13 @@ class ControladorPrincipal:
         self._vistaSanciones.show()
 
     def cerrarSesion(self):
-        respuesta = QMessageBox.question(
-            self._vistaLogin, "Cerrar sesión",
-            "¿Estás seguro de que quieres cerrar sesión?",
-            QMessageBox.Yes | QMessageBox.No
-        )
+        msg = QMessageBox()
+        msg.setWindowTitle("Cerrar sesión")
+        msg.setText("¿Estás seguro de que quieres cerrar sesión?")
+        msg.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
+        msg.button(QMessageBox.Yes).setText("Sí")
+        msg.button(QMessageBox.No).setText("No")
+        respuesta = msg.exec_()
         if respuesta == QMessageBox.Yes:
             if self._vistaRegistro:
                 QApplication.closeAllWindows()

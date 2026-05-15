@@ -10,6 +10,9 @@ from src.vista.VistaPerfil import VistaPerfil
 from src.vista.VistaDevolverLibro import VistaDevolverLibro
 from src.vista.VistaAnadirLibro import VistaAnadirLibro
 from src.vista.VistaBuscarEstudiante import VistaBuscarEstudiante
+from src.vista.VistaAdmin import VistaAdmin
+from src.vista.VistaGestionarCuentas import VistaGestionarCuentas
+from src.vista.VistaAnadirCuenta import VistaAnadirCuenta
 from src.modelo.Logica import Logica
 from src.controlador.ControladorPrincipal import ControladorPrincipal
 
@@ -27,12 +30,18 @@ if __name__ == "__main__":
     anadirLibro      = VistaAnadirLibro()
     buscarEstudiante = VistaBuscarEstudiante()
     vistaCatalogo    = VistaCatalogo()
+    admin            = VistaAdmin()
+    gestionarCuentas = VistaGestionarCuentas()
+    anadirCuenta      = VistaAnadirCuenta()
 
     controlador = ControladorPrincipal(
         modelo, login,
         ref_vista_registro=registro,
         ref_vista_estudiante=estudiante,
         ref_vista_bibliotecario=bibliotecario,
+        ref_vista_admin=admin,
+        ref_vista_gestionar_cuentas=gestionarCuentas,
+        ref_vista_anadir_cuenta=anadirCuenta,
         ref_vista_catalogo=vistaCatalogo,
         ref_vista_mis_prestamos=mis_prestamos,
         ref_vista_mis_reservas=mis_reservas,

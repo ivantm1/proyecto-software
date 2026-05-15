@@ -132,5 +132,8 @@ class Logica():
     def cambiarContrasena(self, correo, nueva_contrasena):
         return UserDaoJDBC().cambiarContrasena(correo, nueva_contrasena)
 
+    def eliminarUsuario(self, correo):
+        return UserDaoJDBC().eliminarUsuario(correo)
+    
     def buscarEstudiante(self, correo):
         return BuscarEstudianteDaoJDBC().buscarEstudiante(correo)
