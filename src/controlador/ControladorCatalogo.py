@@ -136,7 +136,7 @@ class ControladorCatalogo:
         self._vista_catalogo.close()
         if self._tipo_usuario == "Bibliotecario":
             self._vista_bibliotecario.showMaximized()
-        elif self._tipo_usuario == "Administrador":
+        elif self._tipo_usuario == "Admin":
             self._vista_administrador.showMaximized()
         else:
             self._vista_estudiante.showMaximized()

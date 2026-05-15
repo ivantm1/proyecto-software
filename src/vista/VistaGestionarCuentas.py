@@ -13,16 +13,14 @@ class VistaGestionarCuentas(QDialog, Form):
         self.boton_eliminar.clicked.connect(self.on_eliminar_cuenta_click)
         self.boton_volver.clicked.connect(self.on_volver_click)
 
-        self.label.setText("")
-        self.label_2.setText("")
-
     def on_anadir_cuenta_click(self):
         if self._controlador:
             self._controlador.abrirAgregarCuenta()
 
     def on_eliminar_cuenta_click(self):
+        correo = self.lineEdit.text().strip()
         if self._controlador:
-            self._controlador.eliminarCuenta()
+            self._controlador.eliminarCuenta(correo)
 
     def on_volver_click(self):
         if self._controlador:
@@ -33,9 +31,6 @@ class VistaGestionarCuentas(QDialog, Form):
             QMessageBox.critical(self, "Error", mensaje)
         else:
             QMessageBox.information(self, "Información", mensaje)
-
-    def mostrarEstado(self, texto):
-        self.label.setText(texto)
 
     @property
     def controlador(self):

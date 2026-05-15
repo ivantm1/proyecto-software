@@ -82,7 +82,7 @@ class ControladorPrincipal:
         if not all([nombre, apellidos, correo, contrasena, confirmar]):
             self._vistaRegistro.lanzarAviso("Rellena todos los campos.")
             return
-        if "@estudiantes.unileon.es" not in correo:
+        if not correo.endswith("@estudiantes.unileon.es"):
             self._vistaRegistro.lanzarAviso("Usa un correo institucional @estudiantes.unileon.es")
             return
         if contrasena != confirmar:
@@ -134,8 +134,9 @@ class ControladorPrincipal:
             self._vistaAnadirCuenta,
             self._usuario_activo.correo,
         )
-        self._vistaGestionarCuentas.openMaximized()
+        self._vistaGestionarCuentas.lineEdit.clear()
         self._vistaAdmin.close()
+        self._vistaGestionarCuentas.showMaximized()
 
     def ventanaVerPerfil(self):
         if not self._vistaPerfil or not self._usuario_activo:

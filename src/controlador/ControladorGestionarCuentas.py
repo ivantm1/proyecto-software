@@ -9,6 +9,7 @@ class ControladorGestionarCuentas:
         self._vistaAnadirCuenta = vistaAnadirCuenta
         self._correo_admin = correo_admin
         self._vistaGestionarCuentas.controlador = self
+        self._vistaAnadirCuenta.controlador = self
 
     def abrirAgregarCuenta(self):
         self._vistaGestionarCuentas.close()
@@ -18,46 +19,46 @@ class ControladorGestionarCuentas:
         self._vistaAnadirCuenta.lineEdit.clear()
         self._vistaAnadirCuenta.lineEdit_2.clear()
         self._vistaAnadirCuenta.opcion_buscador.setCurrentIndex(-1)
-        self._vistaAnadirCuenta.controlador = self
         self._vistaAnadirCuenta.showMaximized()
 
-    def eliminarCuenta(self):
-        correo = self._vistaGestionarCuentas.lineEdit.text().strip()
+    def eliminarCuenta(self, correo):
         if not correo:
-            self._vistaGestionarCuentas.mostrarEstado("Introduce el correo de la cuenta.")
+            self._vistaGestionarCuentas.lanzarAviso("Introduce el correo de la cuenta.")
             return
         if correo == self._correo_admin:
-            self._vistaGestionarCuentas.mostrarEstado("No puedes eliminar tu propia cuenta.")
+            self._vistaGestionarCuentas.lanzarAviso("No puedes eliminar tu propia cuenta.", error=True)
             return
         usuario = self._modelo.obtenerUsuarioPorCorreo(correo)
         if usuario is None:
-            self._vistaGestionarCuentas.mostrarEstado("No existe ninguna cuenta con ese correo.")
+            self._vistaGestionarCuentas.lanzarAviso("No existe ninguna cuenta con ese correo.", error=True)
+            return
+        if usuario.tipo == "Admin":
+            self._vistaGestionarCuentas.lanzarAviso("No puedes eliminar una cuenta de administrador.", error=True)
             return
 
         if self._modelo.eliminarUsuario(correo):
             self._vistaGestionarCuentas.lanzarAviso("Cuenta eliminada correctamente.")
-            self._vistaGestionarCuentas.lineEdit.clear()
-            self._vistaGestionarCuentas.mostrarEstado("")
         else:
-            self._vistaGestionarCuentas.mostrarEstado("No se pudo eliminar la cuenta.")
+            self._vistaGestionarCuentas.lanzarAviso("No se pudo eliminar la cuenta.", error=True)
 
-    def registrarUsuario(self, nombre, apellidos, correo, contrasena, confirmar):
-        if not all([nombre, apellidos, correo, contrasena, confirmar]):
+    def registrarUsuario(self, registro, confirmar):
+        if not all([registro.nombre, registro.apellidos, registro.correo, registro.contrasena, confirmar]):
             self._vistaAnadirCuenta.lanzarAviso("Rellena todos los campos.")
             return
-        if not correo:
-            self._vistaAnadirCuenta.lanzarAviso("Introduce un correo.")
+        if registro.tipo == "Estudiante" and not registro.correo.endswith("@estudiantes.unileon.es"):
+            self._vistaAnadirCuenta.lanzarAviso("Usa un correo institucional válido (@estudiantes.unileon.es).")
             return
-        if "@estudiantes.unileon.es" not in correo and "@unileon.es" not in correo:
-            self._vistaAnadirCuenta.lanzarAviso("Usa un correo institucional válido.")
+        
+        if (registro.tipo == "Bibliotecario" or registro.tipo == "Admin") and not registro.correo.endswith("@unileon.es"):
+            self._vistaAnadirCuenta.lanzarAviso("Usa un correo institucional válido (@unileon.es).")
             return
-        if contrasena != confirmar:
+        if registro.contrasena != confirmar:
             self._vistaAnadirCuenta.lanzarAviso("Las contraseñas no coinciden.")
             return
-        if len(contrasena) < 8:
+        if len(registro.contrasena) < 8:
             self._vistaAnadirCuenta.lanzarAviso("La contraseña debe tener al menos 8 caracteres.")
             return
-        if not contrasena.isascii():
+        if not registro.contrasena.isascii():
             self._vistaAnadirCuenta.lanzarAviso("La contraseña no debe contener caracteres extraños.")
             return
 
@@ -66,16 +67,17 @@ class ControladorGestionarCuentas:
             self._vistaAnadirCuenta.lanzarAviso("Selecciona un tipo de cuenta.")
             return
 
-        registro = RegistroVO(nombre, apellidos, correo, contrasena, tipo)
         if self._modelo.registrarUsuario(registro):
             self._vistaAnadirCuenta.lanzarAviso("Cuenta creada con éxito.")
             self._vistaAnadirCuenta.close()
+            self._vistaGestionarCuentas.lineEdit.clear()
             self._vistaGestionarCuentas.showMaximized()
         else:
             self._vistaAnadirCuenta.lanzarAviso("Error al crear la cuenta. El email puede estar ya registrado.")
 
     def registroAtras(self):
         self._vistaAnadirCuenta.close()
+        self._vistaGestionarCuentas.lineEdit.clear()
         self._vistaGestionarCuentas.showMaximized()
 
     def volver(self):
