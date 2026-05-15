@@ -4,6 +4,7 @@ from src.modelo.dao.PrestamoDaoJDBC import PrestamoDaoJDBC
 from src.modelo.dao.ReservaDaoJDBC import ReservaDaoJDBC
 from src.modelo.dao.SancionDaoJDBC import SancionDaoJDBC
 from src.modelo.dao.BuscarEstudianteDaoJDBC import BuscarEstudianteDaoJDBC
+from src.modelo.dao.TemaFavoritosDaoJDBC import TemaFavoritosDaoJDBC
 
 class Logica():
     def pruebaSelect(self):
@@ -136,3 +137,12 @@ class Logica():
 
     def buscarEstudiante(self, correo):
         return BuscarEstudianteDaoJDBC().buscarEstudiante(correo)
+    
+    def agregarTemaFavorito(self, correo, nombre_tema):
+        return TemaFavoritosDaoJDBC().agregarFavorito(correo, nombre_tema)
+
+    def eliminarTemaFavorito(self, correo, nombre_tema):
+        return TemaFavoritosDaoJDBC().eliminarFavorito(correo, nombre_tema)
+
+    def obtenerTemasFavoritos(self, correo):
+        return TemaFavoritosDaoJDBC().obtenerFavoritos(correo)
