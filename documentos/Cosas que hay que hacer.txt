@@ -3,6 +3,6 @@ logica de admin
 hacer varias logicas
 pasar todo lo posible de controlador a logica (que tenga sentido)
 comprobar si logica de sanciones esta bien
-hacer historial con tema favoritos
+
 
 
