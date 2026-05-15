@@ -134,8 +134,8 @@ class ControladorPrincipal:
             self._vistaAnadirCuenta,
             self._usuario_activo.correo,
         )
+        self._vistaGestionarCuentas.openMaximized()
         self._vistaAdmin.close()
-        ctrl.iniciar()
 
     def ventanaVerPerfil(self):
         if not self._vistaPerfil or not self._usuario_activo:
