@@ -26,8 +26,6 @@ class VistaLibroDisponible(QDialog, Form):
         self.controlador.cerrarLibroDisponible()
 
     def configurarParaBibliotecario(self, es_bibliotecario):
-        # La versión de bibliotecario usa una vista específica distinta
-        # en lugar de añadir un botón extra aquí.
         if hasattr(self, '_boton_baja') and self._boton_baja:
             self._boton_baja.setVisible(False)
 

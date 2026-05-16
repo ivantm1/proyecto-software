@@ -23,7 +23,7 @@ class ControladorMisPrestamos:
         if prestamo is None:
             return
         self._detalle.controlador = self
-        self._detalle.mostrarPrestamo(prestamo)
+        self._detalle.mostrarPrestamo(prestamo, self._tipo_usuario)
         self._detalle.show()
 
     def prorrogarPrestamo(self, isbn):
@@ -37,6 +37,15 @@ class ControladorMisPrestamos:
                 "No se pudo prorrogar. "
                 "El libro puede tener una reserva activa o ya fue prorrogado."
             )
+
+    def terminarPrestamo(self, isbn):
+        exito = self._modelo.registrarDevolucion(isbn)
+        if exito:
+            self._detalle.lanzarAviso("Préstamo terminado correctamente.")
+            self.actualizarPrestamos()
+            self._detalle.close()
+        else:
+            self._detalle.lanzarAviso("No se pudo terminar el préstamo.")
 
     def registroAtras(self):
         self._vista.close()

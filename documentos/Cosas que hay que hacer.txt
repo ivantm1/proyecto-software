@@ -3,5 +3,9 @@ copia de seguridad desde admin
 hacer varias logicas
 pasar todo lo posible de controlador a logica (que tenga sentido)
 
+quitar que al hacer esc se cierre
+
+actualizar numero de prestamos cuando se cambia igual que numeroe de sanciones.
+
 
 

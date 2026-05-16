@@ -32,10 +32,10 @@ class VistaMisPrestamos(QDialog, Form):
         self.controlador.registroAtras()
 
     def mostrarPrestamos(self, lista_prestamos):
+        self._prestamos = lista_prestamos or []
+        self.tabla_libros.clearContents()
         self.tabla_libros.setRowCount(0)
-        self.tabla_libros.resizeColumnsToContents()
-
-        self._prestamos = lista_prestamos
+        self.tabla_libros.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
 
         if not lista_prestamos:
             return
@@ -58,8 +58,6 @@ class VistaMisPrestamos(QDialog, Form):
                         self.tabla_libros.item(fila, col).setBackground(QColor(240, 150, 150))
             except Exception:
                 pass
-
-        self.tabla_libros.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
 
     def obtenerPrestamoPorFila(self, fila):
         if hasattr(self, '_prestamos') and 0 <= fila < len(self._prestamos):
