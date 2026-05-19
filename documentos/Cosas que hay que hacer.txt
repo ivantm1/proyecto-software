@@ -4,8 +4,21 @@ hacer varias logicas
 pasar todo lo posible de controlador a logica (que tenga sentido)
 
 quitar que al hacer esc se cierre
+hacer un patron
 
-actualizar numero de prestamos cuando se cambia igual que numeroe de sanciones.
+actualizar numero de prestamos cuando se cambia igual que numero de sanciones.
 
+comprobar si se cumplen todos los requisitos de la rúbrica y entregarla
 
+EXAMEN 22 DE MAYO
+entra todo lo que no entro en el otro parcial, a partir de semana 6 incluida
+estudiar los tecnicismos de la asignatura
 
+EXAMEN 8 DE JUNIO
+1 o 2 preguntas sobre modificaciones en nuestro proyecto particular
+media hora como mucho
+
+PRESENTACION
+12 minutos repartidos igualitariamente entre los miembros
+primera parte vender la app
+segunda parte explicar tecnicamente
