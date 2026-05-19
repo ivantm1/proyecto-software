@@ -5,9 +5,11 @@ hacer varias logicas
 pasar todo lo posible de controlador a logica (que tenga sentido)
 
 quitar que al hacer esc se cierre
-hacer un patron
 
 actualizar numero de prestamos cuando se cambia igual que numero de sanciones.
+
+grafico de libros prestados por temas
+hacer un patron singletone con funcion de log
 
 comprobar si se cumplen todos los requisitos de la rúbrica y entregarla
 
