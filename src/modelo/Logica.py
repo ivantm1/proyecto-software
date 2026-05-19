@@ -102,6 +102,9 @@ class Logica:
     def tienePrestamoActivo(self, isbn, correo_estudiante):
         return self._prestamos.tienePrestamoActivo(isbn, correo_estudiante)
 
+    def validarPrestamo(self, isbn, correo_estudiante):
+        return self._prestamos.validarPrestamo(isbn, correo_estudiante)
+
                                           
     def aplicarSancionRetraso(self, correo_estudiante, semanas_retraso):
         return self._sanciones.aplicarSancionRetraso(correo_estudiante, semanas_retraso)
@@ -123,6 +126,9 @@ class Logica:
 
     def calcularDiasSancionActiva(self, correo_estudiante):
         return self._sanciones.calcularDiasSancionActiva(correo_estudiante)
+
+    def calcularSemanasRetraso(self, fecha_devolucion):
+        return self._sanciones.calcularSemanasRetraso(fecha_devolucion)
 
                                          
     def crearReserva(self, isbn, correo_estudiante):
@@ -161,3 +167,6 @@ class Logica:
 
     def obtenerTemasFavoritos(self, correo):
         return self._estudiantes.obtenerTemasFavoritos(correo)
+
+    def obtenerResumenEstudiante(self, correo):
+        return self._estudiantes.obtenerResumenEstudiante(correo)

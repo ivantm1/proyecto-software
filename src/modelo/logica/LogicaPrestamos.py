@@ -1,7 +1,12 @@
 from src.modelo.dao.PrestamoDaoJDBC import PrestamoDaoJDBC
+from src.modelo.dao.LibroDaoJDBC import LibroDaoJDBC
+from src.modelo.dao.ReservaDaoJDBC import ReservaDaoJDBC
+from src.modelo.dao.SancionDaoJDBC import SancionDaoJDBC
 
 class LogicaPrestamos:
-                                                                  
+    """Responsabilidad: ciclo de vida y consultas de préstamos."""
+
+    MAX_PRESTAMOS_ACTIVOS = 7
 
     def registrarPrestamo(self, isbn, correo_estudiante):
         return PrestamoDaoJDBC().registrarPrestamo(isbn, correo_estudiante)
@@ -32,3 +37,32 @@ class LogicaPrestamos:
 
     def tienePrestamoActivo(self, isbn, correo_estudiante):
         return PrestamoDaoJDBC().tienePrestamoActivo(isbn, correo_estudiante)
+
+    def validarPrestamo(self, isbn, correo_estudiante):
+        if SancionDaoJDBC().tieneSancionActiva(correo_estudiante):
+            return False, "Este estudiante tiene una sanción activa y no puede realizar préstamos."
+
+        if self.contarPrestamosEstudiante(correo_estudiante) >= self.MAX_PRESTAMOS_ACTIVOS:
+            return False, f"Este estudiante ya tiene {self.MAX_PRESTAMOS_ACTIVOS} préstamos activos. No puede tener más de {self.MAX_PRESTAMOS_ACTIVOS} a la vez."
+
+        if self.tieneCooldown(correo_estudiante, isbn):
+            return False, "Este estudiante devolvió este libro hace menos de 7 días. Debe esperar antes de volver a pedirlo."
+
+        libro = LibroDaoJDBC().buscarPorISBN(isbn)
+        if libro is None:
+            return False, "No se encontró el libro con ese ISBN."
+
+        disponibilidad = str(libro.disponibilidad).lower()
+        if disponibilidad == 'prestado':
+            return False, "No es posible prestar el libro porque ya está prestado."
+
+        if disponibilidad == 'reservado':
+            if ReservaDaoJDBC().reservaExpirada(isbn):
+                ReservaDaoJDBC().cancelarReserva(isbn)
+                LibroDaoJDBC().restaurarLibro(isbn)
+            else:
+                return False, "No es posible prestar el libro porque está reservado."
+        elif disponibilidad != 'disponible':
+            return False, "No es posible prestar el libro porque no está disponible."
+
+        return True, ""

@@ -21,21 +21,13 @@ class ControladorBuscarEstudiante:
             QMessageBox.warning(self._vista_buscar, "Aviso", "Por favor, introduce un correo electrónico.")
             return
 
-        estudiante = self._modelo.buscarEstudiante(correo)
-        
-        if estudiante is None:
+        resumen = self._modelo.obtenerResumenEstudiante(correo)
+        if resumen is None:
             QMessageBox.warning(self._vista_buscar, "No encontrado", 
-                              f"No se encontró un estudiante con el correo: {correo}")
+                                "No se encontró un estudiante con ese correo.")
             return
 
-                                                              
-        self._estudiante_actual = estudiante
-        
-                                                      
-        num_prestamos = self._modelo.contarPrestamosEstudiante(correo)
-        num_reservas = self._modelo.contarReservasEstudiante(correo)
-        sanciones = self._modelo.obtenerSancionesEstudiante(correo)
-        num_sanciones_activas = len([s for s in sanciones if s.estado == "Activa"])
+        estudiante, num_prestamos, num_reservas, num_sanciones_activas = resumen
         
                                              
         self._vista_gestion.cargar_datos(estudiante, num_prestamos, num_reservas, num_sanciones_activas)
@@ -53,60 +45,22 @@ class ControladorBuscarEstudiante:
             self._vista_bibliotecario.showMaximized()
 
     def hacerPrestamoDesdeGestion(self, isbn, correo_estudiante):
-                                                                              
         if not isbn:
             QMessageBox.warning(self._vista_gestion, "Aviso", "Por favor, introduce un ISBN válido.")
             return
 
-                                                            
-                                                            
-        if self._modelo.tieneSancionActiva(correo_estudiante):
-            QMessageBox.warning(self._vista_gestion, "Aviso", 
-                            "Este estudiante tiene una sanción activa y no puede realizar préstamos.")
+        valido, mensaje = self._modelo.validarPrestamo(isbn, correo_estudiante)
+        if not valido:
+            QMessageBox.warning(self._vista_gestion, "Aviso", mensaje)
             return
 
-                                       
-        num_prestamos = self._modelo.contarPrestamosEstudiante(correo_estudiante)
-        if num_prestamos >= 7:
-            QMessageBox.warning(self._vista_gestion, "Aviso",
-                            f"Este estudiante ya tiene {num_prestamos} préstamos activos. No puede tener más de 7 a la vez.")
-            return
-        
-                            
-        if self._modelo.tieneCooldown(correo_estudiante, isbn):
-            QMessageBox.warning(self._vista_gestion, "Aviso",
-                            "Este estudiante devolvió este libro hace menos de 7 días. Debe esperar antes de volver a pedirlo.")
-            return
-
-                                           
-        libro = self._modelo.buscarPorISBN(isbn)
-        if libro is None:
-            QMessageBox.warning(self._vista_gestion, "Error", "No se encontró el libro con ese ISBN.")
-            return
-
-        if str(libro.disponibilidad).lower() == 'prestado':
-            QMessageBox.warning(self._vista_gestion, "Error", "No es posible prestar el libro porque ya está prestado.")
-            return
-        elif str(libro.disponibilidad).lower() == 'reservado':
-            if self._modelo.reservaExpirada(isbn):
-                self._modelo.liberarReservaExpirada(isbn)
-            else:
-                QMessageBox.warning(self._vista_gestion, "Error", "No es posible prestar el libro porque está reservado.")
-                return
-        elif str(libro.disponibilidad).lower() != 'disponible':
-            QMessageBox.warning(self._vista_gestion, "Error", "No es posible prestar el libro porque no está disponible.")
-            return
-
-                              
         exito = self._modelo.registrarPrestamo(isbn, correo_estudiante)
-        
         if exito:
             QMessageBox.information(self._vista_gestion, "Éxito", "Préstamo registrado correctamente.")
-                              
             self.buscarEstudiante(correo_estudiante)
         else:
             QMessageBox.warning(self._vista_gestion, "Error", 
-                              "No se pudo registrar el préstamo. El libro puede no estar disponible.")
+                                "No se pudo registrar el préstamo. El libro puede no estar disponible.")
 
     def volverGestionarEstudiante(self):
                                                                         

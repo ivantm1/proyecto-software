@@ -1,7 +1,8 @@
+import datetime
 from src.modelo.dao.SancionDaoJDBC import SancionDaoJDBC
 
 class LogicaSanciones:
-                                                                      
+    """Responsabilidad: sanciones a estudiantes y cálculos de retraso."""
 
     def aplicarSancionRetraso(self, correo_estudiante, semanas_retraso):
         return SancionDaoJDBC().aplicarSancionRetraso(correo_estudiante, semanas_retraso)
@@ -32,3 +33,14 @@ class LogicaSanciones:
             if sancion.estado == "Activa":
                 total_dias += int(sancion.duracion_sancion)
         return total_dias
+
+    def calcularSemanasRetraso(self, fecha_devolucion):
+        if fecha_devolucion is None:
+            return 0
+        if isinstance(fecha_devolucion, str):
+            fecha_devolucion = datetime.date.fromisoformat(fecha_devolucion[:10])
+        hoy = datetime.date.today()
+        if hoy <= fecha_devolucion:
+            return 0
+        dias_retraso = (hoy - fecha_devolucion).days
+        return max(1, dias_retraso // 7)
