@@ -79,24 +79,11 @@ class ControladorPrincipal:
             self._vistaRegistro.showMaximized()
 
     def registrarUsuario(self, nombre, apellidos, correo, contrasena, confirmar):
-        if not all([nombre, apellidos, correo, contrasena, confirmar]):
-            self._vistaRegistro.lanzarAviso("Rellena todos los campos.")
+        valido, mensaje = self._modelo.validarRegistro(nombre, apellidos, correo, contrasena, confirmar)
+        if not valido:
+            self._vistaRegistro.lanzarAviso(mensaje)
             return
-        if not correo.endswith("@estudiantes.unileon.es"):
-            self._vistaRegistro.lanzarAviso("Usa un correo institucional @estudiantes.unileon.es")
-            return
-        if contrasena != confirmar:
-            self._vistaRegistro.lanzarAviso("Las contraseñas no coinciden.")
-            return
- 
-        if len(contrasena) < 8:
-            self._vistaRegistro.lanzarAviso("La contraseña debe tener al menos 8 caracteres.")
-            return
- 
-        if not contrasena.isascii():
-            self._vistaRegistro.lanzarAviso("La contraseña no debe contener caracteres extraños.")
-            return
-        
+
         registro = RegistroVO(nombre, apellidos, correo, contrasena)
         if self._modelo.registrarUsuario(registro):
             self._vistaRegistro.lanzarAviso("Usuario registrado con éxito. Vuelve al login.")
@@ -152,13 +139,8 @@ class ControladorPrincipal:
 
         total_dias = 0
         if self._usuario_activo.tipo == "Estudiante":
-            sanciones = self._modelo.obtenerSancionesEstudiante(self._usuario_activo.correo)
-            activas = [s for s in sanciones if s.estado == "Activa"]
+            total_dias = self._modelo.calcularDiasSancionActiva(self._usuario_activo.correo)
 
-            if activas:
-                for sancion in activas:
-                    total_dias += int(sancion.duracion_sancion)
-                
         self._vistaPerfil.mostrarUsuario(
             nombre=self._usuario_activo.nombre,
             apellidos=self._usuario_activo.apellidos,

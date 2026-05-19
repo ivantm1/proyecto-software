@@ -10,7 +10,7 @@ class ReservaDaoJDBC(Conexion):
     SQL_CUENTA_RESERVAS = "SELECT COUNT(*) FROM Reservas WHERE email = ? AND estado = 'Pendiente'"
     SQL_EXISTE          = "SELECT COUNT(*) FROM Reservas WHERE ISBN = ? AND estado = 'Pendiente'"
 
-    # JOIN con Libros para obtener título, autor y tema
+                                                       
     SQL_MIS_RESERVAS = """
         SELECT p.ISBN, l.titulo, l.autor, l.nombre_tema, l.descripcion, p.fecha_reserva, p.estado
         FROM Reservas p
@@ -38,13 +38,13 @@ class ReservaDaoJDBC(Conexion):
     def crearReserva(self, isbn, correo_estudiante):
         cursor = self.getCursor()
         try:
-            # Comprobar que no hay ya una reserva activa para ese libro
+                                                                       
             cursor.execute(self.SQL_EXISTE, (isbn,))
             if cursor.fetchone()[0] > 0:
                 print("No se puede reservar: el libro ya tiene una reserva activa.")
                 return False
 
-            # Comprobar que el estudiante no tenga más de 3 reservas activas
+                                                                            
             if self.contarReservasEstudiante(correo_estudiante) >= 3:
                 print("No se puede reservar: el estudiante ya tiene 3 reservas activas.")
                 return False

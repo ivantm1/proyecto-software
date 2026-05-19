@@ -13,7 +13,7 @@ class PrestamoDaoJDBC(Conexion):
     SQL_VERIFICAR_LIBRO_DISPONIBLE = "SELECT disponibilidad FROM Libros WHERE ISBN = ?"
     SQL_ACTUALIZAR_DISPONIBILIDAD_LIBRO = "UPDATE Libros SET disponibilidad = ? WHERE ISBN = ?"
  
-    # JOIN con Libros para obtener título, autor y tema
+                                                       
     SQL_MIS_PRESTAMOS = """
         SELECT p.ISBN, l.titulo, l.autor, l.nombre_tema, l.descripcion, p.fecha_devolucion, p.estado
         FROM Prestamos p
@@ -147,7 +147,7 @@ class PrestamoDaoJDBC(Conexion):
                 print("No se puede prorrogar: ya fue prorrogado.")
                 return False
 
-            # Convertir a date si viene como string
+                                                   
             if isinstance(fecha_devolucion, str):
                 fecha_devolucion = datetime.date.fromisoformat(fecha_devolucion[:10])
 
@@ -189,4 +189,3 @@ class PrestamoDaoJDBC(Conexion):
         except Exception as e:
             print(f"Error en tieneCooldown: {e}")
             return False
- 

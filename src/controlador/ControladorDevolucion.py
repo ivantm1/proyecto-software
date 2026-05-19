@@ -7,23 +7,23 @@ class ControladorDevolucion:
         self._vista_anterior = ref_vista_bibliotecario
 
     def registrarDevolucion(self, isbn, estado_libro):
-        # 1. Buscar el préstamo activo por ISBN
+                                               
         prestamo = self._modelo.buscarPrestamoActivoPorISBN(isbn)
         if prestamo is None:
             self._vista.lanzarAviso("No se encontró ningún préstamo activo con ese ISBN.")
             return
 
-        # 2. Calcular si hay retraso
+                                    
         semanas_retraso = self._calcularSemanasRetraso(prestamo.fecha_devolucion)
 
-        # 3. Registrar la devolución en BD (marca estado='Devuelto' y libro='Disponible')
+                                                                                         
         exito = self._modelo.registrarDevolucion(isbn)
         if not exito:
             self._vista.lanzarAviso("Error al registrar la devolución. Inténtalo de nuevo.")
             return
 
         mensajes = []
-        # 4. Aplicar sanción si hay retraso
+                                           
         if semanas_retraso > 0:
             self._modelo.aplicarSancionRetraso(prestamo.correo_estudiante, semanas_retraso)
             mensajes.append(f"Devolución registrada con {semanas_retraso} semana(s) de retraso.")
@@ -42,11 +42,11 @@ class ControladorDevolucion:
         self._vista.limpiarFormulario()
 
     def _calcularSemanasRetraso(self, fecha_devolucion):
-        """Devuelve las semanas completas de retraso (0 si no hay retraso)."""
+                                                                              
         if fecha_devolucion is None:
             return 0
         hoy = datetime.date.today()
-        # fecha_devolucion puede llegar como string 'YYYY-MM-DD' o como date
+                                                                            
         if isinstance(fecha_devolucion, str):
             fecha_devolucion = datetime.date.fromisoformat(fecha_devolucion[:10])
         if hoy <= fecha_devolucion:

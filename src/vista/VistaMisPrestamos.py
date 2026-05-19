@@ -24,7 +24,7 @@ class VistaMisPrestamos(QDialog, Form):
             self.controlador.buscarPrestamos(titulo, tema)
 
     def on_fila_doble_click(self, fila, columna):
-        """Al hacer doble clic en una fila, abre el detalle del préstamo"""
+                                                                           
         if self.controlador:
             self.controlador.abrirDetallePrestamo(fila)
 

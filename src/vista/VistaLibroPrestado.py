@@ -25,7 +25,7 @@ class VistaLibroPrestado(QDialog, Form):
             self.controlador.reservarLibro(self._isbn_actual)
 
     def mostrarLibro(self, libro, estudiante=None, tipo_usuario=None):
-        """Rellena los labels con los datos del libro seleccionado"""
+                                                                     
         self._isbn_actual = libro.isbn
         self.linea_titulo.setText(str(libro.titulo))
         self.linea_autor.setText(str(libro.autor))
@@ -40,7 +40,7 @@ class VistaLibroPrestado(QDialog, Form):
 
         self.linea_estado.setText(str(texto_disp))
         
-        # Mostrar estudiante solo si es bibliotecario o administrador
+                                                                     
         if tipo_usuario in ["Bibliotecario", "Administrador"] and estudiante:
             self.linea_estudiante.setText(f"Prestado a {estudiante}.")
         else:

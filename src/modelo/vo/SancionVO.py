@@ -1,7 +1,7 @@
 class SancionVO:
     def __init__(self, correo_estudiante, tipo, duracion_sancion, fecha_inicio, estado=None, fecha_fin=None):
         self._correo_estudiante = correo_estudiante
-        self._tipo = tipo                     # "retraso" | "danio"
+        self._tipo = tipo                                          
         self._duracion_sancion = int(duracion_sancion) if duracion_sancion is not None else 0
         self._fecha_inicio = fecha_inicio
         self._estado = estado

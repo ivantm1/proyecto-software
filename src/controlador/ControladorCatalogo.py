@@ -51,7 +51,7 @@ class ControladorCatalogo:
         if libro is None:
             return
         
-        # Obtener el estudiante que tiene el libro prestado
+                                                           
         estudiante = None
         if self._tipo_usuario in ["Bibliotecario", "Administrador"]:
             prestamo = self._modelo.buscarPrestamoActivoPorISBN(libro.isbn)
@@ -78,13 +78,13 @@ class ControladorCatalogo:
             self._libroPrestado.lanzarAviso("Tienes una sanción activa y no puedes realizar reservas.")
             return
 
-        # Verificar máximo de préstamos
+                                       
         num_prestamos = self._modelo.contarPrestamosEstudiante(self._correo_usuario)
         if num_prestamos >= 3:
             self._libroPrestado.lanzarAviso("Ya tienes 3 préstamos activos. No puedes tener más de 3 a la vez.")
             return
 
-        # Verificar máximo de reservas
+                                      
         num_reservas = self._modelo.contarReservasEstudiante(self._correo_usuario)
         if num_reservas >= 3:
             self._libroPrestado.lanzarAviso("Ya tienes 3 reservas activas. No puedes tener más de 3 a la vez.")

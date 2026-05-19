@@ -1,4 +1,4 @@
-#from src.vista.VistaSeleccionReserva import VistaSeleccionReserva
+                                                                  
 
 class ControladorMisReservas:
     def __init__(self, ref_modelo, ref_vista, ref_vista_estudiante, ref_vista_bibliotecario, correo_estudiante, tipo_usuario):
@@ -8,7 +8,7 @@ class ControladorMisReservas:
         self._vista_bibliotecario = ref_vista_bibliotecario
         self._correo  = correo_estudiante
         self._tipo_usuario = tipo_usuario
-        #self._detalle = VistaSeleccionReserva()
+                                                
 
     def actualizarReservas(self):
         reservas = self._modelo.obtenerReservasEstudiante(self._correo)
