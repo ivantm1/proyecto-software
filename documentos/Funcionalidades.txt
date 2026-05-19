@@ -1,0 +1,31 @@
+Cambiar Contraseña
+Buscar por nombre en catalogo
+Buscar por tema en catalogo
+Administrador puede crear cuentas
+Administrador puede borrar cuentas
+Cerrar sesion
+Registro comprueba todos los campos validos incluyendo que sea un correo institucional
+Todas las vistas tienen opciones de volver y de ir a otras creando un grafo conexo
+Segun la disponibilidad en el catalogo aparece el libro de un color
+Se puede extender prestamo
+Se puede reservar libro
+No se puede extender un prestamo de un libro reservado
+Bibliotecario puede retirar libros
+Solo bibliotecario puede ver libros retirados en el catalogo
+Bibliotecario puede aplicar sanciones
+Bibliotecario puede retirar sanciones
+Las sanciones son acumulativas y se suma duracion
+Solo bibliotecario puede registrar prestamos
+Solo bibliotecario puede devolver libros
+En las devoluciones se registra el estado del libro y si esta mal se aplica sancion automaticamente
+Bibliotecario puede añadir libros
+Bibliotecario puede ver un grafico de libros mas prestados segun el tema(por añadir)
+Administrador puede crear copias de seguridad(por añadir)
+Los botones al pasar por encima y clicar cambian de color
+La contraseña aparece oculta mientras la introduces
+En registro contraseña y coonfirmar contraseña deben ser iguales
+Logo propio de la aplicacion
+
+
+
+

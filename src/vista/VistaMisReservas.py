@@ -34,7 +34,7 @@ class VistaMisReservas(QDialog, Form):
         
         self.tabla_libros.resizeColumnsToContents()
 
-        self._reservas = lista_reservas  # guardamos para acceder por índice
+        self._reservas = lista_reservas                                     
 
         if not lista_reservas:
             return

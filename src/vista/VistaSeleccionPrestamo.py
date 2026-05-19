@@ -37,7 +37,7 @@ class VistaSeleccionPrestamo(QDialog, Form):
         self.linea_resumen.setText(str(prestamo.descripcion) if prestamo.descripcion else "Sin descripción")
         self.linea_estado.setText(f"Activo — Devolución: {prestamo.fecha_devolucion}")
         
-        # Cambiar el texto del botón según el tipo de usuario
+                                                             
         if tipo_usuario == "Bibliotecario":
             self.boton_extender.setText("Terminar préstamo")
         else:

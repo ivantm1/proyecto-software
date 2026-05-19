@@ -8,7 +8,7 @@ class VistaEstudiante(QDialog, Form):
         super().__init__()
         self.setupUi(self)
         self.controlador = None
-        # Conectar el botón a la función
+                                        
         self.boton_perfil.clicked.connect(self.on_ver_perfil_click)
         self.boton_catalogo.clicked.connect(self.on_ver_catalogo_click)
         self.boton_prestamos.clicked.connect(self.on_mis_prestamos_click)
@@ -17,7 +17,7 @@ class VistaEstudiante(QDialog, Form):
         try:
             self.boton_favoritos.clicked.connect(self.on_ver_favoritos_click)
         except AttributeError:
-            pass    # El botón aún no existe en el .ui, pendiente de añadir
+            pass                                                           
 
     def on_ver_perfil_click(self):
         if self.controlador:

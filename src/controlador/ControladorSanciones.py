@@ -1,8 +1,8 @@
 class ControladorSanciones:
-    """
-    Controlador para la vista Sanciones (rol Bibliotecario).
-    Gestiona la consulta y aplicación de sanciones manuales.
-    """
+\
+\
+\
+       
 
     def __init__(self, ref_modelo, ref_vista, ref_vista_gestion=None):
         self._modelo = ref_modelo

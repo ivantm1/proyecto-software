@@ -6,7 +6,7 @@ Form, Window = uic.loadUiType("./src/vista/Ui/VistaRegistro.ui")
 class VistaRegistro(QDialog, Form):
     def __init__(self):
         super().__init__()
-        self.setupUi(self)  # Inicializa los widgets
+        self.setupUi(self)                          
         self.controlador = None
 
         self.boton_registro.clicked.connect(self.on_register_click)

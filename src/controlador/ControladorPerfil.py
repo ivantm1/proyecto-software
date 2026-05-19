@@ -5,8 +5,8 @@ class ControladorPerfil:
     def __init__(self, ref_modelo, ref_vista_perfil, ref_vista_anterior, usuario_activo):
         self._modelo          = ref_modelo
         self._vista           = ref_vista_perfil
-        self._vista_anterior  = ref_vista_anterior  # Estudiante o Bibliotecario
-        self._usuario         = usuario_activo       # UsuarioVO del usuario logueado
+        self._vista_anterior  = ref_vista_anterior                              
+        self._usuario         = usuario_activo                                       
  
     def cerrarPerfil(self):
         self._vista.close()

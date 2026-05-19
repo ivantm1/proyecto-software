@@ -8,18 +8,18 @@ class ControladorAnadirLibro:
         self._vista_bibliotecario = ref_vista_bibliotecario
 
     def anadirLibro(self, titulo, isbn, autor, tema, descripcion):
-        # 1. Validar que todos los campos estén rellenos
+                                                        
         if not all([titulo, isbn, autor, tema, descripcion]):
             self._vista.lanzarAviso("Por favor, rellena todos los campos.")
             return
 
-        # 2. Comprobar que el ISBN no exista ya en la BD
+                                                        
         libro_existente = self._modelo.buscarPorISBN(isbn)
         if libro_existente is not None:
             self._vista.lanzarAviso(f"Ya existe un libro con el ISBN '{isbn}'.")
             return
 
-        # 3. Construir el LibroVO con fecha de hoy
+                                                  
         hoy = datetime.date.today().strftime('%Y-%m-%d')
         libro = LibroVO(
             isbn=isbn,
@@ -32,7 +32,7 @@ class ControladorAnadirLibro:
             nombre_tema=tema
         )
 
-        # 4. Llamar a la capa de lógica
+                                       
         exito = self._modelo.altaLibro(libro)
         if exito:
             self._vista.mostrarResultado(f"Libro '{titulo}' añadido correctamente.")

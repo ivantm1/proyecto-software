@@ -4,7 +4,7 @@ class ReservaVO:
         self._correo_estudiante = correo_estudiante
         self._fecha_reserva = fecha_reserva
         self._estado = estado
-        # Datos del libro (se rellenan con JOIN en el DAO)
+                                                          
         self._titulo      = ''
         self._autor       = ''
         self._nombre_tema = ''

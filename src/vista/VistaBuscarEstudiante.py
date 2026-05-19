@@ -9,7 +9,7 @@ class VistaBuscarEstudiante(QDialog, Form):
         self.setupUi(self)
         self._controlador = None
         
-        # Conexión de botones
+                             
         self.boton_buscar.clicked.connect(self.on_buscar_click)
         self.boton_volver.clicked.connect(self.on_volver_click)
 

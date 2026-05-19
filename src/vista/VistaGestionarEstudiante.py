@@ -10,7 +10,7 @@ class VistaGestionarEstudiante(QDialog, Form):
         self._controlador = None
         self._correo_estudiante = None
 
-        # Conexión de botones
+                             
         self.boton_volver.clicked.connect(self.on_volver_click)
         self.boton_cambiar.clicked.connect(self.on_hacer_prestamo_click)
         self.boton_prestamos.clicked.connect(self.on_ver_prestamos_click)
@@ -19,7 +19,7 @@ class VistaGestionarEstudiante(QDialog, Form):
 
     def cargar_datos(self, usuario, num_prestamos, num_reservas, num_sanciones):
         self._correo_estudiante = usuario.correo
-        # Asumiendo que el objeto usuario tiene atributos nombre, apellidos y correo
+                                                                                    
         self.linea_nombre.setText(usuario.nombre)
         self.linea_apellidos.setText(usuario.apellidos)
         self.linea_email.setText(usuario.correo)

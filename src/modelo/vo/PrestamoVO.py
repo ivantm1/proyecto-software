@@ -5,7 +5,7 @@ class PrestamoVO:
         self._fecha_prestamo    = fecha_prestamo
         self._fecha_devolucion  = fecha_devolucion
         self._estado            = estado
-        # Datos del libro (se rellenan con JOIN en el DAO)
+                                                          
         self._titulo      = ''
         self._autor       = ''
         self._nombre_tema = ''
