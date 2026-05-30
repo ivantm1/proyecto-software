@@ -40,13 +40,6 @@ CREATE TABLE Estudiantes (
 
 
 
-CREATE TABLE Notificaciones (
-    ID_notificacion INT PRIMARY KEY IDENTITY(1,1),
-    mensaje TEXT NOT NULL,
-    fecha_envio DATETIME DEFAULT GETDATE(),
-    email VARCHAR(100) UNIQUE NOT NULL,
-    FOREIGN KEY (email) REFERENCES Estudiantes(email) ON DELETE CASCADE
-);
 
 CREATE TABLE Libros (
     ISBN VARCHAR(20) PRIMARY KEY,
