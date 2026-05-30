@@ -51,14 +51,9 @@ class ControladorCatalogo:
         if libro is None:
             return
         
-                                                           
         estudiante = None
         if self._tipo_usuario in ["Bibliotecario", "Administrador"]:
-            prestamo = self._modelo.buscarPrestamoActivoPorISBN(libro.isbn)
-            if prestamo:
-                estudiante_vo = self._modelo.buscarEstudiante(prestamo.correo_estudiante)
-                if estudiante_vo:
-                    estudiante = f"{estudiante_vo.nombre} {estudiante_vo.apellidos}"
+            estudiante = self._modelo.obtenerNombreEstudiantePrestamo(libro.isbn)
         
         self._libroPrestado.controlador = self
         self._libroPrestado.mostrarLibro(libro, estudiante, self._tipo_usuario)
@@ -74,24 +69,9 @@ class ControladorCatalogo:
             self._libroPrestado.lanzarAviso("No hay usuario identificado.")
             return
 
-        if self._modelo.tieneSancionActiva(self._correo_usuario):
-            self._libroPrestado.lanzarAviso("Tienes una sanción activa y no puedes realizar reservas.")
-            return
-
-                                       
-        num_prestamos = self._modelo.contarPrestamosEstudiante(self._correo_usuario)
-        if num_prestamos >= 3:
-            self._libroPrestado.lanzarAviso("Ya tienes 3 préstamos activos. No puedes tener más de 3 a la vez.")
-            return
-
-                                      
-        num_reservas = self._modelo.contarReservasEstudiante(self._correo_usuario)
-        if num_reservas >= 3:
-            self._libroPrestado.lanzarAviso("Ya tienes 3 reservas activas. No puedes tener más de 3 a la vez.")
-            return
-
-        if self._modelo.tienePrestamoActivo(isbn, self._correo_usuario):
-            self._libroPrestado.lanzarAviso("No puedes reservar un libro que ya tienes prestado.")
+        valido, mensaje = self._modelo.validarReserva(isbn, self._correo_usuario)
+        if not valido:
+            self._libroPrestado.lanzarAviso(mensaje)
             return
 
         exito = self._modelo.crearReserva(isbn, self._correo_usuario)

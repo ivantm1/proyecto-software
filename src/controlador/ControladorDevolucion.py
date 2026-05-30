@@ -1,5 +1,3 @@
-import datetime
-
 class ControladorDevolucion:
     def __init__(self, ref_modelo, ref_vista_devolucion, ref_vista_bibliotecario):
         self._modelo      = ref_modelo
@@ -7,23 +5,23 @@ class ControladorDevolucion:
         self._vista_anterior = ref_vista_bibliotecario
 
     def registrarDevolucion(self, isbn, estado_libro):
-                                               
+        if not isbn:
+            self._vista.lanzarAviso("Por favor, introduce un ISBN válido.")
+            return
+
         prestamo = self._modelo.buscarPrestamoActivoPorISBN(isbn)
         if prestamo is None:
             self._vista.lanzarAviso("No se encontró ningún préstamo activo con ese ISBN.")
             return
 
-                                    
-        semanas_retraso = self._calcularSemanasRetraso(prestamo.fecha_devolucion)
-
-                                                                                         
         exito = self._modelo.registrarDevolucion(isbn)
         if not exito:
             self._vista.lanzarAviso("Error al registrar la devolución. Inténtalo de nuevo.")
             return
 
+        semanas_retraso = self._modelo.calcularSemanasRetraso(prestamo.fecha_devolucion)
+
         mensajes = []
-                                           
         if semanas_retraso > 0:
             self._modelo.aplicarSancionRetraso(prestamo.correo_estudiante, semanas_retraso)
             mensajes.append(f"Devolución registrada con {semanas_retraso} semana(s) de retraso.")
@@ -40,19 +38,6 @@ class ControladorDevolucion:
         self._vista.mostrarResultado(mensaje)
         self._vista.lanzarAviso(mensaje)
         self._vista.limpiarFormulario()
-
-    def _calcularSemanasRetraso(self, fecha_devolucion):
-                                                                              
-        if fecha_devolucion is None:
-            return 0
-        hoy = datetime.date.today()
-                                                                            
-        if isinstance(fecha_devolucion, str):
-            fecha_devolucion = datetime.date.fromisoformat(fecha_devolucion[:10])
-        if hoy <= fecha_devolucion:
-            return 0
-        dias_retraso = (hoy - fecha_devolucion).days
-        return max(1, dias_retraso // 7)
 
     def volver(self):
         self._vista.limpiarFormulario()

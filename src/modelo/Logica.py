@@ -28,8 +28,11 @@ class Logica:
     def registrarUsuario(self, registroVO):
         return self._sesion.registrarUsuario(registroVO)
 
-    def cambiarContrasena(self, correo, nueva_contrasena):
-        return self._sesion.cambiarContrasena(correo, nueva_contrasena)
+    def validarRegistroAdmin(self, nombre, apellidos, correo, contrasena, confirmar, tipo):
+        return self._sesion.validarRegistroAdmin(nombre, apellidos, correo, contrasena, confirmar, tipo)
+
+    def validarCambioContrasena(self, correo, actual, nueva, confirmar):
+        return self._sesion.validarCambioContrasena(correo, actual, nueva, confirmar)
 
     def obtenerUsuarioPorCorreo(self, correo):
         return self._sesion.obtenerUsuarioPorCorreo(correo)
@@ -71,6 +74,12 @@ class Logica:
     def buscarRetiradoPorISBN(self, isbn):
         return self._libros.buscarRetiradoPorISBN(isbn)
 
+    def validarAltaLibro(self, titulo, isbn, autor, tema, descripcion):
+        return self._libros.validarAltaLibro(titulo, isbn, autor, tema, descripcion)
+
+    def crearLibroVO(self, titulo, isbn, autor, tema, descripcion):
+        return self._libros.crearLibroVO(titulo, isbn, autor, tema, descripcion)
+
                                           
     def registrarPrestamo(self, isbn, correo_estudiante):
         return self._prestamos.registrarPrestamo(isbn, correo_estudiante)
@@ -104,6 +113,9 @@ class Logica:
 
     def validarPrestamo(self, isbn, correo_estudiante):
         return self._prestamos.validarPrestamo(isbn, correo_estudiante)
+
+    def obtenerNombreEstudiantePrestamo(self, isbn):
+        return self._prestamos.obtenerNombreEstudiantePrestamo(isbn)
 
                                           
     def aplicarSancionRetraso(self, correo_estudiante, semanas_retraso):
@@ -148,6 +160,12 @@ class Logica:
 
     def reservaExpirada(self, isbn):
         return self._reservas.reservaExpirada(isbn)
+
+    def validarReserva(self, isbn, correo_estudiante):
+        return self._reservas.validarReserva(isbn, correo_estudiante)
+
+    def actualizarReservasEstudiante(self, correo_estudiante):
+        return self._reservas.actualizarReservasEstudiante(correo_estudiante)
 
     def obtenerReservaPorLibro(self, isbn):
         return self._reservas.obtenerReservaPorLibro(isbn)

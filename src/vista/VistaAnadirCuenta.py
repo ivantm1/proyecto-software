@@ -1,6 +1,5 @@
 from PyQt5.QtWidgets import QDialog, QMessageBox
 from PyQt5 import uic
-from src.modelo.vo.RegistroVO import RegistroVO
 
 Form, Window = uic.loadUiType("./src/vista/Ui/VistaAnadirCuenta.ui")
 
@@ -28,7 +27,7 @@ class VistaAnadirCuenta(QDialog, Form):
             confirmar = self.lineEdit_2.text()
             tipo = self.opcion_buscador.currentText()
 
-            self._controlador.registrarUsuario(RegistroVO(nombre, apellidos, correo, contrasena, tipo), confirmar)
+            self._controlador.registrarUsuario(nombre, apellidos, correo, contrasena, confirmar, tipo)
 
     def on_volver_click(self):
         if self._controlador:

@@ -1,4 +1,6 @@
 from src.modelo.dao.LibroDaoJDBC import LibroDaoJDBC
+import datetime
+from src.modelo.vo.LibroVO import LibroVO
 
 class LogicaLibros:
                                                                   
@@ -33,3 +35,28 @@ class LogicaLibros:
 
     def buscarRetiradoPorISBN(self, isbn):
         return LibroDaoJDBC().buscarRetiradoPorISBN(isbn)
+
+    def validarAltaLibro(self, titulo, isbn, autor, tema, descripcion):
+        """Valida que los datos para agregar un libro sean correctos."""
+        if not all([titulo, isbn, autor, tema, descripcion]):
+            return False, "Por favor, rellena todos los campos."
+        
+        libro_existente = self.buscarPorISBN(isbn)
+        if libro_existente is not None:
+            return False, f"Ya existe un libro con el ISBN '{isbn}'."
+        
+        return True, ""
+
+    def crearLibroVO(self, titulo, isbn, autor, tema, descripcion):
+        """Crea un VO de Libro con la información proporcionada."""
+        hoy = datetime.date.today().strftime('%Y-%m-%d')
+        return LibroVO(
+            isbn=isbn,
+            titulo=titulo,
+            autor=autor,
+            fecha_llegada=hoy,
+            num_copias=1,
+            disponibilidad='Disponible',
+            descripcion=descripcion,
+            nombre_tema=tema
+        )

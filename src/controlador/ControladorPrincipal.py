@@ -55,21 +55,26 @@ class ControladorPrincipal:
         self._vistaLogin.Linea_contrasena.clear()
         self._vistaLogin.showMaximized()
 
-    def comprobarLogin(self, loginVO):
-        if not loginVO.nombre or not loginVO.contrasena:
+    def comprobarLogin(self, usuario, contrasena):
+        if not usuario or not contrasena:
             self._vistaLogin.lanzarAviso("Introduce usuario y contraseña.")
             return
-        usuario = self._modelo.comprobarLogin(loginVO)
-        if usuario is None:
+        
+        loginVO = LoginVO(usuario, contrasena)
+        usuario_obj = self._modelo.comprobarLogin(loginVO)
+        
+        if usuario_obj is None:
             self._vistaLogin.lanzarAviso("Usuario o contraseña incorrectos.")
             return
-        self._usuario_activo = usuario
+        
+        self._usuario_activo = usuario_obj
         self._vistaLogin.close()
-        if usuario.tipo == "Estudiante":
+        
+        if usuario_obj.tipo == "Estudiante":
             self.ventanaEstudiante()
-        elif usuario.tipo == "Bibliotecario":
+        elif usuario_obj.tipo == "Bibliotecario":
             self.ventanaBibliotecario()
-        elif usuario.tipo == "Admin":
+        elif usuario_obj.tipo == "Admin":
             self.ventanaAdmin()
 
     def ventanaRegistro(self):
@@ -78,19 +83,19 @@ class ControladorPrincipal:
             self._vistaLogin.close()
             self._vistaRegistro.showMaximized()
 
-    def registrarUsuario(self, nombre, apellidos, correo, contrasena, confirmar):
+    def registrarUsuario(self, nombre, apellidos, correo, contrasena, confirmar, tipo):
         valido, mensaje = self._modelo.validarRegistro(nombre, apellidos, correo, contrasena, confirmar)
         if not valido:
-            self._vistaRegistro.lanzarAviso(mensaje)
+            self._vistaAnadirCuenta.lanzarAviso(mensaje)
             return
 
-        registro = RegistroVO(nombre, apellidos, correo, contrasena)
+        registro = RegistroVO(nombre, apellidos, correo, contrasena, tipo)
         if self._modelo.registrarUsuario(registro):
-            self._vistaRegistro.lanzarAviso("Usuario registrado con éxito. Vuelve al login.")
-            self._vistaRegistro.close()
-            self.ventanaIniciarSesion()
+            self._vistaAnadirCuenta.lanzarAviso("Usuario registrado con éxito.")
+            self._vistaAnadirCuenta.close()
+            self.ventanaGestionarCuentas()
         else:
-            self._vistaRegistro.lanzarAviso("Error al registrarse. El email ya puede estar registrado.")
+            self._vistaAnadirCuenta.lanzarAviso("Error al registrarse. El email ya puede estar registrado.")
 
     def registroAtras(self):
         self._vistaRegistro.close()

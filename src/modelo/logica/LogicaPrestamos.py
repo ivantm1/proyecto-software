@@ -2,6 +2,7 @@ from src.modelo.dao.PrestamoDaoJDBC import PrestamoDaoJDBC
 from src.modelo.dao.LibroDaoJDBC import LibroDaoJDBC
 from src.modelo.dao.ReservaDaoJDBC import ReservaDaoJDBC
 from src.modelo.dao.SancionDaoJDBC import SancionDaoJDBC
+from src.modelo.dao.BuscarEstudianteDaoJDBC import BuscarEstudianteDaoJDBC
 
 class LogicaPrestamos:
     """Responsabilidad: ciclo de vida y consultas de préstamos."""
@@ -66,3 +67,14 @@ class LogicaPrestamos:
             return False, "No es posible prestar el libro porque no está disponible."
 
         return True, ""
+
+    def obtenerNombreEstudiantePrestamo(self, isbn):
+        """Obtiene el nombre completo del estudiante que tiene el libro prestado."""
+        prestamo = self.buscarPrestamoActivoPorISBN(isbn)
+        if prestamo is None:
+            return None
+        
+        estudiante_vo = BuscarEstudianteDaoJDBC().buscarEstudiante(prestamo.correo_estudiante)
+        if estudiante_vo:
+            return f"{estudiante_vo.nombre} {estudiante_vo.apellidos}"
+        return None
