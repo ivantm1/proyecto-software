@@ -41,32 +41,13 @@ class ControladorGestionarCuentas:
         else:
             self._vistaGestionarCuentas.lanzarAviso("No se pudo eliminar la cuenta.", error=True)
 
-    def registrarUsuario(self, registro, confirmar):
-        if not all([registro.nombre, registro.apellidos, registro.correo, registro.contrasena, confirmar]):
-            self._vistaAnadirCuenta.lanzarAviso("Rellena todos los campos.")
-            return
-        if registro.tipo == "Estudiante" and not registro.correo.endswith("@estudiantes.unileon.es"):
-            self._vistaAnadirCuenta.lanzarAviso("Usa un correo institucional válido (@estudiantes.unileon.es).")
-            return
-        
-        if (registro.tipo == "Bibliotecario" or registro.tipo == "Admin") and not registro.correo.endswith("@unileon.es"):
-            self._vistaAnadirCuenta.lanzarAviso("Usa un correo institucional válido (@unileon.es).")
-            return
-        if registro.contrasena != confirmar:
-            self._vistaAnadirCuenta.lanzarAviso("Las contraseñas no coinciden.")
-            return
-        if len(registro.contrasena) < 8:
-            self._vistaAnadirCuenta.lanzarAviso("La contraseña debe tener al menos 8 caracteres.")
-            return
-        if not registro.contrasena.isascii():
-            self._vistaAnadirCuenta.lanzarAviso("La contraseña no debe contener caracteres extraños.")
+    def registrarUsuario(self, nombre, apellidos, correo, contrasena, confirmar, tipo):
+        valido, mensaje = self._modelo.validarRegistroAdmin(nombre, apellidos, correo, contrasena, confirmar, tipo)
+        if not valido:
+            self._vistaAnadirCuenta.lanzarAviso(mensaje)
             return
 
-        tipo = self._vistaAnadirCuenta.opcion_buscador.currentText()
-        if not tipo:
-            self._vistaAnadirCuenta.lanzarAviso("Selecciona un tipo de cuenta.")
-            return
-
+        registro = RegistroVO(nombre, apellidos, correo, contrasena, tipo)
         if self._modelo.registrarUsuario(registro):
             self._vistaAnadirCuenta.lanzarAviso("Cuenta creada con éxito.")
             self._vistaAnadirCuenta.close()

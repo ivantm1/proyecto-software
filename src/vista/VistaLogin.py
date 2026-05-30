@@ -1,8 +1,6 @@
 from PyQt5.QtWidgets import QApplication, QMainWindow, QMessageBox, QDialog
 from PyQt5 import uic
-from src.modelo.vo.LoginVO import LoginVO
 
-                                                  
 Form, Window = uic.loadUiType("./src/vista/Ui/VistaLogin.ui")
 
 class VistaLogin(QDialog, Form):
@@ -21,10 +19,8 @@ class VistaLogin(QDialog, Form):
         usuario = self.Linea_usuario.text()                                   
         contrasena = self.Linea_contrasena.text()                                       
 
-        login = LoginVO(usuario, contrasena)
         if self.controlador:
-            self.controlador.comprobarLogin(login)
-        return login
+            self.controlador.comprobarLogin(usuario, contrasena)
     
     def on_register_click(self):
         if self.controlador:

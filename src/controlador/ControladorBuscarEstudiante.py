@@ -16,7 +16,6 @@ class ControladorBuscarEstudiante:
         self._estudiante_actual = None
 
     def buscarEstudiante(self, correo):
-                                                                       
         if not correo:
             QMessageBox.warning(self._vista_buscar, "Aviso", "Por favor, introduce un correo electrónico.")
             return
@@ -28,17 +27,13 @@ class ControladorBuscarEstudiante:
             return
 
         estudiante, num_prestamos, num_reservas, num_sanciones_activas = resumen
-        
-                                             
         self._vista_gestion.cargar_datos(estudiante, num_prestamos, num_reservas, num_sanciones_activas)
         self._vista_gestion.controlador = self
         
-                                     
         self._vista_buscar.close()
         self._vista_gestion.showMaximized()
 
     def volverDeBuscarEstudiante(self):
-                                                                               
         if self._vista_buscar:
             self._vista_buscar.close()
         if self._vista_bibliotecario:
@@ -60,10 +55,9 @@ class ControladorBuscarEstudiante:
             self.buscarEstudiante(correo_estudiante)
         else:
             QMessageBox.warning(self._vista_gestion, "Error", 
-                                "No se pudo registrar el préstamo. El libro puede no estar disponible.")
+                                "No se pudo registrar el préstamo.")
 
     def volverGestionarEstudiante(self):
-                                                                        
         self._vista_gestion.close()
         self._vista_buscar.linea_busqueda.clear()
         self._vista_buscar.showMaximized()
@@ -84,17 +78,9 @@ class ControladorBuscarEstudiante:
         
     def verReservasEstudiante(self, correo_estudiante):
         reservas = self._modelo.obtenerReservasEstudiante(correo_estudiante)
-        if reservas:
-            reservas_str = "\n".join([
-                f"{r.isbn} - Estado: {r.estado} - Fecha: {r.fecha_reserva}"
-                for r in reservas
-            ])
-            QMessageBox.information(self._vista_gestion, "Reservas del Estudiante", reservas_str)
-        else:
-            QMessageBox.information(self._vista_gestion, "Reservas del Estudiante", "No hay reservas activas para este estudiante.")
+        self._vista_gestion.mostrarReservas(reservas)
 
     def gestionarSanciones(self, correo_estudiante):
-                                                           
         sanciones = self._modelo.obtenerSancionesEstudiante(correo_estudiante)
         ctrl_sanciones = ControladorSanciones(self._modelo, self._vista_sanciones, self._vista_gestion)
         ctrl_sanciones._estudiante_actual = self._estudiante_actual
@@ -104,6 +90,5 @@ class ControladorBuscarEstudiante:
         self._vista_sanciones.showMaximized()
 
     def volverASanciones(self):
-                                                                         
         self._vista_sanciones.close()
         self._vista_gestion.showMaximized()

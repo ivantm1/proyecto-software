@@ -11,11 +11,7 @@ class ControladorMisReservas:
                                                 
 
     def actualizarReservas(self):
-        reservas = self._modelo.obtenerReservasEstudiante(self._correo)
-        for reserva in reservas:
-            if self._modelo.reservaExpirada(reserva.isbn_libro):
-                self._modelo.liberarReservaExpirada(reserva.isbn_libro)
-        reservas = self._modelo.obtenerReservasEstudiante(self._correo)
+        reservas = self._modelo.actualizarReservasEstudiante(self._correo)
         self._vista.mostrarReservas(reservas)
 
     def buscarReservas(self, titulo, tema):

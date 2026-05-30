@@ -1,6 +1,3 @@
-import datetime
-from src.modelo.vo.LibroVO import LibroVO
-
 class ControladorAnadirLibro:
     def __init__(self, ref_modelo, ref_vista_anadir, ref_vista_bibliotecario):
         self._modelo             = ref_modelo
@@ -8,32 +5,14 @@ class ControladorAnadirLibro:
         self._vista_bibliotecario = ref_vista_bibliotecario
 
     def anadirLibro(self, titulo, isbn, autor, tema, descripcion):
-                                                        
-        if not all([titulo, isbn, autor, tema, descripcion]):
-            self._vista.lanzarAviso("Por favor, rellena todos los campos.")
+        valido, mensaje = self._modelo.validarAltaLibro(titulo, isbn, autor, tema, descripcion)
+        if not valido:
+            self._vista.lanzarAviso(mensaje)
             return
 
-                                                        
-        libro_existente = self._modelo.buscarPorISBN(isbn)
-        if libro_existente is not None:
-            self._vista.lanzarAviso(f"Ya existe un libro con el ISBN '{isbn}'.")
-            return
-
-                                                  
-        hoy = datetime.date.today().strftime('%Y-%m-%d')
-        libro = LibroVO(
-            isbn=isbn,
-            titulo=titulo,
-            autor=autor,
-            fecha_llegada=hoy,
-            num_copias=1,
-            disponibilidad='Disponible',
-            descripcion=descripcion,
-            nombre_tema=tema
-        )
-
-                                       
+        libro = self._modelo.crearLibroVO(titulo, isbn, autor, tema, descripcion)
         exito = self._modelo.altaLibro(libro)
+        
         if exito:
             self._vista.mostrarResultado(f"Libro '{titulo}' añadido correctamente.")
             self._vista.lanzarAviso(f"Libro '{titulo}' añadido correctamente.")
