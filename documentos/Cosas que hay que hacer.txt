@@ -5,6 +5,7 @@ hacer varias logicas
 pasar todo lo posible de controlador a logica (que tenga sentido)
 
 quitar que al hacer esc se cierre
+poner logo en las vistas
 
 actualizar numero de prestamos cuando se cambia igual que numero de sanciones.
 

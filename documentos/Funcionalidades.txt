@@ -25,6 +25,7 @@ Los botones al pasar por encima y clicar cambian de color
 La contraseña aparece oculta mientras la introduces
 En registro contraseña y coonfirmar contraseña deben ser iguales
 Logo propio de la aplicacion
+Patron DAO
 
 
 
