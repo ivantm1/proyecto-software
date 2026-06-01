@@ -258,6 +258,23 @@ class ControladorPrincipal:
         self._vistaBibliotecario.close()
         self._vistaBuscarEstudiante.showMaximized()
 
+    def realizarCopiaSeguridad(self):
+        from PyQt5.QtWidgets import QMessageBox
+
+        exito, info = self._modelo.realizarCopiaSeguridad()
+        msg = QMessageBox()
+        if exito:
+            msg.setWindowTitle("Copia de seguridad")
+            msg.setIcon(QMessageBox.Information)
+            msg.setText("✅ Copia de seguridad creada correctamente.")
+            msg.setInformativeText(f"Guardada en:\n{info}")
+        else:
+            msg.setWindowTitle("Error")
+            msg.setIcon(QMessageBox.Critical)
+            msg.setText("❌ No se pudo crear la copia de seguridad.")
+            msg.setInformativeText(info)
+        msg.exec_()
+
     def volverBuscarEstudiante(self):
         if self._vistaBuscarEstudiante and self._vistaBibliotecario:
             self._vistaBuscarEstudiante.close()

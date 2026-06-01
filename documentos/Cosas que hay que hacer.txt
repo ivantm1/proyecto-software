@@ -1,8 +1,8 @@
-copia de seguridad desde admin
+
 en ver prestamos del bibliotecario poner los libros devueltos tambien
 
 hacer varias logicas
-pasar todo lo posible de controlador a logica (que tenga sentido)
+pasar todo lo posible de controlador a logica (que tenga sentido)(hecho pero revisar otras 4 veces)
 
 quitar que al hacer esc se cierre
 

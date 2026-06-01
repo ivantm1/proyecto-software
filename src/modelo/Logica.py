@@ -5,6 +5,7 @@ from src.modelo.logica.LogicaPrestamos import LogicaPrestamos
 from src.modelo.logica.LogicaReservas import LogicaReservas
 from src.modelo.logica.LogicaSanciones import LogicaSanciones
 from src.modelo.logica.LogicaEstudiantes import LogicaEstudiantes
+from src.modelo.logica.LogicaCopiaSeguridad import LogicaCopiaSeguridad
 
 class Logica:
     def __init__(self):
@@ -14,6 +15,7 @@ class Logica:
         self._reservas = LogicaReservas()
         self._sanciones = LogicaSanciones()
         self._estudiantes = LogicaEstudiantes()
+        self._copias = LogicaCopiaSeguridad()
 
     def pruebaSelect(self):
         userDao = UserDaoJDBC()
@@ -188,3 +190,7 @@ class Logica:
 
     def obtenerResumenEstudiante(self, correo):
         return self._estudiantes.obtenerResumenEstudiante(correo)
+
+    # ── Copia de seguridad ──────────────────────────────────────────
+    def realizarCopiaSeguridad(self) -> tuple[bool, str]:
+        return self._copias.realizarCopiaSeguridad()
