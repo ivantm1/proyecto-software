@@ -49,4 +49,9 @@ class ControladorMisPrestamos:
 
     def registroAtras(self):
         self._vista.close()
+        if self._tipo_usuario == "Bibliotecario":
+            resumen = self._modelo.obtenerResumenEstudiante(self._correo)
+            if resumen:
+                estudiante, num_prestamos, num_reservas, num_sanciones = resumen
+                self._vista_estudiante.cargar_datos(estudiante, num_prestamos, num_reservas, num_sanciones)
         self._vista_estudiante.showMaximized()

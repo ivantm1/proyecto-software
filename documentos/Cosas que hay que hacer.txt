@@ -8,7 +8,7 @@ quitar que al hacer esc se cierre
 poner logo en las vistas
 
 actualizar numero de prestamos cuando se cambia igual que numero de sanciones.
-si el prestamo esta terminado no se puede terminar
+si el prestamo esta terminado no se puede terminar(creo que está)
 si finalizas un prestamo desde mis prestamos se aplique sancion
 
 grafico de libros prestados por temas
