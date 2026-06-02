@@ -38,3 +38,31 @@
 [2026-06-02 01:52:29] [INFO ] INICIO_SESION | usuario=123 tipo=Estudiante
 [2026-06-02 01:52:41] [INFO ] CIERRE_SESION | usuario=123
 [2026-06-02 01:52:58] [INFO ] INICIO_SESION | usuario=12 tipo=Bibliotecario
+[2026-06-02 11:16:31] [INFO ] INICIO_SESION | usuario=123 tipo=Estudiante
+[2026-06-02 11:16:44] [INFO ] CIERRE_SESION | usuario=123
+[2026-06-02 11:23:27] [INFO ] INICIO_SESION | usuario=123 tipo=Estudiante
+[2026-06-02 11:23:29] [INFO ] CIERRE_SESION | usuario=123
+[2026-06-02 11:24:49] [INFO ] INICIO_SESION | usuario=12 tipo=Bibliotecario
+[2026-06-02 11:24:53] [INFO ] CIERRE_SESION | usuario=12
+[2026-06-02 11:24:58] [INFO ] INICIO_SESION | usuario=123 tipo=Estudiante
+[2026-06-02 11:25:05] [INFO ] CIERRE_SESION | usuario=123
+[2026-06-02 11:25:39] [INFO ] INICIO_SESION | usuario=123 tipo=Estudiante
+[2026-06-02 11:28:13] [INFO ] CIERRE_SESION | usuario=123
+[2026-06-02 11:28:19] [INFO ] INICIO_SESION | usuario=123 tipo=Estudiante
+[2026-06-02 11:30:22] [INFO ] CIERRE_SESION | usuario=123
+[2026-06-02 11:30:33] [INFO ] INICIO_SESION | usuario=123 tipo=Estudiante
+[2026-06-02 11:30:40] [INFO ] CIERRE_SESION | usuario=123
+[2026-06-02 11:30:45] [INFO ] INICIO_SESION | usuario=12 tipo=Bibliotecario
+[2026-06-02 11:40:34] [INFO ] CIERRE_SESION | usuario=12
+[2026-06-02 11:41:17] [INFO ] INICIO_SESION | usuario=12 tipo=Bibliotecario
+[2026-06-02 11:43:20] [INFO ] CIERRE_SESION | usuario=12
+[2026-06-02 11:43:32] [INFO ] INICIO_SESION | usuario=12 tipo=Bibliotecario
+[2026-06-02 11:43:42] [INFO ] CIERRE_SESION | usuario=12
+[2026-06-02 11:44:01] [INFO ] INICIO_SESION | usuario=12 tipo=Bibliotecario
+[2026-06-02 11:44:06] [INFO ] CIERRE_SESION | usuario=12
+[2026-06-02 11:46:25] [INFO ] INICIO_SESION | usuario=12 tipo=Bibliotecario
+[2026-06-02 11:46:46] [INFO ] CIERRE_SESION | usuario=12
+[2026-06-02 11:47:30] [INFO ] INICIO_SESION | usuario=12 tipo=Bibliotecario
+[2026-06-02 11:49:01] [INFO ] CIERRE_SESION | usuario=12
+[2026-06-02 11:49:09] [INFO ] INICIO_SESION | usuario=12 tipo=Bibliotecario
+[2026-06-02 11:49:17] [INFO ] CIERRE_SESION | usuario=12

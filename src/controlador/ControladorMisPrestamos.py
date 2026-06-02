@@ -45,7 +45,7 @@ class ControladorMisPrestamos:
             self.actualizarPrestamos()
             self._detalle.close()
         else:
-            self._detalle.lanzarAviso("No se pudo terminar el préstamo.")
+            self._detalle.lanzarAviso("Este préstamo ya ha sido devuelto.")
 
     def registroAtras(self):
         self._vista.close()
