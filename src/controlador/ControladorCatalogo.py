@@ -1,3 +1,4 @@
+from src.modelo.logica.LoggerSingleton import Logger
 from src.vista.VistaLibroDisponible import VistaLibroDisponible
 from src.vista.VistaLibroPrestado import VistaLibroPrestado
 from src.vista.VistaLibroBibliotecario import VistaLibroBibliotecario
@@ -71,14 +72,17 @@ class ControladorCatalogo:
 
         valido, mensaje = self._modelo.validarReserva(isbn, self._correo_usuario)
         if not valido:
+            Logger().reserva_error(isbn, self._correo_usuario, mensaje)
             self._libroPrestado.lanzarAviso(mensaje)
             return
 
         exito = self._modelo.crearReserva(isbn, self._correo_usuario)
         if exito:
+            Logger().reserva_ok(isbn, self._correo_usuario)
             self._libroPrestado.lanzarAviso("Reserva realizada con éxito.")
             self.cargarCatalogo()
         else:
+            Logger().reserva_error(isbn, self._correo_usuario, "Error en BD")
             self._libroPrestado.lanzarAviso(
                 "No se pudo reservar el libro. "
                 "Verifica que no excedas el límite de 3 reservas activas o que el libro esté disponible."
@@ -87,9 +91,11 @@ class ControladorCatalogo:
     def bajaLibro(self, isbn, motivo="Retirado por el bibliotecario"):
         exito = self._modelo.bajaLibro(isbn, motivo)
         if exito:
+            Logger().baja_libro(isbn, motivo, actor=self._correo_usuario)
             self._vista_catalogo.lanzarAviso("Libro retirado del catálogo.")
             self.cargarCatalogo()
         else:
+            Logger().baja_libro_error(isbn)
             self._vista_catalogo.lanzarAviso(
                 "No se pudo retirar el libro. "
                 "Comprueba que no tenga préstamos o reservas activas."
@@ -139,6 +145,7 @@ class ControladorCatalogo:
     def restaurarLibro(self, isbn):
         exito = self._modelo.restaurarLibro(isbn)
         if exito:
+            Logger().restaurar_libro(isbn, actor=self._correo_usuario)
             self._vista_catalogo.lanzarAviso("Libro restaurado al catálogo correctamente.")
             self.cargarCatalogo()
         else:

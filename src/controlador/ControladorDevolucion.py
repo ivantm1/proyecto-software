@@ -1,3 +1,5 @@
+from src.modelo.logica.LoggerSingleton import Logger
+
 class ControladorDevolucion:
     def __init__(self, ref_modelo, ref_vista_devolucion, ref_vista_bibliotecario):
         self._modelo      = ref_modelo
@@ -16,20 +18,36 @@ class ControladorDevolucion:
 
         exito = self._modelo.registrarDevolucion(isbn)
         if not exito:
+            Logger().devolucion_error(isbn)
             self._vista.lanzarAviso("Error al registrar la devolución. Inténtalo de nuevo.")
             return
 
         semanas_retraso = self._modelo.calcularSemanasRetraso(prestamo.fecha_devolucion)
+        Logger().devolucion_ok(isbn, prestamo.correo_estudiante, semanas_retraso)
 
         mensajes = []
         if semanas_retraso > 0:
             self._modelo.aplicarSancionRetraso(prestamo.correo_estudiante, semanas_retraso)
+            Logger().sancion_aplicada(
+                prestamo.correo_estudiante,
+                "retraso",
+                f"semanas={semanas_retraso} isbn={isbn}"
+            )
             mensajes.append(f"Devolución registrada con {semanas_retraso} semana(s) de retraso.")
             mensajes.append("Se ha aplicado una sanción por retraso al estudiante.")
 
         if estado_libro in ["Dañado", "Roto"]:
-            mensajes.append(f"El libro está {estado_libro.lower()}: no se aplica sanción automática.")
-            
+            sancion = self._modelo.aplicarSancionDanio(prestamo.correo_estudiante, estado_libro)
+            if sancion:
+                Logger().sancion_aplicada(
+                    prestamo.correo_estudiante,
+                    estado_libro.lower(),
+                    f"isbn={isbn}"
+                )
+                mensajes.append(f"El libro está {estado_libro.lower()}: se ha aplicado una sanción de daño.")
+            else:
+                mensajes.append(f"El libro está {estado_libro.lower()}: no se pudo aplicar la sanción automática.")
+
         if not mensajes:
             mensaje = "Devolución registrada correctamente."
         else:

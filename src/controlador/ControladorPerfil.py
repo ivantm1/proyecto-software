@@ -1,4 +1,5 @@
 from src.modelo.dao.UserDaoJDBC import UserDaoJDBC
+from src.modelo.logica.LoggerSingleton import Logger
  
 class ControladorPerfil:
     def __init__(self, ref_modelo, ref_vista_perfil, ref_vista_anterior, usuario_activo):

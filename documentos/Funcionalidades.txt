@@ -20,7 +20,7 @@ Solo bibliotecario puede devolver libros
 En las devoluciones se registra el estado del libro y si esta mal se aplica sancion automaticamente
 Bibliotecario puede añadir libros
 Bibliotecario puede ver un grafico de libros mas prestados segun el tema(por añadir)
-Administrador puede crear copias de seguridad(por añadir)
+Administrador puede crear copias de seguridad
 Los botones al pasar por encima y clicar cambian de color
 La contraseña aparece oculta mientras la introduces
 En registro contraseña y coonfirmar contraseña deben ser iguales

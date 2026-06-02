@@ -1,5 +1,6 @@
 from src.modelo.vo.LoginVO import LoginVO
 from src.modelo.vo.RegistroVO import RegistroVO
+from src.modelo.logica.LoggerSingleton import Logger
 from PyQt5.QtWidgets import QApplication, QMessageBox
 from src.controlador.ControladorCatalogo import ControladorCatalogo
 from src.controlador.ControladorMisPrestamos import ControladorMisPrestamos
@@ -49,6 +50,7 @@ class ControladorPrincipal:
         self._vistaBuscarEstudiante = ref_vista_buscar_estudiante
         self._vistaAnadirLibro      = ref_vista_anadir_libro
         self._usuario_activo = None
+        self._cerrando_por_cerrar_sesion = False
 
     def ventanaIniciarSesion(self):
         self._vistaLogin.Linea_usuario.clear()
@@ -65,9 +67,11 @@ class ControladorPrincipal:
         
         if usuario_obj is None:
             self._vistaLogin.lanzarAviso("Usuario o contraseña incorrectos.")
+            Logger().login_error(usuario)
             return
         
         self._usuario_activo = usuario_obj
+        Logger().login_ok(usuario_obj.correo, usuario_obj.tipo)
         self._vistaLogin.close()
         
         if usuario_obj.tipo == "Estudiante":
@@ -91,10 +95,12 @@ class ControladorPrincipal:
 
         registro = RegistroVO(nombre, apellidos, correo, contrasena, tipo)
         if self._modelo.registrarUsuario(registro):
+            Logger().registro_cuenta_ok(correo, tipo, actor="Registro público")
             self._vistaAnadirCuenta.lanzarAviso("Usuario registrado con éxito.")
             self._vistaAnadirCuenta.close()
             self.ventanaGestionarCuentas()
         else:
+            Logger().registro_cuenta_error(correo, actor="Registro público")
             self._vistaAnadirCuenta.lanzarAviso("Error al registrarse. El email ya puede estar registrado.")
 
     def registroAtras(self):
@@ -224,7 +230,13 @@ class ControladorPrincipal:
     def ventanaAnadirLibro(self):
         if not self._vistaAnadirLibro:
             return
-        ctrl = ControladorAnadirLibro(self._modelo, self._vistaAnadirLibro, self._vistaBibliotecario)
+        correo = self._usuario_activo.correo if self._usuario_activo else ""
+        ctrl = ControladorAnadirLibro(
+            self._modelo,
+            self._vistaAnadirLibro,
+            self._vistaBibliotecario,
+            correo_actor=correo
+        )
         self._vistaAnadirLibro.controlador = ctrl
         self._vistaBibliotecario.close()
         self._vistaAnadirLibro.showMaximized()
@@ -245,6 +257,8 @@ class ControladorPrincipal:
         msg.button(QMessageBox.No).setText("No")
         respuesta = msg.exec_()
         if respuesta == QMessageBox.Yes:
+            Logger().cierre_sesion(self._usuario_activo.correo)
+            self._cerrando_por_cerrar_sesion = True
             if self._vistaRegistro:
                 QApplication.closeAllWindows()
                 self.ventanaIniciarSesion()
@@ -262,13 +276,16 @@ class ControladorPrincipal:
         from PyQt5.QtWidgets import QMessageBox
 
         exito, info = self._modelo.realizarCopiaSeguridad()
+        actor = self._usuario_activo.correo if self._usuario_activo else "desconocido"
         msg = QMessageBox()
         if exito:
+            Logger().copia_seguridad_ok(info, actor)
             msg.setWindowTitle("Copia de seguridad")
             msg.setIcon(QMessageBox.Information)
             msg.setText("✅ Copia de seguridad creada correctamente.")
             msg.setInformativeText(f"Guardada en:\n{info}")
         else:
+            Logger().copia_seguridad_error(info, actor)
             msg.setWindowTitle("Error")
             msg.setIcon(QMessageBox.Critical)
             msg.setText("❌ No se pudo crear la copia de seguridad.")

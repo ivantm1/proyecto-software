@@ -1,3 +1,5 @@
+from src.modelo.logica.LoggerSingleton import Logger
+
 class ControladorPrestamo:
     def __init__(self, ref_vista):
         self._vista = ref_vista
@@ -15,14 +17,17 @@ class ControladorPrestamo:
 
         valido, mensaje = ref_modelo.validarPrestamo(isbn, str(id_usuario))
         if not valido:
+            Logger().prestamo_error(isbn, str(id_usuario), mensaje)
             self._vista.lanzarAviso(mensaje)
             return
 
         resultado = ref_modelo.registrarPrestamo(isbn, str(id_usuario))
         if resultado:
+            Logger().prestamo_ok(isbn, str(id_usuario), resultado.fecha_devolucion)
             self._vista.lanzarAviso(f"Préstamo registrado con éxito. Fecha de devolución: {resultado.fecha_devolucion}")
             self.cargarPrestamosUsuario(str(id_usuario), ref_modelo)
         else:
+            Logger().prestamo_error(isbn, str(id_usuario), "Error en BD")
             self._vista.lanzarAviso("Error al registrar el préstamo.")
 
     def devolverPrestamo(self, id_prestamo, isbn, ref_modelo):

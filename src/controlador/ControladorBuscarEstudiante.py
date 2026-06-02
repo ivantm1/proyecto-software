@@ -1,8 +1,11 @@
 from PyQt5.QtWidgets import QMessageBox
+from src.modelo.logica.LoggerSingleton import Logger
 from src.vista.VistaGestionarEstudiante import VistaGestionarEstudiante
 from src.vista.VistaSanciones import VistaSanciones
 from src.vista.VistaMisPrestamos import VistaMisPrestamos
+from src.vista.VistaMisReservas import VistaMisReservas
 from src.controlador.ControladorMisPrestamos import ControladorMisPrestamos
+from src.controlador.ControladorMisReservas import ControladorMisReservas
 from src.controlador.ControladorSanciones import ControladorSanciones
 
 class ControladorBuscarEstudiante:
@@ -13,6 +16,7 @@ class ControladorBuscarEstudiante:
         self._vista_gestion = VistaGestionarEstudiante()
         self._vista_sanciones = VistaSanciones()
         self._vista_prestamos = VistaMisPrestamos()
+        self._vista_reservas = VistaMisReservas()
         self._estudiante_actual = None
 
     def buscarEstudiante(self, correo):
@@ -27,6 +31,7 @@ class ControladorBuscarEstudiante:
             return
 
         estudiante, num_prestamos, num_reservas, num_sanciones_activas = resumen
+        self._estudiante_actual = estudiante
         self._vista_gestion.cargar_datos(estudiante, num_prestamos, num_reservas, num_sanciones_activas)
         self._vista_gestion.controlador = self
         
@@ -51,9 +56,11 @@ class ControladorBuscarEstudiante:
 
         exito = self._modelo.registrarPrestamo(isbn, correo_estudiante)
         if exito:
+            Logger().prestamo_ok(isbn, correo_estudiante, exito.fecha_devolucion)
             QMessageBox.information(self._vista_gestion, "Éxito", "Préstamo registrado correctamente.")
             self.buscarEstudiante(correo_estudiante)
         else:
+            Logger().prestamo_error(isbn, correo_estudiante, "Error en BD")
             QMessageBox.warning(self._vista_gestion, "Error", 
                                 "No se pudo registrar el préstamo.")
 
@@ -77,8 +84,18 @@ class ControladorBuscarEstudiante:
         self._vista_prestamos.showMaximized()
         
     def verReservasEstudiante(self, correo_estudiante):
-        reservas = self._modelo.obtenerReservasEstudiante(correo_estudiante)
-        self._vista_gestion.mostrarReservas(reservas)
+        ctrl = ControladorMisReservas(
+            self._modelo,
+            self._vista_reservas,
+            self._vista_gestion,
+            self._vista_bibliotecario,
+            correo_estudiante,
+            "Bibliotecario"
+        )
+        self._vista_reservas.controlador = ctrl
+        ctrl.actualizarReservas()
+        self._vista_gestion.close()
+        self._vista_reservas.showMaximized()
 
     def gestionarSanciones(self, correo_estudiante):
         sanciones = self._modelo.obtenerSancionesEstudiante(correo_estudiante)

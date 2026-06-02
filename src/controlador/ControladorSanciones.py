@@ -1,9 +1,6 @@
-class ControladorSanciones:
-\
-\
-\
-       
+from src.modelo.logica.LoggerSingleton import Logger
 
+class ControladorSanciones:
     def __init__(self, ref_modelo, ref_vista, ref_vista_gestion=None):
         self._modelo = ref_modelo
         self._vista = ref_vista
@@ -18,6 +15,7 @@ class ControladorSanciones:
         resultado = self._modelo.aplicarSancionManual(correo_estudiante, motivo, dias)
 
         if resultado:
+            Logger().sancion_aplicada(correo_estudiante, "manual", f"motivo={motivo} dias={dias}")
             self._vista.lanzarAviso(
                 f"Se ha aplicado una sanción por {motivo.lower()}"
             )
@@ -29,6 +27,7 @@ class ControladorSanciones:
     def eliminarSancion(self, correo_estudiante, tipo, fecha_inicio, duracion):
         resultado = self._modelo.eliminarSancion(correo_estudiante, tipo, fecha_inicio, duracion)
         if resultado:
+            Logger().sancion_eliminada(correo_estudiante, tipo)
             self._vista.lanzarAviso("Sanción eliminada correctamente.")
             self.cargarSanciones(correo_estudiante)
         else:

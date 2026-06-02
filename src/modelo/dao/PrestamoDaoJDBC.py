@@ -18,14 +18,14 @@ class PrestamoDaoJDBC(Conexion):
         SELECT p.ISBN, l.titulo, l.autor, l.nombre_tema, l.descripcion, p.fecha_devolucion, p.estado
         FROM Prestamos p
         JOIN Libros l ON p.ISBN = l.ISBN
-        WHERE p.email = ? AND p.estado IN ('Activo', 'Vencido')
+        WHERE p.email = ? AND p.estado IN ('Activo', 'Vencido', 'Devuelto')
     """
  
     SQL_BUSCAR_PRESTAMOS = """
         SELECT p.ISBN, l.titulo, l.autor, l.nombre_tema, l.descripcion, p.fecha_devolucion, p.estado
         FROM Prestamos p
         JOIN Libros l ON p.ISBN = l.ISBN
-        WHERE p.email = ? AND p.estado IN ('Activo', 'Vencido')
+        WHERE p.email = ? AND p.estado IN ('Activo', 'Vencido', 'Devuelto')
         AND l.titulo LIKE ?
     """
  
@@ -33,7 +33,7 @@ class PrestamoDaoJDBC(Conexion):
         SELECT p.ISBN, l.titulo, l.autor, l.nombre_tema, l.descripcion, p.fecha_devolucion, p.estado
         FROM Prestamos p
         JOIN Libros l ON p.ISBN = l.ISBN
-        WHERE p.email = ? AND p.estado IN ('Activo', 'Vencido')
+        WHERE p.email = ? AND p.estado IN ('Activo', 'Vencido', 'Devuelto')
         AND l.titulo LIKE ?
         AND l.nombre_tema = ?
     """

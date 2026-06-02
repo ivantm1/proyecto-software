@@ -1,4 +1,5 @@
 from PyQt5.QtWidgets import QMessageBox
+from src.modelo.logica.LoggerSingleton import Logger
 from src.modelo.vo.RegistroVO import RegistroVO
 
 class ControladorGestionarCuentas:
@@ -37,8 +38,10 @@ class ControladorGestionarCuentas:
             return
 
         if self._modelo.eliminarUsuario(correo):
+            Logger().eliminacion_cuenta_ok(correo, actor=self._correo_admin)
             self._vistaGestionarCuentas.lanzarAviso("Cuenta eliminada correctamente.")
         else:
+            Logger().eliminacion_cuenta_error(correo, actor=self._correo_admin)
             self._vistaGestionarCuentas.lanzarAviso("No se pudo eliminar la cuenta.", error=True)
 
     def registrarUsuario(self, nombre, apellidos, correo, contrasena, confirmar, tipo):
@@ -49,11 +52,13 @@ class ControladorGestionarCuentas:
 
         registro = RegistroVO(nombre, apellidos, correo, contrasena, tipo)
         if self._modelo.registrarUsuario(registro):
+            Logger().registro_cuenta_ok(correo, tipo, actor=self._correo_admin)
             self._vistaAnadirCuenta.lanzarAviso("Cuenta creada con éxito.")
             self._vistaAnadirCuenta.close()
             self._vistaGestionarCuentas.lineEdit.clear()
             self._vistaGestionarCuentas.showMaximized()
         else:
+            Logger().registro_cuenta_error(correo, actor=self._correo_admin)
             self._vistaAnadirCuenta.lanzarAviso("Error al crear la cuenta. El email puede estar ya registrado.")
 
     def registroAtras(self):

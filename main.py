@@ -14,6 +14,7 @@ from src.vista.VistaAdmin import VistaAdmin
 from src.vista.VistaGestionarCuentas import VistaGestionarCuentas
 from src.vista.VistaAnadirCuenta import VistaAnadirCuenta
 from src.modelo.Logica import Logica
+from src.modelo.logica.LoggerSingleton import Logger
 from src.controlador.ControladorPrincipal import ControladorPrincipal
 
 if __name__ == "__main__":
@@ -50,6 +51,14 @@ if __name__ == "__main__":
         ref_vista_buscar_estudiante=buscarEstudiante,
         ref_vista_anadir_libro=anadirLibro,
     )
+
+    def registrar_cierre_sesion():
+        if getattr(controlador, '_cerrando_por_cerrar_sesion', False):
+            return
+        if controlador._usuario_activo:
+            Logger().cierre_sesion(controlador._usuario_activo.correo)
+
+    app.aboutToQuit.connect(registrar_cierre_sesion)
 
     login.controlador = controlador
     controlador.ventanaIniciarSesion()
