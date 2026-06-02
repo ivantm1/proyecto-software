@@ -1,4 +1,4 @@
-
+si teneis ideas decidlo
 en ver prestamos del bibliotecario poner los libros devueltos tambien(hay que añadir en la vista que se añada una nueva columna del estado)
 
 hacer varias logicas(hecho pero revisar otras 4 veces)
