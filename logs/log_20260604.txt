@@ -1,0 +1,3 @@
+[2026-06-04 19:00:40] [INFO ] INICIO_SESION | usuario=12 tipo=Bibliotecario
+[2026-06-04 19:00:54] [INFO ] SANCION_ELIMINADA | estudiante=123 tipo=Roto
+[2026-06-04 19:03:29] [INFO ] CIERRE_SESION | usuario=12

@@ -1,6 +1,8 @@
 si teneis ideas decidlo
 en ver prestamos del bibliotecario poner los libros devueltos tambien(hay que añadir en la vista que se añada una nueva columna del estado)
 
+Las sanciones no se actualizan con los dias
+
 hacer varias logicas(hecho pero revisar otras 4 veces)
 pasar todo lo posible de controlador a logica (que tenga sentido)(hecho pero revisar otras 4 veces)
 
