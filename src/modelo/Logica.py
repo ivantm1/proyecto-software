@@ -191,6 +191,9 @@ class Logica:
     def obtenerResumenEstudiante(self, correo):
         return self._estudiantes.obtenerResumenEstudiante(correo)
 
+    def marcarReservaDisponible(self, isbn):
+        return self._reservas.marcarReservaDisponible(isbn)
+
     # ── Copia de seguridad ──────────────────────────────────────────
     def realizarCopiaSeguridad(self) -> tuple[bool, str]:
         return self._copias.realizarCopiaSeguridad()

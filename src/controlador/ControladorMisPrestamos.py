@@ -49,6 +49,9 @@ class ControladorMisPrestamos:
             self._detalle.lanzarAviso("Este préstamo ya ha sido devuelto.")
             return
 
+        if self._modelo.obtenerReservaPorLibro(isbn):
+            self._modelo.marcarReservaDisponible(isbn)
+
         semanas_retraso = self._modelo.calcularSemanasRetraso(prestamo.fecha_devolucion)
         if semanas_retraso > 0:
             self._modelo.aplicarSancionRetraso(prestamo.correo_estudiante, semanas_retraso)

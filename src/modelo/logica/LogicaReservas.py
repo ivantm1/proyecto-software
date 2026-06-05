@@ -58,3 +58,6 @@ class LogicaReservas:
             if self.reservaExpirada(reserva.isbn_libro):
                 self.liberarReservaExpirada(reserva.isbn_libro)
         return self.obtenerReservasEstudiante(correo_estudiante)
+
+    def marcarReservaDisponible(self, isbn):
+        return ReservaDaoJDBC().marcarReservaDisponible(isbn)
