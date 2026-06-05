@@ -41,6 +41,17 @@ class VistaMisPrestamos(QDialog, Form):
             return
 
         import datetime
+
+        tipo_usuario = None
+        try:
+            if self.controlador:
+                tipo_usuario = getattr(self.controlador, '_tipo_usuario', None)
+        except Exception:
+            tipo_usuario = None
+
+        if tipo_usuario == 'Estudiante':
+            lista_prestamos = [p for p in (lista_prestamos or []) if getattr(p, 'estado', '') in ('Activo', 'Vencido')]
+
         for prestamo in lista_prestamos:
             fila = self.tabla_libros.rowCount()
             self.tabla_libros.insertRow(fila)
@@ -48,24 +59,32 @@ class VistaMisPrestamos(QDialog, Form):
             self.tabla_libros.setItem(fila, 1, QTableWidgetItem(str(prestamo.autor)))
             self.tabla_libros.setItem(fila, 2, QTableWidgetItem(str(prestamo.nombre_tema)))
             
-            # Mostrar "Devuelto" y la fecha si el préstamo ha sido devuelto
-            if prestamo.estado == 'Devuelto':
-                texto_devolucion = f"{prestamo.estado} - {prestamo.fecha_devolucion}"
-            elif prestamo.estado == 'Vencido':
-                texto_devolucion = f"{prestamo.estado} - {prestamo.fecha_devolucion}"
-            else:
-                texto_devolucion = f"{prestamo.estado} - {prestamo.fecha_devolucion}"
-            self.tabla_libros.setItem(fila, 3, QTableWidgetItem(texto_devolucion))
-
             try:
                 fecha = prestamo.fecha_devolucion
                 if isinstance(fecha, str):
-                    fecha = datetime.date.fromisoformat(str(fecha)[:10])
-                if fecha < datetime.date.today():
-                    for col in range(4):
-                        self.tabla_libros.item(fila, col).setBackground(QColor(240, 150, 150))
+                    fecha_dt = datetime.date.fromisoformat(str(fecha)[:10])
+                else:
+                    fecha_dt = fecha
+
+                dias_restantes = (fecha_dt - datetime.date.today()).days
+                if dias_restantes < 0:
+                    texto_fin = f"Vencido el: {fecha_dt}"
+                    item_fin = QTableWidgetItem(texto_fin)
+                    item_fin.setForeground(QColor(200, 0, 0))
+                else:
+                    texto_fin = f"{dias_restantes} días"
+                    item_fin = QTableWidgetItem(texto_fin)
+
+                self.tabla_libros.setItem(fila, 3, item_fin)
             except Exception:
-                pass
+                # Fallback: mostrar fecha original
+                self.tabla_libros.setItem(fila, 3, QTableWidgetItem(str(prestamo.fecha_devolucion)))
+        
+            if getattr(prestamo, 'estado', '') == 'Devuelto' and tipo_usuario != 'Estudiante':
+                for col in range(self.tabla_libros.columnCount()):
+                    item = self.tabla_libros.item(fila, col)
+                    if item:
+                        item.setBackground(QColor(220, 220, 220))
 
     def obtenerPrestamoPorFila(self, fila):
         if hasattr(self, '_prestamos') and 0 <= fila < len(self._prestamos):
