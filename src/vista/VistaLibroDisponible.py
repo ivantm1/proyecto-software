@@ -25,19 +25,6 @@ class VistaLibroDisponible(QDialog, Form):
     def on_cerrar_click(self):
         self.controlador.cerrarLibroDisponible()
 
-    def configurarParaBibliotecario(self, es_bibliotecario):
-        if hasattr(self, '_boton_baja') and self._boton_baja:
-            self._boton_baja.setVisible(False)
-
-    def on_dar_baja_click(self):
-        if self.controlador and self._isbn_actual:
-            motivo, ok = QInputDialog.getText(self, "Motivo de baja", "Introduce el motivo de retirada:")
-            if ok and motivo.strip():
-                self.controlador.bajaLibro(self._isbn_actual, motivo.strip())
-                self.close()
-            elif ok:
-                QMessageBox.warning(self, "Aviso", "Debes introducir un motivo.")
-
     @property
     def controlador(self):
         return self._controlador

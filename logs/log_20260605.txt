@@ -38,3 +38,5 @@
 [2026-06-05 17:06:55] [INFO ] INICIO_SESION | usuario=12 tipo=Bibliotecario
 [2026-06-05 17:06:57] [INFO ] DEVOLUCION | isbn=978-84-291-5032-2 estudiante=1234
 [2026-06-05 17:08:23] [INFO ] CIERRE_SESION | usuario=12
+[2026-06-05 23:22:45] [INFO ] INICIO_SESION | usuario=123 tipo=Estudiante
+[2026-06-05 23:23:01] [INFO ] CIERRE_SESION | usuario=123

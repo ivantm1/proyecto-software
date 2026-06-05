@@ -48,11 +48,6 @@ class VistaMisReservas(QDialog, Form):
             self.tabla_libros.setItem(fila, 3, QTableWidgetItem(str(reserva.estado)))
         self.tabla_libros.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
 
-    def obtenerReservaPorFila(self, fila):
-        if hasattr(self, '_reservas') and 0 <= fila < len(self._reservas):
-            return self._reservas[fila]
-        return None
-
     def lanzarAviso(self, aviso):
         QMessageBox.information(self, "Información", aviso)
 

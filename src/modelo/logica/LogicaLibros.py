@@ -12,12 +12,6 @@ class LogicaLibros:
     def obtenerCatalogo(self):
         return LibroDaoJDBC().obtenerCatalogo()
 
-    def buscarPorTitulo(self, titulo):
-        return LibroDaoJDBC().buscarPorTitulo(titulo)
-
-    def buscarPorTema(self, tema):
-        return LibroDaoJDBC().buscarPorTema(tema)
-
     def altaLibro(self, libroVO):
         return LibroDaoJDBC().altaLibro(libroVO)
 

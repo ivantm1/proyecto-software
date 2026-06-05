@@ -18,14 +18,6 @@ class ControladorMisReservas:
         reservas = self._modelo.buscarReservasEstudiante(self._correo, titulo, tema)
         self._vista.mostrarReservas(reservas)
 
-    def abrirDetalleReserva(self, fila):
-        reserva = self._vista.obtenerReservaPorFila(fila)
-        if reserva is None:
-            return
-        self._detalle.controlador = self
-        self._detalle.mostrarReserva(reserva)
-        self._detalle.show()
-
     def registroAtras(self):
         self._vista.close()
         self._vista_estudiante.showMaximized()

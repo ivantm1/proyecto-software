@@ -111,12 +111,6 @@ class Logger:
     def copia_seguridad_error(self, motivo: str, actor: str):
         self.error("COPIA_SEGURIDAD_FALLIDA", f"motivo={motivo} por={actor}")
 
-    def cambio_contrasena_ok(self, correo: str):
-        self.info("CAMBIO_CONTRASENA", f"usuario={correo}")
-
-    def cambio_contrasena_error(self, correo: str):
-        self.error("CAMBIO_CONTRASENA_FALLIDO", f"usuario={correo}")
-
     def registro_cuenta_ok(self, correo: str, tipo: str, actor: str):
         self.info("REGISTRO_CUENTA", f"nuevo={correo} tipo={tipo} por={actor}")
 

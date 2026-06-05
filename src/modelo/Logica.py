@@ -17,13 +17,6 @@ class Logica:
         self._estudiantes = LogicaEstudiantes()
         self._copias = LogicaCopiaSeguridad()
 
-    def pruebaSelect(self):
-        userDao = UserDaoJDBC()
-        usuarios = userDao.select()
-        for user in usuarios:
-            pass                             
-
-                                             
     def comprobarLogin(self, loginVO):
         return self._sesion.comprobarLogin(loginVO)
 
@@ -51,12 +44,6 @@ class Logica:
 
     def obtenerCatalogo(self):
         return self._libros.obtenerCatalogo()
-
-    def buscarPorTitulo(self, titulo):
-        return self._libros.buscarPorTitulo(titulo)
-
-    def buscarPorTema(self, tema):
-        return self._libros.buscarPorTema(tema)
 
     def altaLibro(self, libroVO):
         return self._libros.altaLibro(libroVO)

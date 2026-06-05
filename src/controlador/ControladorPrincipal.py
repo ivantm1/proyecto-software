@@ -212,13 +212,6 @@ class ControladorPrincipal:
         self._vistaEstudiante.close()
         self._vistaMisReservas.showMaximized()
 
-    def ventanaPrestamo(self):
-        if not self._vistaPrestamo:
-            return
-        ctrl = ControladorPrestamo(self._vistaPrestamo)
-        self._vistaPrestamo.controlador = ctrl
-        self._vistaPrestamo.show()
-
     def ventanaDevolucion(self):
         if not self._vistaDevolucion:
             return
@@ -240,13 +233,6 @@ class ControladorPrincipal:
         self._vistaAnadirLibro.controlador = ctrl
         self._vistaBibliotecario.close()
         self._vistaAnadirLibro.showMaximized()
-
-    def ventanaSanciones(self):
-        if not self._vistaSanciones or not self._usuario_activo:
-            return
-        ctrl = ControladorSanciones(self._modelo, self._vistaSanciones)
-        self._vistaSanciones.controlador = ctrl
-        self._vistaSanciones.show()
 
     def cerrarSesion(self):
         msg = QMessageBox()
@@ -291,8 +277,3 @@ class ControladorPrincipal:
             msg.setText("❌ No se pudo crear la copia de seguridad.")
             msg.setInformativeText(info)
         msg.exec_()
-
-    def volverBuscarEstudiante(self):
-        if self._vistaBuscarEstudiante and self._vistaBibliotecario:
-            self._vistaBuscarEstudiante.close()
-            self._vistaBibliotecario.showMaximized()

@@ -36,9 +36,6 @@ class VistaAnadirCuenta(QDialog, Form):
     def lanzarAviso(self, aviso):
         QMessageBox.information(self, "Información", aviso)
 
-    def mostrarEstado(self, texto):
-        self.label.setText(texto)
-
     @property
     def controlador(self):
         return self._controlador

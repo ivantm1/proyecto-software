@@ -102,13 +102,6 @@ class ControladorCatalogo:
             )
         return exito
 
-    def ventanaAltaLibro(self):
-        self._vista_catalogo.lanzarAviso("La ventana de Alta de libro aún no está implementada.")
-
-    def verReservados(self):
-        libros = self._modelo.obtenerReservados()
-        self._vista_catalogo.cargar_lista_libros_bibliotecario(libros)
-
     def cerrarLibroDisponible(self):
         self._libroDisponible.close()
 

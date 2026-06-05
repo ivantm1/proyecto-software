@@ -33,11 +33,3 @@ class Conexion:
         if self.conexion is None:
             self.createConnection()
         return self.conexion.cursor()
-
-    def closeConnection(self):
-        try:
-            if self.conexion:
-                self.conexion.close()
-                self.conexion = None
-        except Exception as e:
-            print("Error cerrando conexión:", e)

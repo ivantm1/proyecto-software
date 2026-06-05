@@ -10,9 +10,6 @@ class VistaGrafica(QDialog, Form):
         self.setupUi(self)
         self.setWindowTitle("Gráfica — BiblioULE")
 
-    def on_generar_grafica(self):
-        self._controlador.generarGrafica()
-
     def on_volver_click(self):
         if self._controlador:
             self._controlador.volver()
