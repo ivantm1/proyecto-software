@@ -47,7 +47,15 @@ class VistaMisPrestamos(QDialog, Form):
             self.tabla_libros.setItem(fila, 0, QTableWidgetItem(str(prestamo.titulo)))
             self.tabla_libros.setItem(fila, 1, QTableWidgetItem(str(prestamo.autor)))
             self.tabla_libros.setItem(fila, 2, QTableWidgetItem(str(prestamo.nombre_tema)))
-            self.tabla_libros.setItem(fila, 3, QTableWidgetItem(str(prestamo.fecha_devolucion)))
+            
+            # Mostrar "Devuelto" y la fecha si el préstamo ha sido devuelto
+            if prestamo.estado == 'Devuelto':
+                texto_devolucion = f"{prestamo.estado} - {prestamo.fecha_devolucion}"
+            elif prestamo.estado == 'Vencido':
+                texto_devolucion = f"{prestamo.estado} - {prestamo.fecha_devolucion}"
+            else:
+                texto_devolucion = f"{prestamo.estado} - {prestamo.fecha_devolucion}"
+            self.tabla_libros.setItem(fila, 3, QTableWidgetItem(texto_devolucion))
 
             try:
                 fecha = prestamo.fecha_devolucion
