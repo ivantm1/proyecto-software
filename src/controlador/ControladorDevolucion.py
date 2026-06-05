@@ -1,3 +1,4 @@
+from PyQt5.QtWidgets import QMessageBox
 from src.modelo.logica.LoggerSingleton import Logger
 
 class ControladorDevolucion:
@@ -22,9 +23,6 @@ class ControladorDevolucion:
             self._vista.lanzarAviso("Error al registrar la devolución. Inténtalo de nuevo.")
             return
 
-        if self._modelo.obtenerReservaPorLibro(isbn):
-            self._modelo.marcarReservaDisponible(isbn)
-
         semanas_retraso = self._modelo.calcularSemanasRetraso(prestamo.fecha_devolucion)
         Logger().devolucion_ok(isbn, prestamo.correo_estudiante, semanas_retraso)
 
@@ -38,7 +36,7 @@ class ControladorDevolucion:
             )
             mensajes.append(f"Devolución registrada con {semanas_retraso} semana(s) de retraso.")
             mensajes.append("Se ha aplicado una sanción por retraso al estudiante.")
-
+            
         if estado_libro in ["Dañado", "Roto"]:
             sancion = self._modelo.aplicarSancionDanio(prestamo.correo_estudiante, estado_libro)
             if sancion:
@@ -58,6 +56,16 @@ class ControladorDevolucion:
 
         self._vista.mostrarResultado(mensaje)
         self._vista.lanzarAviso(mensaje)
+
+        reserva = self._modelo.obtenerReservaPorLibro(isbn)
+        if reserva:
+            self._modelo.marcarReservaDisponible(isbn)
+            QMessageBox.warning(
+                self._vista,
+                "Libro reservado",
+                "El libro estaba reservado. Debes retirarlo para entregarlo al estudiante que hizo la reserva."
+            )
+
         self._vista.limpiarFormulario()
 
     def volver(self):

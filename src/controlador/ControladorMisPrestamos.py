@@ -1,3 +1,4 @@
+from PyQt5.QtWidgets import QMessageBox
 from src.vista.VistaSeleccionPrestamo import VistaSeleccionPrestamo
 
 class ControladorMisPrestamos:
@@ -49,15 +50,21 @@ class ControladorMisPrestamos:
             self._detalle.lanzarAviso("Este préstamo ya ha sido devuelto.")
             return
 
-        if self._modelo.obtenerReservaPorLibro(isbn):
-            self._modelo.marcarReservaDisponible(isbn)
-
         semanas_retraso = self._modelo.calcularSemanasRetraso(prestamo.fecha_devolucion)
         if semanas_retraso > 0:
             self._modelo.aplicarSancionRetraso(prestamo.correo_estudiante, semanas_retraso)
             self._detalle.lanzarAviso(f"Préstamo terminado con {semanas_retraso} semana(s) de retraso. Se ha aplicado una sanción.")
         else:
             self._detalle.lanzarAviso("Préstamo terminado correctamente.")
+
+        reserva = self._modelo.obtenerReservaPorLibro(isbn)
+        if reserva:
+            self._modelo.marcarReservaDisponible(isbn)
+            QMessageBox.warning(
+                self._detalle,
+                "Libro reservado",
+                "El libro estaba reservado. Debes retirarlo para entregarlo al estudiante que hizo la reserva."
+            )
 
         self.actualizarPrestamos()
         self._detalle.close()
