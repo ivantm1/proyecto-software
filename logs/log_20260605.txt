@@ -1,2 +1,22 @@
 [2026-06-05 15:27:00] [INFO ] INICIO_SESION | usuario=123 tipo=Estudiante
 [2026-06-05 15:27:08] [INFO ] CIERRE_SESION | usuario=123
+[2026-06-05 16:10:17] [INFO ] INICIO_SESION | usuario=12 tipo=Bibliotecario
+[2026-06-05 16:10:25] [INFO ] CIERRE_SESION | usuario=12
+[2026-06-05 16:12:03] [INFO ] INICIO_SESION | usuario=12 tipo=Bibliotecario
+[2026-06-05 16:12:19] [INFO ] CIERRE_SESION | usuario=12
+[2026-06-05 16:12:27] [INFO ] INICIO_SESION | usuario=123 tipo=Estudiante
+[2026-06-05 16:12:57] [INFO ] CIERRE_SESION | usuario=123
+[2026-06-05 16:13:07] [INFO ] INICIO_SESION | usuario=12 tipo=Bibliotecario
+[2026-06-05 16:14:45] [INFO ] CIERRE_SESION | usuario=12
+[2026-06-05 16:15:24] [INFO ] INICIO_SESION | usuario=12 tipo=Bibliotecario
+[2026-06-05 16:24:47] [INFO ] CIERRE_SESION | usuario=12
+[2026-06-05 16:26:30] [INFO ] INICIO_SESION | usuario=12 tipo=Bibliotecario
+[2026-06-05 16:27:01] [INFO ] CIERRE_SESION | usuario=12
+[2026-06-05 16:27:20] [INFO ] INICIO_SESION | usuario=12 tipo=Bibliotecario
+[2026-06-05 16:30:09] [INFO ] CIERRE_SESION | usuario=12
+[2026-06-05 16:30:20] [INFO ] INICIO_SESION | usuario=12 tipo=Bibliotecario
+[2026-06-05 16:33:41] [INFO ] CIERRE_SESION | usuario=12
+[2026-06-05 16:34:37] [INFO ] INICIO_SESION | usuario=12 tipo=Bibliotecario
+[2026-06-05 16:35:00] [INFO ] CIERRE_SESION | usuario=12
+[2026-06-05 16:35:06] [INFO ] INICIO_SESION | usuario=12 tipo=Bibliotecario
+[2026-06-05 16:38:52] [INFO ] CIERRE_SESION | usuario=12

@@ -39,13 +39,25 @@ class ControladorMisPrestamos:
             )
 
     def terminarPrestamo(self, isbn):
-        exito = self._modelo.registrarDevolucion(isbn)
-        if exito:
-            self._detalle.lanzarAviso("Préstamo terminado correctamente.")
-            self.actualizarPrestamos()
-            self._detalle.close()
-        else:
+        prestamo = self._modelo.buscarPrestamoActivoPorISBN(isbn)
+        if prestamo is None:
             self._detalle.lanzarAviso("Este préstamo ya ha sido devuelto.")
+            return
+
+        exito = self._modelo.registrarDevolucion(isbn)
+        if not exito:
+            self._detalle.lanzarAviso("Este préstamo ya ha sido devuelto.")
+            return
+
+        semanas_retraso = self._modelo.calcularSemanasRetraso(prestamo.fecha_devolucion)
+        if semanas_retraso > 0:
+            self._modelo.aplicarSancionRetraso(prestamo.correo_estudiante, semanas_retraso)
+            self._detalle.lanzarAviso(f"Préstamo terminado con {semanas_retraso} semana(s) de retraso. Se ha aplicado una sanción.")
+        else:
+            self._detalle.lanzarAviso("Préstamo terminado correctamente.")
+
+        self.actualizarPrestamos()
+        self._detalle.close()
 
     def registroAtras(self):
         self._vista.close()

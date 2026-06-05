@@ -71,3 +71,4 @@
 [2026-06-02 11:55:23] [INFO ] INICIO_SESION | usuario=12 tipo=Bibliotecario
 [2026-06-02 11:55:47] [INFO ] CIERRE_SESION | usuario=12
 [2026-06-02 11:56:10] [INFO ] INICIO_SESION | usuario=12 tipo=Bibliotecario
+[2026-06-02 12:18:51] [INFO ] CIERRE_SESION | usuario=12

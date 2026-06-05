@@ -5,7 +5,7 @@ from src.modelo.vo.PrestamoVO import PrestamoVO
 class PrestamoDaoJDBC(Conexion):
     SQL_REGISTRAR        = "INSERT INTO Prestamos (email, ISBN, estado, fecha_prestamo, fecha_devolucion, prorroga) VALUES (?, ?, 'Activo', ?, ?, 0)"
     SQL_DEVOLVER = "UPDATE Prestamos SET estado = 'Devuelto', fecha_devolucion = GETDATE() WHERE ISBN = ? AND (estado = 'Activo' OR estado = 'Vencido')"
-    SQL_DATOS_PRESTAMO   = "SELECT p.ISBN, p.email, p.fecha_prestamo, p.fecha_devolucion, p.estado, p.prorroga FROM Prestamos p WHERE p.ISBN = ? AND p.estado = 'Activo'"
+    SQL_DATOS_PRESTAMO = "SELECT p.ISBN, p.email, p.fecha_prestamo, p.fecha_devolucion, p.estado, p.prorroga FROM Prestamos p WHERE p.ISBN = ? AND p.estado IN ('Activo', 'Vencido')"    
     SQL_PRESTAMO_ACTIVO_ISBN = SQL_DATOS_PRESTAMO
     SQL_PRORROGAR        = "UPDATE Prestamos SET fecha_devolucion = ?, prorroga = 1 WHERE ISBN = ? AND estado = 'Activo' AND prorroga = 0 AND NOT EXISTS (SELECT 1 FROM Reservas WHERE ISBN = ? AND estado = 'Pendiente')"
     SQL_CUENTA_PRESTAMOS = "SELECT COUNT(*) FROM Prestamos WHERE email = ? AND (estado = 'Activo' OR estado = 'Vencido')"
