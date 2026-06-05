@@ -8,8 +8,7 @@ class PrestamoDaoJDBC(Conexion):
     SQL_DATOS_PRESTAMO   = "SELECT p.ISBN, p.email, p.fecha_prestamo, p.fecha_devolucion, p.estado, p.prorroga FROM Prestamos p WHERE p.ISBN = ? AND p.estado = 'Activo'"
     SQL_PRESTAMO_ACTIVO_ISBN = SQL_DATOS_PRESTAMO
     SQL_PRORROGAR        = "UPDATE Prestamos SET fecha_devolucion = ?, prorroga = 1 WHERE ISBN = ? AND estado = 'Activo' AND prorroga = 0 AND NOT EXISTS (SELECT 1 FROM Reservas WHERE ISBN = ? AND estado = 'Pendiente')"
-    SQL_CUENTA_PRESTAMOS = "SELECT COUNT(*) FROM Prestamos WHERE email = ? AND estado = 'Activo'"
-    SQL_EXISTE_PRESTAMO_ACTIVO = "SELECT COUNT(*) FROM Prestamos WHERE email = ? AND ISBN = ? AND estado = 'Activo'"
+    SQL_CUENTA_PRESTAMOS = "SELECT COUNT(*) FROM Prestamos WHERE email = ? AND (estado = 'Activo' OR estado = 'Vencido')"
     SQL_VERIFICAR_LIBRO_DISPONIBLE = "SELECT disponibilidad FROM Libros WHERE ISBN = ?"
     SQL_ACTUALIZAR_DISPONIBILIDAD_LIBRO = "UPDATE Libros SET disponibilidad = ? WHERE ISBN = ?"
  
