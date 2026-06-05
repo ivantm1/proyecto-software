@@ -121,18 +121,36 @@ QHeaderView::section {
 </string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
+   <property name="spacing">
+    <number>10</number>
+   </property>
    <property name="sizeConstraint">
     <enum>QLayout::SetMaximumSize</enum>
+   </property>
+   <property name="leftMargin">
+    <number>20</number>
+   </property>
+   <property name="topMargin">
+    <number>20</number>
+   </property>
+   <property name="rightMargin">
+    <number>20</number>
+   </property>
+   <property name="bottomMargin">
+    <number>20</number>
    </property>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_4"/>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_9">
+     <property name="spacing">
+      <number>10</number>
+     </property>
      <item>
       <layout class="QVBoxLayout" name="verticalLayout">
        <property name="spacing">
-        <number>8</number>
+        <number>14</number>
        </property>
        <property name="leftMargin">
         <number>8</number>
@@ -455,19 +473,19 @@ QHeaderView::section {
         <widget class="QPushButton" name="boton_volver">
          <property name="styleSheet">
           <string notr="true">QPushButton {
-    background-color: #1B4332; 
-    color: white; 
-    border-radius: 5px;  
+    background-color: #082e53; 
+    color: white;  
+    border-radius: 5px; 
     padding: 8px;  
     font-weight: bold;
 }
 
 QPushButton:hover {
-    background-color: #2D6A4F; 
+    background-color: #1b5084; 
 }
 
 QPushButton:pressed {
-    background-color: #081C15;
+    background-color: #031324; 
 }</string>
          </property>
          <property name="text">
