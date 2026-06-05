@@ -22,6 +22,9 @@ class ControladorDevolucion:
             self._vista.lanzarAviso("Error al registrar la devolución. Inténtalo de nuevo.")
             return
 
+        if self._modelo.obtenerReservaPorLibro(isbn):
+            self._modelo.marcarReservaDisponible(isbn)
+
         semanas_retraso = self._modelo.calcularSemanasRetraso(prestamo.fecha_devolucion)
         Logger().devolucion_ok(isbn, prestamo.correo_estudiante, semanas_retraso)
 

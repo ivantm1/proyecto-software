@@ -9,6 +9,8 @@ class ReservaDaoJDBC(Conexion):
     SQL_RESERVA_LIBRO   = "SELECT email, fecha_reserva FROM Reservas WHERE ISBN = ? AND estado = 'Pendiente'"
     SQL_CUENTA_RESERVAS = "SELECT COUNT(*) FROM Reservas WHERE email = ? AND estado = 'Pendiente'"
     SQL_EXISTE          = "SELECT COUNT(*) FROM Reservas WHERE ISBN = ? AND estado = 'Pendiente'"
+    SQL_MARCAR_DISPONIBLE = "UPDATE Reservas SET fecha_reserva = ? WHERE ISBN = ? AND estado = 'Pendiente'"
+
 
                                                        
     SQL_MIS_RESERVAS = """
@@ -137,3 +139,14 @@ class ReservaDaoJDBC(Conexion):
             fecha = reserva.fecha_reserva
         limite = fecha + datetime.timedelta(days=7)
         return datetime.date.today() > limite
+
+    def marcarReservaDisponible(self, isbn):
+        cursor = self.getCursor()
+        try:
+            hoy = datetime.date.today().strftime('%Y-%m-%d')
+            cursor.execute(self.SQL_MARCAR_DISPONIBLE, (hoy, isbn))
+            self.conexion.commit()
+            return True
+        except Exception as e:
+            print(f"Error en marcarReservaDisponible: {e}")
+            return False
