@@ -35,7 +35,7 @@ class VistaSeleccionPrestamo(QDialog, Form):
         self.linea_autor.setText(str(prestamo.autor))
         self.linea_tema.setText(str(prestamo.nombre_tema))
         self.linea_resumen.setText(str(prestamo.descripcion) if prestamo.descripcion else "Sin descripción")
-        self.linea_estado.setText(f"Activo — Devolución: {prestamo.fecha_devolucion}")
+        self.linea_estado.setText(f"{prestamo.estado}— Devolución: {prestamo.fecha_devolucion}")
         
                                                              
         if tipo_usuario == "Bibliotecario":
