@@ -1,0 +1,2 @@
+[2026-06-05 15:27:00] [INFO ] INICIO_SESION | usuario=123 tipo=Estudiante
+[2026-06-05 15:27:08] [INFO ] CIERRE_SESION | usuario=123
