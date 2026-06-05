@@ -67,6 +67,25 @@ class VistaEstudiante(QDialog, Form):
         dialog.exec_()
 
 
+    def actualizar_datos_estudiante(self):
+        if not self.controlador or not hasattr(self.controlador, '_usuario_activo'):
+            return
+        
+        usuario = self.controlador._usuario_activo
+        modelo = self.controlador._modelo
+        
+        # Actualizar nombre
+        nombre_completo = f"{usuario.nombre}"
+        self.linea_nombre.setText(f"Bienvenido: {nombre_completo}")
+        
+        # Actualizar prestamos
+        num_prestamos = modelo._prestamos.contarPrestamosEstudiante(usuario.correo)
+        self.linea_prestamos.setText(f"Prestamos activos: {num_prestamos}")
+        
+        # Actualizar reservas
+        num_reservas = modelo._reservas.contarReservasEstudiante(usuario.correo)
+        self.linea_reservas.setText(f"Reservas activas: {num_reservas}")
+
     @property
     def controlador(self):
         return self._controlador
@@ -74,3 +93,4 @@ class VistaEstudiante(QDialog, Form):
     @controlador.setter
     def controlador(self, ref_controlador):
         self._controlador = ref_controlador
+        self.actualizar_datos_estudiante()
