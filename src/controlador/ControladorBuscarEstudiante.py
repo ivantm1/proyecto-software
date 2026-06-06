@@ -108,4 +108,9 @@ class ControladorBuscarEstudiante:
 
     def volverASanciones(self):
         self._vista_sanciones.close()
+        if self._estudiante_actual is not None:
+            resumen = self._modelo.obtenerResumenEstudiante(self._estudiante_actual.correo)
+            if resumen is not None:
+                estudiante, num_prestamos, num_reservas, num_sanciones_activas = resumen
+                self._vista_gestion.cargar_datos(estudiante, num_prestamos, num_reservas, num_sanciones_activas)
         self._vista_gestion.showMaximized()

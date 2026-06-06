@@ -10,6 +10,7 @@ class PrestamoDaoJDBC(Conexion):
     SQL_CUENTA_PRESTAMOS = "SELECT COUNT(*) FROM Prestamos WHERE email = ? AND (estado = 'Activo' OR estado = 'Vencido')"
     SQL_VERIFICAR_LIBRO_DISPONIBLE = "SELECT disponibilidad FROM Libros WHERE ISBN = ?"
     SQL_ACTUALIZAR_DISPONIBILIDAD_LIBRO = "UPDATE Libros SET disponibilidad = ? WHERE ISBN = ?"
+    SQL_EXISTE_PRESTAMO_ACTIVO = "SELECT COUNT(*) FROM Prestamos WHERE email = ? AND ISBN = ? AND estado IN ('Activo', 'Vencido')"
  
                                                        
     SQL_MIS_PRESTAMOS = """

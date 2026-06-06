@@ -52,6 +52,14 @@ class VistaMisPrestamos(QDialog, Form):
         if tipo_usuario == 'Estudiante':
             lista_prestamos = [p for p in (lista_prestamos or []) if getattr(p, 'estado', '') in ('Activo', 'Vencido')]
 
+        lista_prestamos = sorted(
+            lista_prestamos or [],
+            key=lambda p: (
+                1 if tipo_usuario == 'Bibliotecario' and getattr(p, 'estado', '') == 'Devuelto' else 0,
+                str(getattr(p, 'fecha_devolucion', '9999-12-31'))
+            )
+        )
+
         for prestamo in lista_prestamos:
             fila = self.tabla_libros.rowCount()
             self.tabla_libros.insertRow(fila)

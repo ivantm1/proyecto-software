@@ -19,13 +19,18 @@ class VistaGestionarEstudiante(QDialog, Form):
 
     def cargar_datos(self, usuario, num_prestamos, num_reservas, num_sanciones):
         self._correo_estudiante = usuario.correo
-                                                                                    
+                                                                                   
         self.linea_nombre.setText(usuario.nombre)
         self.linea_apellidos.setText(usuario.apellidos)
         self.linea_email.setText(usuario.correo)
         self.linea_prestamos.setText(f"{num_prestamos} préstamos activos")
         self.linea_reservas.setText(f"{num_reservas} reservas activas")
         self.linea_sanciones.setText(f"{num_sanciones} sanciones activas")
+
+        if num_sanciones > 0:
+            self.linea_sanciones.setStyleSheet("font-weight: bold; color: #B22222")
+        else:
+            self.linea_sanciones.setStyleSheet("font-weight: bold; color: #082e53")
 
     def on_hacer_prestamo_click(self):
         isbn = self.lineEdit.text().strip()

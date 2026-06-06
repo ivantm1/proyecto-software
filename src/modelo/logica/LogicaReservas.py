@@ -38,10 +38,7 @@ class LogicaReservas:
         from src.modelo.logica.LogicaPrestamos import LogicaPrestamos
         prestamos_logica = LogicaPrestamos()
         
-        num_prestamos = prestamos_logica.contarPrestamosEstudiante(correo_estudiante)
-        if num_prestamos >= prestamos_logica.MAX_PRESTAMOS_ACTIVOS:
-            return False, f"Ya tienes {prestamos_logica.MAX_PRESTAMOS_ACTIVOS} préstamos activos. No puedes tener más a la vez."
-        
+
         num_reservas = self.contarReservasEstudiante(correo_estudiante)
         if num_reservas >= 3:
             return False, "Ya tienes 3 reservas activas. No puedes tener más de 3 a la vez."

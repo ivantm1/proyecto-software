@@ -30,11 +30,12 @@ class VistaMisReservas(QDialog, Form):
         self.controlador.registroAtras()
 
     def mostrarReservas(self, lista_reservas):
+        self._reservas = lista_reservas or []
+        self.tabla_libros.clearContents()
         self.tabla_libros.setRowCount(0)
-        
-        self.tabla_libros.resizeColumnsToContents()
-
-        self._reservas = lista_reservas                                     
+        self.tabla_libros.setColumnCount(4)
+        self.tabla_libros.setHorizontalHeaderLabels(["Nombre", "Autor", "Tema", "Estado"])
+        self.tabla_libros.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
 
         if not lista_reservas:
             return
@@ -46,7 +47,6 @@ class VistaMisReservas(QDialog, Form):
             self.tabla_libros.setItem(fila, 1, QTableWidgetItem(str(reserva.autor)))
             self.tabla_libros.setItem(fila, 2, QTableWidgetItem(str(reserva.nombre_tema)))
             self.tabla_libros.setItem(fila, 3, QTableWidgetItem(str(reserva.estado)))
-        self.tabla_libros.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
 
     def lanzarAviso(self, aviso):
         QMessageBox.information(self, "Información", aviso)

@@ -37,5 +37,11 @@ class ControladorSanciones:
     def volverASanciones(self):
         if self._vista:
             self._vista.close()
+
         if self._vista_gestion:
+            controlador_gestion = getattr(self._vista_gestion, 'controlador', None)
+            if controlador_gestion and hasattr(controlador_gestion, 'volverASanciones'):
+                controlador_gestion.volverASanciones()
+                return
+
             self._vista_gestion.showMaximized()
