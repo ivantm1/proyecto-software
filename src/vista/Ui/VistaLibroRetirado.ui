@@ -95,6 +95,12 @@ QLabel {
          <height>30</height>
         </size>
        </property>
+       <property name="styleSheet">
+        <string notr="true">font-family: 'Segoe UI', sans-serif;
+font-size: 28px;
+font-weight: bold;
+color: #082e53; </string>
+       </property>
        <property name="text">
         <string>Titulo</string>
        </property>
@@ -141,6 +147,12 @@ QLabel {
            <height>30</height>
           </size>
          </property>
+         <property name="styleSheet">
+          <string notr="true">font-family: 'Segoe UI', sans-serif;
+font-size: 18px;
+font-weight: bold;
+color: #082e53; </string>
+         </property>
          <property name="text">
           <string>Tema</string>
          </property>
@@ -150,6 +162,12 @@ QLabel {
      </item>
      <item>
       <widget class="QLabel" name="linea_isbn">
+       <property name="styleSheet">
+        <string notr="true">font-family: 'Segoe UI', sans-serif;
+font-size: 14px;
+font-weight: bold;
+color: #082e53; </string>
+       </property>
        <property name="text">
         <string>ISBN</string>
        </property>
@@ -157,6 +175,12 @@ QLabel {
      </item>
      <item>
       <widget class="QLabel" name="linea_fecha">
+       <property name="styleSheet">
+        <string notr="true">font-family: 'Segoe UI', sans-serif;
+font-size: 14px;
+font-weight: bold;
+color: #082e53; </string>
+       </property>
        <property name="text">
         <string>Fecha llegada</string>
        </property>
@@ -175,6 +199,12 @@ QLabel {
          <width>16777215</width>
          <height>150</height>
         </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">font-family: 'Segoe UI', sans-serif;
+font-size: 18px;
+font-weight: bold;
+color: #082e53; </string>
        </property>
        <property name="text">
         <string>Resumen</string>
@@ -208,7 +238,7 @@ QLabel {
       <widget class="QPushButton" name="boton_devolver">
        <property name="styleSheet">
         <string notr="true">QPushButton {
-    background-color: #1B4332; 
+    background-color: #082e53; 
     color: white;  
     border-radius: 5px; 
     padding: 8px;  
@@ -216,11 +246,11 @@ QLabel {
 }
 
 QPushButton:hover {
-    background-color: #2D6A4F; 
+    background-color: #1b5084; 
 }
 
 QPushButton:pressed {
-    background-color: #081C15; 
+    background-color: #031324; 
 }</string>
        </property>
        <property name="text">
@@ -235,7 +265,7 @@ QPushButton:pressed {
       <widget class="QPushButton" name="boton_cerrar">
        <property name="styleSheet">
         <string notr="true">QPushButton {
-    background-color: #1B4332; 
+    background-color: #082e53; 
     color: white;  
     border-radius: 5px; 
     padding: 8px;  
@@ -243,11 +273,11 @@ QPushButton:pressed {
 }
 
 QPushButton:hover {
-    background-color: #2D6A4F; 
+    background-color: #1b5084; 
 }
 
 QPushButton:pressed {
-    background-color: #081C15; 
+    background-color: #031324; 
 }</string>
        </property>
        <property name="text">
