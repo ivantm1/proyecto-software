@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Dialog</class>
+ <widget class="QDialog" name="Dialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1040</width>
+    <height>921</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">#Dialog {
+    background-color: #89ABA7;
+}
+
+* {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 13px;
+}
+
+QFrame#frame_principal {
+    background-color: white;
+    border: 2px solid #e5e7eb;
+    border-radius: 15px;
+}
+QTableWidget::item:selected {
+    background-color: #dbeafe; 
+    color: #1e40af;
+}
+
+QComboBox QAbstractItemView {
+    background-color: white;
+    selection-background-color: #1f2937; 
+    selection-color: white; 
+}
+
+QLineEdit, QComboBox {
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    padding: 5px;
+    background-color: white;
+    color: #333;
+}
+
+QLineEdit {
+    border: 2px solid #bdc3c7;
+    border-radius: 15px; 
+    padding: 5px 15px;
+    background: white;
+    selection-background-color: #34495e;
+}
+
+QLabel {
+    border: 2px solid #bdc3c7;
+    border-radius: 15px; /* Aquí está el redondeo */
+    background: white;
+    selection-background-color: #34495e;
+}
+QTableWidget {
+    border: 1px solid #d1d5db;
+    border-radius: 10px; 
+    gridline-color: #f3f4f6;
+}
+/* Estilo para las cabeceras de la tabla */
+QHeaderView::section {
+    background-color: #2c3e50;
+    color: white;
+    padding: 5px;
+    border: none;
+    font-weight: bold;
+}
+
+
+QPushButton#boton_buscar {
+    background-color: #bdc3c7;
+    color: white;
+    border-radius: 10px;
+    padding: 5px;
+}
+
+QPushButton#boton_buscar:hover {
+    background-color: #d5dbdb;
+}
+
+QPushButton#boton_buscar:pressed {
+    background-color: #7f8c8d;
+}
+
+QHeaderView::section:last {
+    border-top-right-radius: 5px;
+}
+
+QHeaderView::section:first {
+    border-top-left-radius: 5px;
+}
+
+QHeaderView::section {
+    background-color: #1f2937; 
+    color: #ffffff; /* Texto blanco */
+    font-family: &quot;Segoe UI&quot;, Arial, sans-serif;
+    font-size: 15px;
+    font-weight: bold; /* Negrita */
+    padding: 6px;
+    border: none;
+    border-right: 1px solid #374151; /* Una pequeña línea divisoria entre títulos */
+}
+
+</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_2">
+   <property name="sizeConstraint">
+    <enum>QLayout::SetMaximumSize</enum>
+   </property>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_4"/>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_9">
+     <property name="leftMargin">
+      <number>10</number>
+     </property>
+     <property name="topMargin">
+      <number>10</number>
+     </property>
+     <property name="rightMargin">
+      <number>10</number>
+     </property>
+     <property name="bottomMargin">
+      <number>10</number>
+     </property>
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <property name="spacing">
+        <number>14</number>
+       </property>
+       <property name="leftMargin">
+        <number>8</number>
+       </property>
+       <property name="topMargin">
+        <number>8</number>
+       </property>
+       <property name="rightMargin">
+        <number>8</number>
+       </property>
+       <property name="bottomMargin">
+        <number>8</number>
+       </property>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_6">
+         <item>
+          <widget class="QComboBox" name="opcion_buscador">
+           <property name="currentText">
+            <string/>
+           </property>
+           <property name="currentIndex">
+            <number>-1</number>
+           </property>
+           <property name="placeholderText">
+            <string>Selecciona un intervalo</string>
+           </property>
+           <property name="frame">
+            <bool>true</bool>
+           </property>
+           <item>
+            <property name="text">
+             <string>Última semana</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Último mes</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Últimos 3 meses</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="boton_buscar">
+           <property name="maximumSize">
+            <size>
+             <width>45</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normaloff>recursos/Lupa.png</normaloff>recursos/Lupa.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>25</width>
+             <height>25</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_2">
+         <property name="minimumSize">
+          <size>
+           <width>800</width>
+           <height>600</height>
+          </size>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="boton_volver">
+         <property name="styleSheet">
+          <string notr="true">QPushButton {
+    background-color: #082e53; 
+    color: white;  
+    border-radius: 5px; 
+    padding: 8px;  
+    font-weight: bold;
+}
+
+QPushButton:hover {
+    background-color: #1b5084; 
+}
+
+QPushButton:pressed {
+    background-color: #031324; 
+}</string>
+         </property>
+         <property name="text">
+          <string>Volver</string>
+         </property>
+         <property name="autoDefault">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_3"/>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
