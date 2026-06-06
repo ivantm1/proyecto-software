@@ -1,23 +1,15 @@
-si teneis ideas decidlo
 Las sanciones no se actualizan con los dias
+
+hacer el sql para la prueba
 
 hacer varias logicas(hecho pero revisar otras 4 veces)
 pasar todo lo posible de controlador a logica (que tenga sentido)(hecho pero revisar otras 4 veces)
 
 quitar que al hacer esc se cierre
-poner logo en las vistas
-
-actualizar numero de prestamos cuando se cambia igual que numero de sanciones.
-si el prestamo esta terminado no se puede terminar(creo que está)
-si finalizas un prestamo desde mis prestamos se aplique sancion
 
 grafico de libros prestados por temas
 
 comprobar si se cumplen todos los requisitos de la rúbrica y entregarla
-
-EXAMEN 22 DE MAYO
-entra todo lo que no entro en el otro parcial, a partir de semana 6 incluida
-estudiar los tecnicismos de la asignatura
 
 EXAMEN 8 DE JUNIO
 1 o 2 preguntas sobre modificaciones en nuestro proyecto particular
