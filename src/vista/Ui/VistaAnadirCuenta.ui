@@ -57,64 +57,6 @@
       </spacer>
      </item>
      <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_11">
-       <property name="topMargin">
-        <number>20</number>
-       </property>
-       <property name="bottomMargin">
-        <number>20</number>
-       </property>
-       <item>
-        <spacer name="horizontalSpacer_3">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>40</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item>
-        <widget class="QLabel" name="imagen_ule">
-         <property name="enabled">
-          <bool>true</bool>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>260</width>
-           <height>200</height>
-          </size>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-         <property name="pixmap">
-          <pixmap>recursos/logotipo-universidad-de-leon-01.png</pixmap>
-         </property>
-         <property name="scaledContents">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <spacer name="horizontalSpacer_4">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>40</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-      </layout>
-     </item>
-     <item>
       <widget class="QComboBox" name="opcion_buscador">
        <property name="styleSheet">
         <string notr="true">QComboBox QAbstractItemView {
@@ -249,19 +191,19 @@ QComboBox::placeholder {
       <widget class="QPushButton" name="boton_registro">
        <property name="styleSheet">
         <string notr="true">QPushButton {
-    background-color: #1B4332; 
-    color: white; 
-    border-radius: 5px;  
+    background-color: #082e53; 
+    color: white;  
+    border-radius: 5px; 
     padding: 8px;  
     font-weight: bold;
 }
 
 QPushButton:hover {
-    background-color: #2D6A4F; 
+    background-color: #1b5084; 
 }
 
 QPushButton:pressed {
-    background-color: #081C15;
+    background-color: #031324; 
 }</string>
        </property>
        <property name="text">
@@ -280,77 +222,25 @@ QPushButton:pressed {
       <widget class="QPushButton" name="boton_volver">
        <property name="styleSheet">
         <string notr="true">QPushButton {
-    background-color: #1B4332; 
-    color: white; 
-    border-radius: 5px;  
+    background-color: #082e53; 
+    color: white;  
+    border-radius: 5px; 
     padding: 8px;  
     font-weight: bold;
 }
 
 QPushButton:hover {
-    background-color: #2D6A4F; 
+    background-color: #1b5084; 
 }
 
 QPushButton:pressed {
-    background-color: #081C15;
+    background-color: #031324; 
 }</string>
        </property>
        <property name="text">
         <string>Volver</string>
        </property>
       </widget>
-     </item>
-     <item>
-      <spacer name="verticalSpacer_4">
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>20</width>
-         <height>40</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <spacer name="verticalSpacer_7">
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>20</width>
-         <height>40</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <spacer name="verticalSpacer_5">
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>20</width>
-         <height>40</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <spacer name="verticalSpacer_6">
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>20</width>
-         <height>40</height>
-        </size>
-       </property>
-      </spacer>
      </item>
      <item>
       <spacer name="verticalSpacer_2">
