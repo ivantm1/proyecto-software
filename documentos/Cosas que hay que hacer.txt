@@ -1,15 +1,15 @@
-Las sanciones no se actualizan con los dias
-
 hacer el sql para la prueba
 
 hacer varias logicas(hecho pero revisar otras 4 veces)
 pasar todo lo posible de controlador a logica (que tenga sentido)(hecho pero revisar otras 4 veces)
 
-quitar que al hacer esc se cierre
-
 grafico de libros prestados por temas
 
 comprobar si se cumplen todos los requisitos de la rúbrica y entregarla
+
+En reservas hacer un nuevo estado que sea pendiente de pasar a recogerlo e implementarlo en todas las vistas
+
+
 
 EXAMEN 8 DE JUNIO
 1 o 2 preguntas sobre modificaciones en nuestro proyecto particular
