@@ -118,6 +118,8 @@ class ControladorCatalogo:
         elif self._tipo_usuario == "Admin":
             self._vista_administrador.showMaximized()
         else:
+            if self._vista_estudiante and hasattr(self._vista_estudiante, 'actualizar_datos_estudiante'):
+                self._vista_estudiante.actualizar_datos_estudiante()
             self._vista_estudiante.showMaximized()
             
     def abrirDetalleLibroRetirado(self, fila):

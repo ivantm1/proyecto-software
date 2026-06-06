@@ -32,7 +32,6 @@ class VistaMisPrestamos(QDialog, Form):
         self.controlador.registroAtras()
 
     def mostrarPrestamos(self, lista_prestamos):
-        self._prestamos = lista_prestamos or []
         self.tabla_libros.clearContents()
         self.tabla_libros.setRowCount(0)
         self.tabla_libros.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
@@ -60,6 +59,8 @@ class VistaMisPrestamos(QDialog, Form):
             )
         )
 
+        self._prestamos = lista_prestamos or []
+
         for prestamo in lista_prestamos:
             fila = self.tabla_libros.rowCount()
             self.tabla_libros.insertRow(fila)
@@ -85,14 +86,13 @@ class VistaMisPrestamos(QDialog, Form):
 
                 self.tabla_libros.setItem(fila, 3, item_fin)
             except Exception:
-                # Fallback: mostrar fecha original
                 self.tabla_libros.setItem(fila, 3, QTableWidgetItem(str(prestamo.fecha_devolucion)))
         
             if getattr(prestamo, 'estado', '') == 'Devuelto' and tipo_usuario != 'Estudiante':
                 for col in range(self.tabla_libros.columnCount()):
                     item = self.tabla_libros.item(fila, col)
                     if item:
-                        item.setBackground(QColor(220, 220, 220))
+                        item.setFlags(item.flags() & ~(Qt.ItemIsSelectable | Qt.ItemIsEnabled | Qt.ItemIsEditable))
 
     def obtenerPrestamoPorFila(self, fila):
         if hasattr(self, '_prestamos') and 0 <= fila < len(self._prestamos):
