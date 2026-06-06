@@ -22,7 +22,7 @@ class VistaLibroBibliotecario(QDialog, Form):
         self.linea_autor.setText(f"Autor: {str(libro.autor)}")
         self.linea_tema.setText(str(libro.nombre_tema))
         self.linea_isbn.setText(f"ISBN: {str(libro.isbn)}")
-        self.linea_fecha.setText(f"Llegada: {str(libro.fecha_llegada)}")
+        self.linea_fecha.setText(f"Fecha de llegada: {str(libro.fecha_llegada)}")
         self.linea_resumen.setText(str(libro.descripcion) if libro.descripcion else "Sin descripción")
         self.linea_estado.setText(str(libro.disponibilidad))
         self.lineEdit.clear()
