@@ -5,13 +5,12 @@ from PyQt5.QtWidgets import QApplication, QMessageBox
 from src.controlador.ControladorCatalogo import ControladorCatalogo
 from src.controlador.ControladorMisPrestamos import ControladorMisPrestamos
 from src.controlador.ControladorMisReservas import ControladorMisReservas
-from src.controlador.ControladorSanciones import ControladorSanciones
 from src.controlador.ControladorDevolucion import ControladorDevolucion
-from src.controlador.ControladorPrestamo import ControladorPrestamo
 from src.controlador.ControladorPerfil import ControladorPerfil
 from src.controlador.ControladorBuscarEstudiante import ControladorBuscarEstudiante
 from src.controlador.ControladorAnadirLibro import ControladorAnadirLibro
 from src.controlador.ControladorGestionarCuentas import ControladorGestionarCuentas
+from src.controlador.ControladorEstadisticas import ControladorEstadisticas
 
 
 class ControladorPrincipal:
@@ -30,7 +29,8 @@ class ControladorPrincipal:
                  ref_vista_sanciones=None,
                  ref_vista_devolucion=None,
                  ref_vista_buscar_estudiante=None,
-                 ref_vista_anadir_libro=None):
+                 ref_vista_anadir_libro=None,
+                 ref_vista_estadistica=None):
 
         self._modelo                = ref_modelo
         self._vistaLogin            = ref_login
@@ -49,6 +49,7 @@ class ControladorPrincipal:
         self._vistaDevolucion       = ref_vista_devolucion
         self._vistaBuscarEstudiante = ref_vista_buscar_estudiante
         self._vistaAnadirLibro      = ref_vista_anadir_libro
+        self._vistaEstadistica      = ref_vista_estadistica
         self._usuario_activo = None
         self._cerrando_por_cerrar_sesion = False
 
@@ -268,12 +269,20 @@ class ControladorPrincipal:
             Logger().copia_seguridad_ok(info, actor)
             msg.setWindowTitle("Copia de seguridad")
             msg.setIcon(QMessageBox.Information)
-            msg.setText("✅ Copia de seguridad creada correctamente.")
+            msg.setText("Copia de seguridad creada correctamente.")
             msg.setInformativeText(f"Guardada en:\n{info}")
         else:
             Logger().copia_seguridad_error(info, actor)
             msg.setWindowTitle("Error")
             msg.setIcon(QMessageBox.Critical)
-            msg.setText("❌ No se pudo crear la copia de seguridad.")
+            msg.setText("No se pudo crear la copia de seguridad.")
             msg.setInformativeText(info)
         msg.exec_()
+
+    def ventanaEstadisticas(self):
+        if not self._vistaEstadistica:
+            return
+        ctrl = ControladorEstadisticas(self._modelo, self._vistaEstadistica, self._vistaBibliotecario)
+        self._vistaEstadistica.controlador = ctrl
+        self._vistaBibliotecario.close()
+        self._vistaEstadistica.showMaximized()

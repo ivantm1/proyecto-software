@@ -13,6 +13,7 @@ from src.vista.VistaBuscarEstudiante import VistaBuscarEstudiante
 from src.vista.VistaAdmin import VistaAdmin
 from src.vista.VistaGestionarCuentas import VistaGestionarCuentas
 from src.vista.VistaAnadirCuenta import VistaAnadirCuenta
+from src.vista.VistaEstadisticas import VistaEstadisticas
 from src.modelo.Logica import Logica
 from src.modelo.logica.LoggerSingleton import Logger
 from src.controlador.ControladorPrincipal import ControladorPrincipal
@@ -34,6 +35,7 @@ if __name__ == "__main__":
     admin            = VistaAdmin()
     gestionarCuentas = VistaGestionarCuentas()
     anadirCuenta      = VistaAnadirCuenta()
+    estadisticas      = VistaEstadisticas()
 
     controlador = ControladorPrincipal(
         modelo, login,
@@ -50,6 +52,7 @@ if __name__ == "__main__":
         ref_vista_devolucion=devolucion,
         ref_vista_buscar_estudiante=buscarEstudiante,
         ref_vista_anadir_libro=anadirLibro,
+        ref_vista_estadistica=estadisticas
     )
 
     def registrar_cierre_sesion():
