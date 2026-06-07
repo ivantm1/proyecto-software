@@ -88,7 +88,7 @@ class ControladorPrincipal:
             self._vistaLogin.close()
             self._vistaRegistro.showMaximized()
 
-    def registrarUsuario(self, nombre, apellidos, correo, contrasena, confirmar, tipo):
+    def registrarUsuario(self, nombre, apellidos, correo, contrasena, confirmar, tipo="Estudiante"):
         valido, mensaje = self._modelo.validarRegistro(nombre, apellidos, correo, contrasena, confirmar)
         if not valido:
             self._vistaAnadirCuenta.lanzarAviso(mensaje)
