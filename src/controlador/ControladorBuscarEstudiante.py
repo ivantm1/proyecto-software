@@ -89,6 +89,7 @@ class ControladorBuscarEstudiante:
             self._vista_reservas,
             self._vista_gestion,
             self._vista_bibliotecario,
+            self._vista_buscar,
             correo_estudiante,
             "Bibliotecario"
         )
