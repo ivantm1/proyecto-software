@@ -102,16 +102,16 @@ class VistaSanciones(QDialog, Form):
         total_dias = 0
         if lista_sanciones:
             for sancion in lista_sanciones:
-                fila = self.tabla_sanciones.rowCount()
-                self.tabla_sanciones.insertRow(fila)
-                self.tabla_sanciones.setItem(fila, 0, QTableWidgetItem(str(sancion.fecha_inicio)))
-                self.tabla_sanciones.setItem(fila, 1, QTableWidgetItem(str(sancion.duracion_sancion)))
-                self.tabla_sanciones.setItem(fila, 2, QTableWidgetItem(str(sancion.tipo)))
-                try:
-                    if sancion.estado in ("Activa", "Pendiente"):
+                if sancion.estado in ("Activa", "Pendiente"):
+                    fila = self.tabla_sanciones.rowCount()
+                    self.tabla_sanciones.insertRow(fila)
+                    self.tabla_sanciones.setItem(fila, 0, QTableWidgetItem(str(sancion.fecha_inicio)))
+                    self.tabla_sanciones.setItem(fila, 1, QTableWidgetItem(str(sancion.duracion_sancion)))
+                    self.tabla_sanciones.setItem(fila, 2, QTableWidgetItem(str(sancion.tipo)))
+                    try:
                         total_dias += int(sancion.duracion_sancion)
-                except Exception:
-                    pass
+                    except Exception:
+                        pass
 
         if not lista_sanciones:
             self.linea_tiempo.setText("No hay sanciones registradas para este estudiante.")
