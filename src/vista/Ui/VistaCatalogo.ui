@@ -384,6 +384,11 @@ QHeaderView::section {
              <string>Prestado</string>
             </property>
            </item>
+           <item>
+            <property name="text">
+             <string>Reservado</string>
+            </property>
+           </item>
           </widget>
          </item>
         </layout>

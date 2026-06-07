@@ -66,7 +66,7 @@ class VistaCatalogo(QDialog, Form):
         
         seleccion_actual = self.opcion_disponibilidad.currentText() if hasattr(self.opcion_disponibilidad, 'currentText') else "Todos"
         self.opcion_disponibilidad.clear()
-        self.opcion_disponibilidad.addItems(["Todos", "Disponibles", "Prestados"])
+        self.opcion_disponibilidad.addItems(["Todos", "Disponibles", "Prestados", "Reservados"])
         self.opcion_disponibilidad.setCurrentText(seleccion_actual)
         
         libros_filtrados = [l for l in lista_libros if str(l.disponibilidad).lower() != "retirado"]
@@ -76,6 +76,8 @@ class VistaCatalogo(QDialog, Form):
             self._libros = [l for l in libros_filtrados if str(l.disponibilidad).lower() == "disponible"]
         elif seleccion_actual == "Prestados":
             self._libros = [l for l in libros_filtrados if "prestado" in str(l.disponibilidad).lower()]
+        elif seleccion_actual == "Reservados":
+            self._libros = [l for l in libros_filtrados if "reservado" in str(l.disponibilidad).lower()]
         else:
             self._libros = libros_filtrados
         
@@ -112,7 +114,7 @@ class VistaCatalogo(QDialog, Form):
 
         seleccion_actual = self.opcion_disponibilidad.currentText() if hasattr(self.opcion_disponibilidad, 'currentText') else "Todos"
         self.opcion_disponibilidad.clear()
-        self.opcion_disponibilidad.addItems(["Todos", "Disponibles", "Prestados", "Retirados"])    
+        self.opcion_disponibilidad.addItems(["Todos", "Disponibles", "Prestados", "Retirados","Reservados"])    
         self.opcion_disponibilidad.setCurrentText(seleccion_actual)
         
         
@@ -122,6 +124,8 @@ class VistaCatalogo(QDialog, Form):
             self._libros = [l for l in lista_libros if "prestado" in str(l.disponibilidad).lower()]
         elif seleccion_actual == "Retirados":
             self._libros = [l for l in lista_libros if "retirado" in str(l.disponibilidad).lower()]
+        elif seleccion_actual == "Reservados":
+            self._libros = [l for l in lista_libros if "reservado" in str(l.disponibilidad).lower()]
         else:
             self._libros = list(lista_libros)
         
