@@ -14,7 +14,7 @@ from src.vista.VistaAdmin import VistaAdmin
 from src.vista.VistaGestionarCuentas import VistaGestionarCuentas
 from src.vista.VistaAnadirCuenta import VistaAnadirCuenta
 from src.vista.VistaEstadisticas import VistaEstadisticas
-from src.modelo.Logica import Logica
+from src.modelo.logica.Logica import Logica
 from src.modelo.logica.LoggerSingleton import Logger
 from src.controlador.ControladorPrincipal import ControladorPrincipal
 

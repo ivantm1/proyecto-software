@@ -1,11 +1,11 @@
-from src.modelo.dao.UserDaoJDBC import UserDaoJDBC
-from src.modelo.logica.LogicaInicioSesion import LogicaInicioSesion
-from src.modelo.logica.LogicaLibros import LogicaLibros
-from src.modelo.logica.LogicaPrestamos import LogicaPrestamos
-from src.modelo.logica.LogicaReservas import LogicaReservas
-from src.modelo.logica.LogicaSanciones import LogicaSanciones
-from src.modelo.logica.LogicaEstudiantes import LogicaEstudiantes
-from src.modelo.logica.LogicaCopiaSeguridad import LogicaCopiaSeguridad
+from ..dao.UserDaoJDBC import UserDaoJDBC
+from .LogicaInicioSesion import LogicaInicioSesion
+from .LogicaLibros import LogicaLibros
+from .LogicaPrestamos import LogicaPrestamos
+from .LogicaReservas import LogicaReservas
+from .LogicaSanciones import LogicaSanciones
+from .LogicaEstudiantes import LogicaEstudiantes
+from .LogicaCopiaSeguridad import LogicaCopiaSeguridad
 
 class Logica:
     def __init__(self):
