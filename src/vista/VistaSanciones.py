@@ -108,7 +108,7 @@ class VistaSanciones(QDialog, Form):
                 self.tabla_sanciones.setItem(fila, 1, QTableWidgetItem(str(sancion.duracion_sancion)))
                 self.tabla_sanciones.setItem(fila, 2, QTableWidgetItem(str(sancion.tipo)))
                 try:
-                    if sancion.estado == "Activa":
+                    if sancion.estado in ("Activa", "Pendiente"):
                         total_dias += int(sancion.duracion_sancion)
                 except Exception:
                     pass

@@ -18,7 +18,7 @@ class LogicaEstudiantes:
         num_prestamos = LogicaPrestamos().contarPrestamosEstudiante(correo)
         num_reservas = LogicaReservas().contarReservasEstudiante(correo)
         sanciones = LogicaSanciones().obtenerSancionesEstudiante(correo)
-        num_sanciones_activas = len([s for s in sanciones if s.estado == "Activa"])
+        num_sanciones_activas = len([s for s in sanciones if s.estado in ("Activa", "Pendiente")])
 
         return estudiante, num_prestamos, num_reservas, num_sanciones_activas
 

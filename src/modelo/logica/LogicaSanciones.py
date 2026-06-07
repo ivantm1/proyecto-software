@@ -30,7 +30,7 @@ class LogicaSanciones:
         sanciones = self.obtenerSancionesEstudiante(correo_estudiante)
         total_dias = 0
         for sancion in sanciones:
-            if sancion.estado == "Activa":
+            if sancion.estado in ("Activa", "Pendiente"):
                 total_dias += int(sancion.duracion_sancion)
         return total_dias
 
