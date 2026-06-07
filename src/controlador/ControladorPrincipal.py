@@ -85,6 +85,11 @@ class ControladorPrincipal:
     def ventanaRegistro(self):
         if self._vistaRegistro:
             self._vistaRegistro.controlador = self
+            self._vistaRegistro.Linea_nombre.clear()
+            self._vistaRegistro.Linea_apellidos.clear()
+            self._vistaRegistro.Linea_correo.clear()
+            self._vistaRegistro.Linea_contrasena.clear()
+            self._vistaRegistro.Linea_confirmar_contrasena.clear()
             self._vistaLogin.close()
             self._vistaRegistro.showMaximized()
 
@@ -97,9 +102,9 @@ class ControladorPrincipal:
         registro = RegistroVO(nombre, apellidos, correo, contrasena, tipo)
         if self._modelo.registrarUsuario(registro):
             Logger().registro_cuenta_ok(correo, tipo, actor="Registro público")
-            self._vistaAnadirCuenta.lanzarAviso("Usuario registrado con éxito.")
-            self._vistaAnadirCuenta.close()
-            self.ventanaGestionarCuentas()
+            self._vistaRegistro.lanzarAviso("Usuario registrado con éxito.")
+            self._vistaRegistro.close()
+            self.ventanaIniciarSesion()
         else:
             Logger().registro_cuenta_error(correo, actor="Registro público")
             self._vistaAnadirCuenta.lanzarAviso("Error al registrarse. El email ya puede estar registrado.")
