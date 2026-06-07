@@ -1,274 +1,266 @@
--- =============================================================================
---  DATOS DE PRUEBA COMPLEMENTARIOS — BibliotecaDB
---  Cuentas principales: 1 (Admin), 12 (Bibliotecario), 123 (Estudiante Miguel)
---  También se usan: 1234 (Estudiante Elena) y otros estudiantes existentes
--- =============================================================================
-
 USE BibliotecaDB;
 GO
 
--- =============================================================================
---  BLOQUE 1 — PRÉSTAMOS ACTIVOS (estado='Activo', fecha devolución futura)
---  Caso: libro prestado sin incidencias, el alumno aún tiene tiempo
--- =============================================================================
+/* Cleanup: re-runnable script - remove previous test data */
+DELETE FROM Prestamos WHERE email LIKE 'test_%';
+DELETE FROM Reservas WHERE email LIKE 'test_%';
+DELETE FROM Sanciones WHERE email LIKE 'test_%';
+DELETE FROM Retirados WHERE ISBN IN (
+    '978-84-291-5032-2', '978-84-7615-402-7', '978-84-9735-730-3', '978-84-7615-689-2', '978-84-9735-610-8', '978-84-291-4025-5', '978-84-291-6124-3'
+);
+DELETE FROM Estudiantes WHERE email LIKE 'test_%';
+DELETE FROM Usuarios WHERE email LIKE 'test_%';
 
--- Miguel (123) tiene 3 libros activos
-INSERT INTO Prestamos (email, ISBN, estado, fecha_prestamo, fecha_devolucion, prorroga) VALUES
-('123', '978-84-291-5032-2', 'Activo', DATEADD(day,-5,GETDATE()), DATEADD(day,9,GETDATE()),  0),  -- Cálculo Diferencial
-('123', '978-84-9835-944-6', 'Activo', DATEADD(day,-3,GETDATE()), DATEADD(day,11,GETDATE()), 0),  -- Visión por Computador
-('123', '978-84-9735-730-3', 'Activo', DATEADD(day,-1,GETDATE()), DATEADD(day,13,GETDATE()), 0);  -- Redes de Computadores
+-- Reset influenced books to a neutral availability so script can run repeatedly
+UPDATE Libros SET disponibilidad = 'Disponible' WHERE ISBN IN (
+    '978-84-291-5032-2', '978-84-7615-402-7', '978-84-9735-730-3', '978-84-7615-689-2', '978-84-9735-610-8', '978-84-291-4025-5', '978-84-291-6124-3'
+);
+GO
 
-UPDATE Libros SET disponibilidad='Prestado' WHERE ISBN IN (
-    '978-84-291-5032-2','978-84-9835-944-6','978-84-9735-730-3'
+/* 1. Create test users (prefixed with test_) and corresponding Estudiantes */
+INSERT INTO Usuarios (contrasena, email, nombre, apellidos, tipo) VALUES
+('pass', 'test_user1@example.com', 'Test', 'Usuario1', 'Estudiante'),
+('pass', 'test_user2@example.com', 'Test', 'Usuario2', 'Estudiante'),
+('pass', 'test_user3@example.com', 'Test', 'Usuario3', 'Estudiante');
+
+INSERT INTO Estudiantes (email, num_prestamos, num_reservas, sanciones) VALUES
+('test_user1@example.com', 0, 0, 0),
+('test_user2@example.com', 0, 0, 0),
+('test_user3@example.com', 0, 0, 0);
+GO
+
+/* 2. Préstamos: one per requested state */
+
+-- 2.1 Activo (no prórroga)
+UPDATE Libros SET disponibilidad = 'Prestado' WHERE ISBN = '978-84-7615-402-7';
+INSERT INTO Prestamos (email, ISBN, estado, fecha_prestamo, fecha_devolucion, prorroga)
+VALUES ('test_user1@example.com', '978-84-7615-402-7', 'Activo',
+        CAST(GETDATE() AS DATE),
+        CAST(DATEADD(day, 14, GETDATE()) AS DATE), 0);
+
+-- 2.2 Activo + prórroga = 1 (extendida 7 días)
+UPDATE Libros SET disponibilidad = 'Prestado' WHERE ISBN = '978-84-9735-730-3';
+INSERT INTO Prestamos (email, ISBN, estado, fecha_prestamo, fecha_devolucion, prorroga)
+VALUES ('test_user1@example.com', '978-84-9735-730-3', 'Activo',
+        CAST(GETDATE() AS DATE),
+        CAST(DATEADD(day, 21, GETDATE()) AS DATE), 1);
+
+-- 2.3 Vencido (fecha_devolucion pasada)
+UPDATE Libros SET disponibilidad = 'Prestado' WHERE ISBN = '978-84-291-5032-2';
+INSERT INTO Prestamos (email, ISBN, estado, fecha_prestamo, fecha_devolucion, prorroga)
+VALUES ('test_user2@example.com', '978-84-291-5032-2', 'Vencido',
+        CAST(DATEADD(day, -30, GETDATE()) AS DATE),
+        CAST(DATEADD(day, -3, GETDATE()) AS DATE), 0);
+
+-- 2.4 Devuelto (libro ya devuelto -> disponibilidad = 'Disponible')
+-- We insert a Devuelto préstamo (histórico) and ensure the libro is Disponible
+INSERT INTO Prestamos (email, ISBN, estado, fecha_prestamo, fecha_devolucion, prorroga)
+VALUES ('test_user2@example.com', '978-84-7615-689-2', 'Devuelto',
+        CAST(DATEADD(day, -20, GETDATE()) AS DATE),
+        CAST(DATEADD(day, -6, GETDATE()) AS DATE), 0);
+UPDATE Libros SET disponibilidad = 'Disponible' WHERE ISBN = '978-84-7615-689-2';
+GO
+
+/* 3. Reservas: Espera (recién creada), Espera lista para recoger (Recoger), Caducada */
+
+-- 3.1 Reserva 'Espera' recién creada: the book remains 'Prestado' (not reserved yet)
+-- Use the same ISBN that is currently prestado ('978-84-7615-402-7')
+INSERT INTO Reservas (estado, email, ISBN, fecha_reserva)
+VALUES ('Espera', 'test_user3@example.com', '978-84-7615-402-7', CAST(GETDATE() AS DATE));
+-- Do NOT change disponibilidad: it remains 'Prestado'
+
+-- 3.2 Reserva lista para recoger -> estado 'Recoger' and set book 'Reservado'
+UPDATE Libros SET disponibilidad = 'Reservado' WHERE ISBN = '978-84-9735-610-8';
+INSERT INTO Reservas (estado, email, ISBN, fecha_reserva)
+VALUES ('Recoger', 'test_user3@example.com', '978-84-9735-610-8', CAST(DATEADD(day, -2, GETDATE()) AS DATE));
+
+-- 3.3 Reserva Caducada -> student didn't pick up within 7 days, book back to 'Disponible'
+INSERT INTO Reservas (estado, email, ISBN, fecha_reserva)
+VALUES ('Caducada', 'test_user3@example.com', '978-84-291-4025-5', CAST(DATEADD(day, -20, GETDATE()) AS DATE));
+-- Mantener como 'Reservado' en catálogo aunque la reserva haya caducado (solicitud del equipo)
+UPDATE Libros SET disponibilidad = 'Reservado' WHERE ISBN = '978-84-291-4025-5';
+GO
+
+/* 4. Sanciones: Activa, Pendiente, Cumplida */
+-- 4.1 Activa
+INSERT INTO Sanciones (tipo, estado, fecha_inicio, duracion, email)
+VALUES ('Retraso', 'Activa', CAST(GETDATE() AS DATE), 30, 'test_user1@example.com');
+
+-- 4.2 Pendiente (queued because an Activa exists for same student in normal logic)
+INSERT INTO Sanciones (tipo, estado, fecha_inicio, duracion, email)
+VALUES ('Comportamiento', 'Pendiente', CAST(DATEADD(day, 1, GETDATE()) AS DATE), 14, 'test_user1@example.com');
+
+-- 4.3 Cumplida (historical)
+INSERT INTO Sanciones (tipo, estado, fecha_inicio, duracion, email)
+VALUES ('Multa', 'Cumplida', CAST(DATEADD(day, -60, GETDATE()) AS DATE), 15, 'test_user2@example.com');
+GO
+
+/* 5. Retirados: example of a withdrawn book */
+UPDATE Libros SET disponibilidad = 'Retirado' WHERE ISBN = '978-84-291-6124-3';
+INSERT INTO Retirados (ISBN, motivo, fecha_retiro)
+VALUES ('978-84-291-6124-3', 'Colección desactualizada', CAST(GETDATE() AS DATE));
+GO
+
+/* Verification queries: counts grouped by (tabla, estado) for test data */
+SELECT 'Prestamos' AS tabla, estado, COUNT(*) AS cnt
+FROM Prestamos
+WHERE email LIKE 'test_%'
+GROUP BY estado
+
+UNION ALL
+
+SELECT 'Reservas' AS tabla, estado, COUNT(*) AS cnt
+FROM Reservas
+WHERE email LIKE 'test_%'
+GROUP BY estado
+
+UNION ALL
+
+SELECT 'Sanciones' AS tabla, estado, COUNT(*) AS cnt
+FROM Sanciones
+WHERE email LIKE 'test_%'
+GROUP BY estado;
+GO
+
+/* -------------------------------------------------- */
+/* Ejemplos adicionales de Reservas para cuentas '123' */
+/* Muestran comprobaciones: límite de 3 reservas, una reserva activa por ISBN, y cambios de estado */
+/* Usamos los usuarios existentes en DataBase.sql con email = '123' y '1234' */
+
+-- Asegurarnos de que los usuarios existen como Estudiantes (ya presentes en DataBase.sql)
+-- (si no existen, crearíamos filas similares a las de test_ )
+
+/* Escenario 1: usuario '123' intenta reservar varios libros (hasta 3 permitidas) */
+-- Marcar 3 libros como Prestado para permitir reservas en Espera
+UPDATE Libros SET disponibilidad = 'Prestado' WHERE ISBN IN ('978-84-9735-730-3','978-84-7615-689-2','978-84-8322-855-0');
+
+DECLARE @countReservas INT;
+SELECT @countReservas = COUNT(*) FROM Reservas WHERE email = '123' AND estado IN ('Espera','Recoger');
+
+IF @countReservas < 3
+BEGIN
+        -- Reserva 1
+        IF NOT EXISTS(SELECT 1 FROM Reservas WHERE ISBN = '978-84-9735-730-3' AND estado IN ('Espera','Recoger'))
+        BEGIN
+                INSERT INTO Reservas (estado, email, ISBN, fecha_reserva)
+                VALUES ('Espera', '123', '978-84-9735-730-3', CAST(GETDATE() AS DATE));
+                UPDATE Estudiantes SET num_reservas = num_reservas + 1 WHERE email = '123';
+        END
+
+        -- Reserva 2
+        IF NOT EXISTS(SELECT 1 FROM Reservas WHERE ISBN = '978-84-7615-689-2' AND estado IN ('Espera','Recoger'))
+        BEGIN
+                INSERT INTO Reservas (estado, email, ISBN, fecha_reserva)
+                VALUES ('Espera', '123', '978-84-7615-689-2', CAST(GETDATE() AS DATE));
+                UPDATE Estudiantes SET num_reservas = num_reservas + 1 WHERE email = '123';
+        END
+
+        -- Reserva 3
+        IF NOT EXISTS(SELECT 1 FROM Reservas WHERE ISBN = '978-84-8322-855-0' AND estado IN ('Espera','Recoger'))
+        BEGIN
+                INSERT INTO Reservas (estado, email, ISBN, fecha_reserva)
+                VALUES ('Espera', '123', '978-84-8322-855-0', CAST(GETDATE() AS DATE));
+                UPDATE Estudiantes SET num_reservas = num_reservas + 1 WHERE email = '123';
+        END
+END
+ELSE
+BEGIN
+        PRINT 'El usuario 123 ya tiene 3 o más reservas activas. No se insertan más.';
+END
+
+-- Intento de reserva 4 (debe ser rechazado por la lógica de la aplicación)
+IF (SELECT COUNT(*) FROM Reservas WHERE email = '123' AND estado IN ('Espera','Recoger')) < 3
+BEGIN
+        INSERT INTO Reservas (estado, email, ISBN, fecha_reserva)
+        VALUES ('Espera', '123', '978-84-291-6003-1', CAST(GETDATE() AS DATE));
+        UPDATE Estudiantes SET num_reservas = num_reservas + 1 WHERE email = '123';
+END
+ELSE
+BEGIN
+        PRINT 'Rechazado: no se permite una cuarta reserva activa para 123.';
+END
+
+/* Escenario 2: cuando un libro pasa de Prestado -> Devuelto, la primera reserva en Espera se marca Recoger */
+-- Simular devolución del libro A (978-84-9735-730-3)
+UPDATE Prestamos SET estado = 'Devuelto', fecha_devolucion = CAST(DATEADD(day, -1, GETDATE()) AS DATE)
+WHERE ISBN = '978-84-9735-730-3' AND estado = 'Activo';
+-- poner libro disponible temporalmente
+UPDATE Libros SET disponibilidad = 'Disponible' WHERE ISBN = '978-84-9735-730-3';
+
+-- Buscar la reserva más antigua en 'Espera' para ese ISBN y pasarla a 'Recoger'
+DECLARE @idReserva INT;
+SELECT TOP 1 @idReserva = ID_reserva FROM Reservas WHERE ISBN = '978-84-9735-730-3' AND estado = 'Espera' ORDER BY fecha_reserva ASC;
+IF @idReserva IS NOT NULL
+BEGIN
+        UPDATE Reservas SET estado = 'Recoger' WHERE ID_reserva = @idReserva;
+        UPDATE Libros SET disponibilidad = 'Reservado' WHERE ISBN = '978-84-9735-730-3';
+        PRINT 'Reserva promovida a Recoger y libro puesto en Reservado.';
+END
+
+/* Escenario 3: Caducidad de reserva si no se recoge en 7 días */
+-- Crear una reserva vieja para simular caducidad
+INSERT INTO Reservas (estado, email, ISBN, fecha_reserva)
+VALUES ('Recoger', '1234', '978-84-7615-544-4', CAST(DATEADD(day, -10, GETDATE()) AS DATE));
+UPDATE Libros SET disponibilidad = 'Reservado' WHERE ISBN = '978-84-7615-544-4';
+
+-- Marcar caducadas las reservas con estado 'Recoger' con más de 7 días sin recogida
+UPDATE Reservas
+SET estado = 'Caducada'
+WHERE estado = 'Recoger' AND fecha_reserva < CAST(DATEADD(day, -7, GETDATE()) AS DATE);
+
+-- Restaurar disponibilidad a Disponible para los libros cuyos reservas caducaron
+-- Según petición: los libros con reservas 'Caducada' se muestran como 'Reservado' en catálogo
+UPDATE Libros
+SET disponibilidad = 'Reservado'
+WHERE ISBN IN (
+        SELECT ISBN FROM Reservas WHERE estado = 'Caducada'
 );
 
--- Elena (1234) tiene 2 libros activos
-INSERT INTO Prestamos (email, ISBN, estado, fecha_prestamo, fecha_devolucion, prorroga) VALUES
-('1234', '978-84-291-4198-6', 'Activo', DATEADD(day,-7,GETDATE()), DATEADD(day,7,GETDATE()),  0),  -- Mecánica Clásica
-('1234', '978-84-8322-337-1', 'Activo', DATEADD(day,-2,GETDATE()), DATEADD(day,12,GETDATE()), 0);  -- Microbiología
+/* Consecuencias administrativas (ejemplos):
+ - num_reservas en tabla Estudiantes incrementado por cada reserva creada.
+ - disponibilidad de Libros cambia según reglas: Prestado/Reservado/Disponible/Retirado.
+ - El sistema de aplicación debe prevenir más de 3 reservas y una reserva activa por ISBN.
+*/
 
-UPDATE Libros SET disponibilidad='Prestado' WHERE ISBN IN (
-    '978-84-291-4198-6','978-84-8322-337-1'
+/* -------------------------------------------------- */
+/* Préstamos adicionales para la cuenta '123' */
+/* Insertamos varios préstamos (Activos, Vencido, Devuelto) y actualizamos contadores */
+
+-- Selección de ISBNs para los préstamos adicionales
+UPDATE Libros SET disponibilidad = 'Prestado' WHERE ISBN IN (
+        '978-84-8322-340-1', -- Aprendizaje Automático
+        '978-84-291-5788-8', -- Estructura de Computadores
+        '978-84-9735-610-8', -- Sistemas Operativos Modernos
+        '978-84-7615-544-4', -- Introducción a los Algoritmos
+        '978-84-291-6312-4'  -- Geología Física
 );
 
--- =============================================================================
---  BLOQUE 2 — PRÉSTAMOS CON PRÓRROGA (prorroga=1)
---  Caso: el alumno solicitó prórroga, nuevo plazo extendido
--- =============================================================================
+-- 1) Activos normales
+INSERT INTO Prestamos (email, ISBN, estado, fecha_prestamo, fecha_devolucion, prorroga)
+VALUES
+('123', '978-84-8322-340-1', 'Activo', CAST(GETDATE() AS DATE), CAST(DATEADD(day, 14, GETDATE()) AS DATE), 0),
+('123', '978-84-291-5788-8', 'Activo', CAST(GETDATE() AS DATE), CAST(DATEADD(day, 14, GETDATE()) AS DATE), 0),
+('123', '978-84-9735-610-8', 'Activo', CAST(GETDATE() AS DATE), CAST(DATEADD(day, 14, GETDATE()) AS DATE), 0);
 
--- Miguel (123) tiene 1 préstamo prorrogado
-INSERT INTO Prestamos (email, ISBN, estado, fecha_prestamo, fecha_devolucion, prorroga) VALUES
-('123', '978-84-7615-544-4', 'Activo', DATEADD(day,-14,GETDATE()), DATEADD(day,14,GETDATE()), 1); -- Algoritmos (prorrogado)
+-- 2) Activo con prórroga utilizada
+UPDATE Libros SET disponibilidad = 'Prestado' WHERE ISBN = '978-84-7615-544-4';
+INSERT INTO Prestamos (email, ISBN, estado, fecha_prestamo, fecha_devolucion, prorroga)
+VALUES ('123', '978-84-7615-544-4', 'Activo', CAST(DATEADD(day, -10, GETDATE()) AS DATE), CAST(DATEADD(day, 11, GETDATE()) AS DATE), 1);
 
-UPDATE Libros SET disponibilidad='Prestado' WHERE ISBN='978-84-7615-544-4';
+-- 3) Vencido
+UPDATE Libros SET disponibilidad = 'Prestado' WHERE ISBN = '978-84-291-6312-4';
+INSERT INTO Prestamos (email, ISBN, estado, fecha_prestamo, fecha_devolucion, prorroga)
+VALUES ('123', '978-84-291-6312-4', 'Vencido', CAST(DATEADD(day, -40, GETDATE()) AS DATE), CAST(DATEADD(day, -5, GETDATE()) AS DATE), 0);
 
--- =============================================================================
---  BLOQUE 3 — PRÉSTAMOS VENCIDOS (estado='Vencido', fecha pasada)
---  Caso: el alumno no devolvió a tiempo, el trigger lo marca automáticamente
--- =============================================================================
+-- 4) Devuelto (histórico)
+INSERT INTO Prestamos (email, ISBN, estado, fecha_prestamo, fecha_devolucion, prorroga)
+VALUES ('123', '978-84-291-6003-1', 'Devuelto', CAST(DATEADD(day, -30, GETDATE()) AS DATE), CAST(DATEADD(day, -10, GETDATE()) AS DATE), 0);
+UPDATE Libros SET disponibilidad = 'Disponible' WHERE ISBN = '978-84-291-6003-1';
 
--- Miguel (123) tiene 1 préstamo vencido
-INSERT INTO Prestamos (email, ISBN, estado, fecha_prestamo, fecha_devolucion, prorroga) VALUES
-('123', '978-84-291-7842-6', 'Vencido', DATEADD(day,-20,GETDATE()), DATEADD(day,-6,GETDATE()), 0); -- Ecología (vencido)
+-- Actualizar contador de préstamos en Estudiantes (incrementar por los nuevos préstamos no devueltos)
+UPDATE Estudiantes SET num_prestamos = num_prestamos + (
+        SELECT COUNT(*) FROM Prestamos p WHERE p.email = '123' AND p.estado IN ('Activo','Vencido')
+)
+WHERE email = '123';
 
-UPDATE Libros SET disponibilidad='Prestado' WHERE ISBN='978-84-291-7842-6';
-
--- Elena (1234) tiene 1 préstamo vencido
-INSERT INTO Prestamos (email, ISBN, estado, fecha_prestamo, fecha_devolucion, prorroga) VALUES
-('1234', '978-84-9835-780-0', 'Vencido', DATEADD(day,-25,GETDATE()), DATEADD(day,-11,GETDATE()), 0); -- Patología (vencido)
-
-UPDATE Libros SET disponibilidad='Prestado' WHERE ISBN='978-84-9835-780-0';
-
--- =============================================================================
---  BLOQUE 4 — PRÉSTAMOS DEVUELTOS (estado='Devuelto')
---  Caso: historial de devoluciones pasadas para ver en "Mis Préstamos"
--- =============================================================================
-
--- Miguel (123) — historial de devoluciones
-INSERT INTO Prestamos (email, ISBN, estado, fecha_prestamo, fecha_devolucion, prorroga) VALUES
-('123', '978-84-8322-910-6', 'Devuelto', DATEADD(day,-60,GETDATE()), DATEADD(day,-46,GETDATE()), 0), -- Probabilidad
-('123', '978-84-291-1720-2', 'Devuelto', DATEADD(day,-45,GETDATE()), DATEADD(day,-31,GETDATE()), 0), -- La República
-('123', '978-84-376-0494-7', 'Devuelto', DATEADD(day,-30,GETDATE()), DATEADD(day,-16,GETDATE()), 0); -- Don Quijote
-
--- Elena (1234) — historial de devoluciones
-INSERT INTO Prestamos (email, ISBN, estado, fecha_prestamo, fecha_devolucion, prorroga) VALUES
-('1234', '978-84-9735-089-2', 'Devuelto', DATEADD(day,-50,GETDATE()), DATEADD(day,-36,GETDATE()), 0), -- Historia Música
-('1234', '978-84-8322-240-4', 'Devuelto', DATEADD(day,-35,GETDATE()), DATEADD(day,-21,GETDATE()), 0); -- Ética a Nicómaco
-
--- Otros estudiantes — historial variado
-INSERT INTO Prestamos (email, ISBN, estado, fecha_prestamo, fecha_devolucion, prorroga) VALUES
-('smartm00@estudiantes.unileon.es', '978-84-9835-821-0', 'Devuelto', DATEADD(day,-40,GETDATE()), DATEADD(day,-26,GETDATE()), 0),
-('dferns00@estudiantes.unileon.es', '978-84-291-3587-2', 'Devuelto', DATEADD(day,-55,GETDATE()), DATEADD(day,-41,GETDATE()), 0);
-
--- =============================================================================
---  BLOQUE 5 — RESERVAS EN ESTADO 'Pendiente'
---  Caso: alumno reservó un libro que está prestado, aún no se devolvió
--- =============================================================================
-
--- Miguel (123) reserva un libro que está prestado por Elena
--- '978-84-291-4198-6' = Mecánica Clásica (prestado por Elena, activo)
-INSERT INTO Reservas (email, ISBN, fecha_reserva, estado) VALUES
-('123', '978-84-291-4198-6', DATEADD(day,-3,GETDATE()), 'Pendiente');
-
--- Elena (1234) reserva un libro prestado por Miguel
--- '978-84-9835-944-6' = Visión por Computador (prestado por Miguel, activo)
-INSERT INTO Reservas (email, ISBN, fecha_reserva, estado) VALUES
-('1234', '978-84-9835-944-6', DATEADD(day,-1,GETDATE()), 'Pendiente');
-
--- Otro estudiante reserva libro prestado por Miguel (vencido)
--- '978-84-291-7842-6' = Ecología (vencido por Miguel)
-INSERT INTO Reservas (email, ISBN, fecha_reserva, estado) VALUES
-('smartm00@estudiantes.unileon.es', '978-84-291-7842-6', DATEADD(day,-2,GETDATE()), 'Pendiente');
-
--- =============================================================================
---  BLOQUE 6 — RESERVAS EN ESTADO 'Espera'
---  Caso: libro devuelto pero el alumno aún no lo ha recogido (< 7 días)
---  El libro queda disponible en la biblioteca esperando al alumno con reserva
--- =============================================================================
-
--- Libro '978-84-291-5560-0' = Urgencias en Medicina — devuelto ayer, reservado por Miguel
--- Simula: otro alumno lo tenía, lo devolvió, y Miguel tiene 6 días para recogerlo
-UPDATE Libros SET disponibilidad='Reservado' WHERE ISBN='978-84-291-5560-0';
-
-INSERT INTO Prestamos (email, ISBN, estado, fecha_prestamo, fecha_devolucion, prorroga) VALUES
-('dferns00@estudiantes.unileon.es', '978-84-291-5560-0', 'Devuelto',
- DATEADD(day,-15,GETDATE()), DATEADD(day,-1,GETDATE()), 0);
-
-INSERT INTO Reservas (email, ISBN, fecha_reserva, estado) VALUES
-('123', '978-84-291-5560-0', DATEADD(day,-1,GETDATE()), 'Espera');
-
-
--- Libro '978-84-291-6908-5' = Derecho Constitucional — devuelto hace 3 días, reservado por Elena
-UPDATE Libros SET disponibilidad='Reservado' WHERE ISBN='978-84-291-6908-5';
-
-INSERT INTO Prestamos (email, ISBN, estado, fecha_prestamo, fecha_devolucion, prorroga) VALUES
-('pcanol00@estudiantes.unileon.es', '978-84-291-6908-5', 'Devuelto',
- DATEADD(day,-17,GETDATE()), DATEADD(day,-3,GETDATE()), 0);
-
-INSERT INTO Reservas (email, ISBN, fecha_reserva, estado) VALUES
-('1234', '978-84-291-6908-5', DATEADD(day,-3,GETDATE()), 'Espera');
-
--- =============================================================================
---  BLOQUE 6B — RESERVAS EN ESTADO 'Recoger'
---  Caso: libro devuelto y disponible, pendiente de recogida por el alumno con reserva
---  El libro está apartado en la biblioteca (disponibilidad='Reservado'), listo para recoger
--- =============================================================================
-
--- Libro '978-84-9835-203-4' = Anatomía Humana — devuelto hace 2 días, reservado por David
-UPDATE Libros SET disponibilidad='Reservado' WHERE ISBN='978-84-9835-203-4';
-
-INSERT INTO Prestamos (email, ISBN, estado, fecha_prestamo, fecha_devolucion, prorroga) VALUES
-('jvazqh00@estudiantes.unileon.es', '978-84-9835-203-4', 'Devuelto',
- DATEADD(day,-10,GETDATE()), DATEADD(day,-2,GETDATE()), 0);
-
-INSERT INTO Reservas (email, ISBN, fecha_reserva, estado) VALUES
-('dferns00@estudiantes.unileon.es', '978-84-9835-203-4', DATEADD(day,-2,GETDATE()), 'Recoger');
-
--- Libro '978-84-291-3985-3' = Harrison: Principios de Medicina Interna — devuelto hace 1 día, reservado por Sara
-UPDATE Libros SET disponibilidad='Reservado' WHERE ISBN='978-84-291-3985-3';
-
-INSERT INTO Prestamos (email, ISBN, estado, fecha_prestamo, fecha_devolucion, prorroga) VALUES
-('pcanol00@estudiantes.unileon.es', '978-84-291-3985-3', 'Devuelto',
- DATEADD(day,-8,GETDATE()), DATEADD(day,-1,GETDATE()), 0);
-
-INSERT INTO Reservas (email, ISBN, fecha_reserva, estado) VALUES
-('smartm00@estudiantes.unileon.es', '978-84-291-3985-3', DATEADD(day,-1,GETDATE()), 'Recoger');
-
--- Libro '978-84-9835-612-4' = Farmacología Básica y Clínica — devuelto hoy mismo, reservado por Laura
-UPDATE Libros SET disponibilidad='Reservado' WHERE ISBN='978-84-9835-612-4';
-
-INSERT INTO Prestamos (email, ISBN, estado, fecha_prestamo, fecha_devolucion, prorroga) VALUES
-('amends00@estudiantes.unileon.es', '978-84-9835-612-4', 'Devuelto',
- DATEADD(day,-5,GETDATE()), CAST(GETDATE() AS DATE), 0);
-
-INSERT INTO Reservas (email, ISBN, fecha_reserva, estado) VALUES
-('ldiazf00@estudiantes.unileon.es', '978-84-9835-612-4', CAST(GETDATE() AS DATE), 'Recoger');
-
--- Libro '978-84-9835-203-4' = Anatomía Humana — devuelto hace 2 días, reservado por David
--- =============================================================================
---  BLOQUE 7 — RESERVAS EN ESTADO 'Espera' EXPIRADA (> 7 días sin recoger)
---  Caso: el alumno dejó pasar más de 7 días → la lógica debe pasarla a 'Caducada'
---        Se inserta en 'Espera' para que la app la detecte y cambie automáticamente
--- =============================================================================
-
--- Libro '978-84-9835-310-9' = Armonía (Música) — en espera desde hace 9 días (expirada)
-UPDATE Libros SET disponibilidad='Reservado' WHERE ISBN='978-84-9835-310-9';
-
-INSERT INTO Prestamos (email, ISBN, estado, fecha_prestamo, fecha_devolucion, prorroga) VALUES
-('lruizm00@estudiantes.unileon.es', '978-84-9835-310-9', 'Devuelto',
- DATEADD(day,-25,GETDATE()), DATEADD(day,-9,GETDATE()), 0);
-
-INSERT INTO Reservas (email, ISBN, fecha_reserva, estado) VALUES
-('123', '978-84-9835-310-9', DATEADD(day,-9,GETDATE()), 'Espera');  -- 9 días → expirada
-
--- =============================================================================
---  BLOQUE 8 — RESERVAS 'Caducada' (historial)
---  Caso: reservas expiradas que aparecen en el historial del alumno
--- =============================================================================
-
-INSERT INTO Reservas (email, ISBN, fecha_reserva, estado) VALUES
--- Miguel (123) — reservas pasadas cumplidas
-('123', '978-84-8322-910-6', DATEADD(day,-70,GETDATE()), 'Caducada'),  -- Probabilidad
-('123', '978-84-291-1720-2', DATEADD(day,-55,GETDATE()), 'Caducada'),  -- La República
--- Elena (1234) — reservas pasadas caducadas
-('1234', '978-84-9735-089-2', DATEADD(day,-65,GETDATE()), 'Caducada'), -- Historia Música
-('1234', '978-84-291-5032-2', DATEADD(day,-40,GETDATE()), 'Caducada'), -- Cálculo (ya está prestado por Miguel, historial OK)
--- Otros
-('smartm00@estudiantes.unileon.es', '978-84-7615-544-4', DATEADD(day,-30,GETDATE()), 'Caducada');
-
--- =============================================================================
---  BLOQUE 9 — SANCIONES
---  Casos: sanción activa (bloquea préstamos/reservas) y sanción cumplida (historial)
--- =============================================================================
-
--- Elena (1234) tiene una sanción ACTIVA por retraso (bloquea préstamos y reservas)
-INSERT INTO Sanciones (tipo, estado, fecha_inicio, duracion, email) VALUES
-('Retraso en devolución', 'Activa', DATEADD(day,-5,GETDATE()), 14, '1234');
-
--- Miguel (123) tiene una sanción CUMPLIDA (solo historial, no le bloquea)
-INSERT INTO Sanciones (tipo, estado, fecha_inicio, duracion, email) VALUES
-('Retraso en devolución', 'Cumplida', DATEADD(day,-60,GETDATE()), 7, '123');
-
--- Otro estudiante con sanción activa por daño
-INSERT INTO Sanciones (tipo, estado, fecha_inicio, duracion, email) VALUES
-('Libro dañado', 'Activa', DATEADD(day,-2,GETDATE()), 30, 'smartm00@estudiantes.unileon.es');
-
--- Otro con sanción cumplida por daño (historial)
-INSERT INTO Sanciones (tipo, estado, fecha_inicio, duracion, email) VALUES
-('Libro roto', 'Cumplida', DATEADD(day,-90,GETDATE()), 60, 'dferns00@estudiantes.unileon.es');
-
--- =============================================================================
---  BLOQUE 10 — LIBROS RETIRADOS
---  Caso: libros dados de baja del catálogo por el bibliotecario
--- =============================================================================
-
-UPDATE Libros SET disponibilidad='Retirado' WHERE ISBN IN (
-    '978-84-291-3340-0',   -- El Arte del Siglo XX
-    '978-84-9832-567-2'    -- (si no existe, SQL simplemente no actualiza nada)
-);
-
-INSERT INTO Retirados (ISBN, motivo, fecha_retiro) VALUES
-('978-84-291-3340-0', 'Ejemplar deteriorado, páginas rotas y portada dañada', DATEADD(day,-10,GETDATE()));
-
--- =============================================================================
---  BLOQUE 11 — LIBRO DISPONIBLE SIN INCIDENCIAS (referencia limpia)
---  Caso: libro disponible para probar el flujo completo de reserva/préstamo
---        desde cero en las cuentas de prueba
--- =============================================================================
--- Los libros no mencionados arriba siguen en estado 'Disponible' por defecto.
--- Ejemplos disponibles para pruebas manuales:
---   '978-84-7615-402-7'  Matemáticas Discretas       (Disponible)
---   '978-84-291-4310-2'  Fisicoquímica                (Disponible)
---   '978-84-291-2450-7'  Psicopatología General       (Disponible)
---   '978-84-9835-821-0'  IA: Enfoque Moderno          (Disponible)
---   '978-84-376-0494-7'  Don Quijote                  (Disponible)
---   '978-84-9732-788-1'  Cien Años de Soledad         (Disponible)
-
---  CUENTA 1234 (Estudiante Elena):
---    Préstamos activos    : Mecánica Clásica, Microbiología
---    Préstamo vencido     : Patología Estructural
---    Devoluciones pasadas : Historia de la Música, Ética a Nicómaco
---    Reserva Pendiente    : Visión por Computador (prestado por Miguel)
---    Reserva Espera (<7d) : Derecho Constitucional (recogida pendiente)
---    Reservas Caducadas   : Historia de la Música, Cálculo (historial expirado)
---    Sanciones            : 1 ACTIVA por retraso (bloquea préstamos y reservas)
---
---  CUENTA 12 (Bibliotecario Pepe):
---    Puede ver en "Libros Reservados" TODAS las reservas del sistema:
---      - Reservas Pendientes de 123, 1234 y smartm00
---      - Reservas en Espera de 123 y 1234 (incluyendo la expirada)
---      - Reservas en Recoger de David, Sara y Laura (libros listos en biblioteca)
---      - Historial de Caducadas de todos
---    Puede gestionar devoluciones de cualquier ISBN activo/vencido
---    Puede hacer préstamos directos desde "Gestionar Estudiante"
---
---  CASOS ESPECIALES PARA PROBAR:
---    1. Devolver '978-84-291-4198-6' (Mecánica) → reserva de 123 pasa a 'Espera'
---    2. Miguel (123) pide prestado '978-84-291-5560-0' (Urgencias) → reserva se elimina
---    3. Elena (1234) intenta reservar/prestar → bloqueada por sanción activa
---    4. Abrir "Libros Reservados" como Pepe (12) → debe mostrar todas las reservas activas e historial
---    5. Armonía (ISBN 978-84-9835-310-9) → reserva expirada, la app la debe pasar a 'Caducada'
---    6. Libro en 'Recoger' (ej. '978-84-9835-203-4') → David (dferns00) debe poder verlo y recogerlo
---    7. Libro disponible '978-84-376-0494-7' (Don Quijote) → flujo nuevo préstamo/reserva
---
--- =============================================================================
+GO
