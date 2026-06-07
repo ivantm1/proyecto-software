@@ -72,9 +72,16 @@ pip install PyQt5 jaydebeapi JPype1
 
 | Rol | Capacidades |
 |---|---|
-| **Estudiante** | Consultar catálogo, gestionar sus préstamos y reservas, ver su perfil y sanciones activas | User: 123, Pw: 123
-| **Bibliotecario** | Añadir/retirar libros, gestionar préstamos y devoluciones, buscar estudiantes, aplicar sanciones | User: 12, Pw:12
-| **Administrador** | Todo lo anterior más gestión de cuentas de usuario y copia de seguridad | User: 1, Pw: 1
+| **Estudiante** | Consultar catálogo, gestionar sus préstamos y reservas, ver su perfil y sanciones activas |
+| **Bibliotecario** | Añadir/retirar libros, gestionar préstamos y devoluciones, buscar estudiantes, aplicar sanciones |
+| **Administrador** | Todo lo anterior más gestión de cuentas de usuario y copia de seguridad |
+
+## 🔑 Credenciales para pruebas
+| Rol | Correo | Contraseña |
+|---|---|---|
+| **Estudiante** | 123 | 123 |
+| **Bibliotecario** | 12 | 12 |
+| **Administrador** | 1 | 1 |
 
 ---
 
