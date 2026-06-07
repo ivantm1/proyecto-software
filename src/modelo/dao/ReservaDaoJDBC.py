@@ -8,7 +8,7 @@ class ReservaDaoJDBC(Conexion):
     SQL_CANCELAR        = "DELETE FROM Reservas WHERE ISBN = ? AND estado = 'Pendiente'"
     SQL_RESERVAS_EST    = "SELECT ISBN, email, fecha_reserva FROM Reservas WHERE email = ? AND estado = 'Pendiente'"
     SQL_RESERVA_LIBRO   = "SELECT email, fecha_reserva FROM Reservas WHERE ISBN = ? AND estado = 'Pendiente'"
-    SQL_CUENTA_RESERVAS = "SELECT COUNT(*) FROM Reservas WHERE email = ? AND estado = 'Pendiente'"
+    SQL_CUENTA_RESERVAS = "SELECT COUNT(*) FROM Reservas WHERE email = ? AND estado IN ('Pendiente', 'Espera')"
     SQL_EXISTE          = "SELECT COUNT(*) FROM Reservas WHERE ISBN = ? AND estado = 'Pendiente'"
     SQL_MARCAR_DISPONIBLE = "UPDATE Reservas SET fecha_reserva = ? WHERE ISBN = ? AND estado = 'Pendiente'"
     SQL_MARCAR_ESPERA   = "UPDATE Reservas SET estado = 'Espera', fecha_reserva = ? WHERE ISBN = ? AND estado = 'Pendiente'"
