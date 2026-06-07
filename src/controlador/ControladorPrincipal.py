@@ -221,7 +221,6 @@ class ControladorPrincipal:
             self._modelo,
             self._vistaMisReservas,
             self._vistaBibliotecario,
-            self._vistaBuscarEstudiante,
             None,
             "Bibliotecario"
         )
