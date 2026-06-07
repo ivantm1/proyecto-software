@@ -300,6 +300,70 @@ class ControladorPrincipal:
             msg.setInformativeText(info)
         msg.exec_()
 
+    def restaurarCopiaSeguridad(self):
+        import os
+        from PyQt5.QtWidgets import QInputDialog, QMessageBox
+
+        carpeta = os.path.join(os.getcwd(), "copias_seguridad")
+        if not os.path.isdir(carpeta):
+            QMessageBox.warning(None, "Sin copias", "No existe la carpeta 'copias_seguridad'.")
+            return
+
+        archivos = sorted(
+            [f for f in os.listdir(carpeta) if f.endswith(".json")],
+            reverse=True
+        )
+
+        if not archivos:
+            QMessageBox.warning(None, "Sin copias", "No hay copias de seguridad disponibles.")
+            return
+
+        archivo, ok = QInputDialog.getItem(
+            None,
+            "Restaurar copia de seguridad",
+            "Selecciona la copia a restaurar:",
+            archivos,
+            0,
+            False
+        )
+
+        if not ok or not archivo:
+            return
+
+        msg = QMessageBox()
+        msg.setWindowTitle("¿Confirmar restauración?")
+        msg.setIcon(QMessageBox.Warning)
+        msg.setText(f"¿Seguro que quieres restaurar '{archivo}'?")
+        msg.setInformativeText(
+            "Esta operación sobreescribirá TODOS los datos actuales de la base de datos. "
+            "Esta acción no se puede deshacer."
+        )
+        msg.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
+        msg.button(QMessageBox.Yes).setText("Sí, restaurar")
+        msg.button(QMessageBox.No).setText("Cancelar")
+        if msg.exec_() != QMessageBox.Yes:
+            return
+
+        ruta = os.path.join(carpeta, archivo)
+        actor = self._usuario_activo.correo if self._usuario_activo else "desconocido"
+
+        exito, info = self._modelo.restaurarCopiaSeguridad(ruta)
+
+        resultado_msg = QMessageBox()
+        if exito:
+            Logger().info(f"Restauración completada desde '{archivo}' por {actor}")
+            resultado_msg.setWindowTitle("Restauración completada")
+            resultado_msg.setIcon(QMessageBox.Information)
+            resultado_msg.setText("Base de datos restaurada correctamente.")
+            resultado_msg.setInformativeText(f"Copia usada:\n{info}")
+        else:
+            Logger().error(f"Error al restaurar desde '{archivo}' por {actor}: {info}")
+            resultado_msg.setWindowTitle("Error en la restauración")
+            resultado_msg.setIcon(QMessageBox.Critical)
+            resultado_msg.setText("No se pudo restaurar la copia de seguridad.")
+            resultado_msg.setInformativeText(info)
+        resultado_msg.exec_()
+
     def ventanaEstadisticas(self):
         if not self._vistaEstadistica:
             return

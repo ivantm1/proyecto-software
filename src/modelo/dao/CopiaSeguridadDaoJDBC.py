@@ -7,7 +7,7 @@ class CopiaSeguridadDaoJDBC(Conexion):
 
     TABLAS = [
         "Tema", "Usuarios", "Estudiantes", "Libros",
-        "Prestamos", "Reservas", "Sanciones", "TemasFavoritos", "Retirados"
+        "Prestamos", "Reservas", "Sanciones", "Retirados"
     ]
 
     def exportarDatos(self) -> dict:
@@ -41,3 +41,73 @@ class CopiaSeguridadDaoJDBC(Conexion):
         with open(ruta, "w", encoding="utf-8") as f:
             json.dump(datos, f, ensure_ascii=False, indent=2)
         return ruta
+
+    IDENTITY_TABLES = ["Sanciones", "Reservas", "Prestamos"]
+
+    def restaurarCopia(self, ruta: str) -> None:
+        """
+        Restaura la BD a partir del JSON en 'ruta'.
+        Lanza excepción si algo falla (el caller hace rollback).
+        """
+        # Cargar JSON
+        with open(ruta, "r", encoding="utf-8") as f:
+            datos = json.load(f)
+
+        cursor = self.getCursor()
+        # Desactivar auto-commit en el driver JDBC subyacente
+        try:
+            self.conexion.jconn.setAutoCommit(False)
+        except Exception:
+            # Si no está disponible, intentar usar conexion.commit/rollback
+            pass
+
+        try:
+            # Borrar en orden inverso para respetar FK
+            for tabla in reversed(self.TABLAS):
+                cursor.execute(f"DELETE FROM {tabla}")
+
+            # Insertar en orden normal
+            for tabla in self.TABLAS:
+                filas = datos.get(tabla, [])
+                identidad_completa = f"dbo.{tabla}" if tabla in self.IDENTITY_TABLES else tabla
+                if tabla in self.IDENTITY_TABLES and filas:
+                    cursor.execute(f"SET IDENTITY_INSERT {identidad_completa} ON")
+                    identity_on = True
+                else:
+                    identity_on = False
+
+                try:
+                    for fila in filas:
+                        if not fila:
+                            continue
+                        columnas = list(fila.keys())
+                        valores = list(fila.values())
+                        placeholders = ", ".join(["?" for _ in columnas])
+                        cols_str = ", ".join(columnas)
+                        destino = identidad_completa if tabla in self.IDENTITY_TABLES else tabla
+                        sql = f"INSERT INTO {destino} ({cols_str}) VALUES ({placeholders})"
+                        cursor.execute(sql, valores)
+                finally:
+                    if identity_on:
+                        cursor.execute(f"SET IDENTITY_INSERT {identidad_completa} OFF")
+
+            # Commit en el conector JDBC subyacente si existe
+            try:
+                self.conexion.jconn.commit()
+            except Exception:
+                # Fallback a commit de jaydebeapi
+                self.conexion.commit()
+        except Exception as e:
+            try:
+                self.conexion.jconn.rollback()
+            except Exception:
+                try:
+                    self.conexion.rollback()
+                except Exception:
+                    pass
+            raise e
+        finally:
+            try:
+                self.conexion.jconn.setAutoCommit(True)
+            except Exception:
+                pass

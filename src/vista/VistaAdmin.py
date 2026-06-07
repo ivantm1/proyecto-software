@@ -12,6 +12,7 @@ class VistaAdmin(QDialog, Form):
         self.boton_catalogo.clicked.connect(self.on_ver_catalogo_click)
         self.boton_cuentas.clicked.connect(self.on_gestionar_cuentas_click)
         self.boton_copia.clicked.connect(self.on_copia_seguridad_click)
+        self.boton_restaurar.clicked.connect(self.on_restaurar_copia_click)
         self.boton_cerrar.clicked.connect(self.on_cerrar_sesion_click)
 
     def on_ver_catalogo_click(self):
@@ -25,6 +26,10 @@ class VistaAdmin(QDialog, Form):
     def on_copia_seguridad_click(self):
         if self._controlador:
             self._controlador.realizarCopiaSeguridad()
+
+    def on_restaurar_copia_click(self):
+        if self._controlador:
+            self._controlador.restaurarCopiaSeguridad()
 
     def on_cerrar_sesion_click(self):
         if self._controlador:

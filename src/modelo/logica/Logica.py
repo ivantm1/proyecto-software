@@ -201,3 +201,6 @@ class Logica:
     # ── Copia de seguridad ──────────────────────────────────────────
     def realizarCopiaSeguridad(self) -> tuple[bool, str]:
         return self._copias.realizarCopiaSeguridad()
+
+    def restaurarCopiaSeguridad(self, ruta: str) -> tuple[bool, str]:
+        return self._copias.restaurarCopiaSeguridad(ruta)

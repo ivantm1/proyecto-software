@@ -13,3 +13,15 @@ class LogicaCopiaSeguridad:
             return True, ruta
         except Exception as e:
             return False, str(e)
+
+    def restaurarCopiaSeguridad(self, ruta: str) -> tuple[bool, str]:
+        """
+        Retorna (True, ruta) si la restauración tiene éxito,
+        o (False, mensaje_error) si falla.
+        """
+        try:
+            dao = CopiaSeguridadDaoJDBC()
+            dao.restaurarCopia(ruta)
+            return True, ruta
+        except Exception as e:
+            return False, str(e)
