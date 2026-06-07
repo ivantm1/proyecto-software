@@ -205,7 +205,7 @@ class ControladorPrincipal:
             return
         ctrl = ControladorMisReservas(
             self._modelo, self._vistaMisReservas,
-            self._vistaEstudiante, self._vistaBibliotecario,
+            self._vistaEstudiante,
             self._usuario_activo.correo, self._usuario_activo.tipo
         )
         self._vistaMisReservas.controlador = ctrl
@@ -220,10 +220,9 @@ class ControladorPrincipal:
         ctrl = ControladorMisReservas(
             self._modelo,
             self._vistaMisReservas,
-            self._vistaEstudiante,
             self._vistaBibliotecario,
-            correo_estudiante=None,
-            tipo_usuario="Bibliotecario"
+            None,
+            "Bibliotecario"
         )
         self._vistaMisReservas.controlador = ctrl
         ctrl.actualizarReservas()

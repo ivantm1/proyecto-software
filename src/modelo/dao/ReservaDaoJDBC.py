@@ -1,17 +1,20 @@
 import datetime
 from src.modelo.conexion.Conexion import Conexion
 from src.modelo.vo.ReservaVO import ReservaVO
+from src.modelo.dao.LibroDaoJDBC import LibroDaoJDBC
 
 class ReservaDaoJDBC(Conexion):
     SQL_CREAR           = "INSERT INTO Reservas (email, ISBN, fecha_reserva) VALUES (?, ?, ?)"
-    SQL_CANCELAR        = "UPDATE Reservas SET estado = 'Cumplida' WHERE ISBN = ? AND estado = 'Pendiente'"
+    SQL_CANCELAR        = "DELETE FROM Reservas WHERE ISBN = ? AND estado = 'Pendiente'"
     SQL_RESERVAS_EST    = "SELECT ISBN, email, fecha_reserva FROM Reservas WHERE email = ? AND estado = 'Pendiente'"
     SQL_RESERVA_LIBRO   = "SELECT email, fecha_reserva FROM Reservas WHERE ISBN = ? AND estado = 'Pendiente'"
     SQL_CUENTA_RESERVAS = "SELECT COUNT(*) FROM Reservas WHERE email = ? AND estado = 'Pendiente'"
     SQL_EXISTE          = "SELECT COUNT(*) FROM Reservas WHERE ISBN = ? AND estado = 'Pendiente'"
     SQL_MARCAR_DISPONIBLE = "UPDATE Reservas SET fecha_reserva = ? WHERE ISBN = ? AND estado = 'Pendiente'"
     SQL_MARCAR_ESPERA   = "UPDATE Reservas SET estado = 'Espera', fecha_reserva = ? WHERE ISBN = ? AND estado = 'Pendiente'"
-    SQL_CUMPLIR_ESPERA  = "UPDATE Reservas SET estado = 'Cumplida' WHERE ISBN = ? AND estado = 'Espera'"
+    SQL_CUMPLIR_ESPERA  = "DELETE FROM Reservas WHERE ISBN = ? AND estado = 'Espera'"
+    SQL_CADUCAR_PENDIENTE = "UPDATE Reservas SET estado = 'Caducada' WHERE ISBN = ? AND estado = 'Pendiente'"
+    SQL_CADUCAR_ESPERA = "UPDATE Reservas SET estado = 'Caducada' WHERE ISBN = ? AND estado = 'Espera'"
     SQL_RESERVA_EN_ESPERA = "SELECT email, fecha_reserva FROM Reservas WHERE ISBN = ? AND estado = 'Espera'"
     SQL_ESPERA_EXPIRADA = "SELECT COUNT(*) FROM Reservas WHERE ISBN = ? AND estado = 'Espera' AND DATEADD(day, 7, fecha_reserva) < GETDATE()"
     SQL_TODAS_RESERVAS = """
@@ -73,6 +76,11 @@ class ReservaDaoJDBC(Conexion):
         try:
             cursor.execute(self.SQL_CANCELAR, (isbn,))
             self.conexion.commit()
+            # Restaurar disponibilidad del libro al cancelar la reserva
+            try:
+                LibroDaoJDBC().restaurarLibro(isbn)
+            except Exception:
+                pass
             return True
         except Exception as e:
             print(f"Error en cancelarReserva: {e}")
@@ -155,6 +163,11 @@ class ReservaDaoJDBC(Conexion):
             hoy = datetime.date.today().strftime('%Y-%m-%d')
             cursor.execute(self.SQL_MARCAR_ESPERA, (hoy, isbn))
             self.conexion.commit()
+            # marcar el libro como reservado para que no pueda prestarse a otros
+            try:
+                LibroDaoJDBC().actualizarDisponibilidad(isbn, 'Reservado')
+            except Exception:
+                pass
             return True
         except Exception as e:
             print(f"Error en marcarReservaEspera: {e}")
@@ -168,6 +181,26 @@ class ReservaDaoJDBC(Conexion):
             return True
         except Exception as e:
             print(f"Error en cumplirReservaEspera: {e}")
+            return False
+
+    def caducarReservaPendiente(self, isbn):
+        cursor = self.getCursor()
+        try:
+            cursor.execute(self.SQL_CADUCAR_PENDIENTE, (isbn,))
+            self.conexion.commit()
+            return True
+        except Exception as e:
+            print(f"Error en caducarReservaPendiente: {e}")
+            return False
+
+    def caducarReservaEspera(self, isbn):
+        cursor = self.getCursor()
+        try:
+            cursor.execute(self.SQL_CADUCAR_ESPERA, (isbn,))
+            self.conexion.commit()
+            return True
+        except Exception as e:
+            print(f"Error en caducarReservaEspera: {e}")
             return False
 
     def obtenerReservaEnEspera(self, isbn):

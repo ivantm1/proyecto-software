@@ -66,8 +66,8 @@ CREATE TABLE Sanciones (
 
 
 CREATE TABLE Reservas (
-	ID_reserva INT PRIMARY KEY IDENTITY(1,1),
-	estado VARCHAR(40) CHECK (estado IN ('Pendiente','Esper' ,'Cumplida')) default 'Pendiente' ,
+    ID_reserva INT PRIMARY KEY IDENTITY(1,1),
+    estado VARCHAR(40) DEFAULT 'Espera',
     email VARCHAR(100) NOT NULL,
     ISBN VARCHAR(20),
     fecha_reserva DATE NOT NULL,
@@ -131,7 +131,7 @@ GO
 
 ALTER TABLE Reservas DROP CONSTRAINT IF EXISTS CK_Reservas_estado;
 ALTER TABLE Reservas ADD CONSTRAINT CK_Reservas_estado
-    CHECK (estado IN ('Pendiente', 'Espera', 'Cumplida'));
+    CHECK (estado IN ( 'Espera', 'Recoger', 'Caducada'));
 
 
 
