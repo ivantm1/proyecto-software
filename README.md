@@ -97,9 +97,7 @@ proyecto-software/
 
 ### Sanciones
 - Aplicación manual por motivo y días, o automática por retraso en devolución o daño al libro
-- **Cola de sanciones**: solo puede haber una sanción activa al mismo tiempo; las demás quedan en `Pendiente` y se activan automáticamente en orden cuando la anterior se cumple
-- **Fechas encadenadas**: la fecha de inicio de cada sanción pendiente se calcula desde el fin de la anterior, no desde el día de apertura de la app
-- Los días mostrados al bibliotecario son la suma de la sanción activa más todas las pendientes
+- Se muestra los días restantes de sanción al estudiante.
 - Estados: `Activa`, `Pendiente`, `Cumplida`
 
 ### Administración
