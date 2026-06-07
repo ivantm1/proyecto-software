@@ -75,14 +75,18 @@ class VistaMisPrestamos(QDialog, Form):
                 else:
                     fecha_dt = fecha
 
-                dias_restantes = (fecha_dt - datetime.date.today()).days
-                if dias_restantes < 0:
-                    texto_fin = f"Vencido el: {fecha_dt}"
+                if getattr(prestamo, 'estado', '') == 'Devuelto':
+                    texto_fin = f"Devuelto el: {fecha_dt}"
                     item_fin = QTableWidgetItem(texto_fin)
-                    item_fin.setForeground(QColor(200, 0, 0))
                 else:
-                    texto_fin = f"{dias_restantes} días"
-                    item_fin = QTableWidgetItem(texto_fin)
+                    dias_restantes = (fecha_dt - datetime.date.today()).days
+                    if dias_restantes < 0:
+                        texto_fin = f"Vencido el: {fecha_dt}"
+                        item_fin = QTableWidgetItem(texto_fin)
+                        item_fin.setForeground(QColor(200, 0, 0))
+                    else:
+                        texto_fin = f"{dias_restantes} días"
+                        item_fin = QTableWidgetItem(texto_fin)
 
                 self.tabla_libros.setItem(fila, 3, item_fin)
             except Exception:

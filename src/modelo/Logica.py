@@ -156,6 +156,24 @@ class Logica:
     def actualizarReservasEstudiante(self, correo_estudiante):
         return self._reservas.actualizarReservasEstudiante(correo_estudiante)
 
+    def marcarReservaEspera(self, isbn):
+        return self._reservas.marcarReservaEspera(isbn)
+
+    def cumplirReservaEspera(self, isbn):
+        return self._reservas.cumplirReservaEspera(isbn)
+
+    def obtenerReservaEnEspera(self, isbn):
+        return self._reservas.obtenerReservaEnEspera(isbn)
+
+    def esperaExpirada(self, isbn):
+        return self._reservas.esperaExpirada(isbn)
+
+    def liberarEsperaExpirada(self, isbn):
+        return self._reservas.liberarEsperaExpirada(isbn)
+
+    def obtenerTodasReservas(self):
+        return self._reservas.obtenerTodasReservas()
+
     def obtenerReservaPorLibro(self, isbn):
         return self._reservas.obtenerReservaPorLibro(isbn)
 

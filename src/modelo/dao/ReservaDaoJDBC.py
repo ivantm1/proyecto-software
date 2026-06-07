@@ -10,6 +10,15 @@ class ReservaDaoJDBC(Conexion):
     SQL_CUENTA_RESERVAS = "SELECT COUNT(*) FROM Reservas WHERE email = ? AND estado = 'Pendiente'"
     SQL_EXISTE          = "SELECT COUNT(*) FROM Reservas WHERE ISBN = ? AND estado = 'Pendiente'"
     SQL_MARCAR_DISPONIBLE = "UPDATE Reservas SET fecha_reserva = ? WHERE ISBN = ? AND estado = 'Pendiente'"
+    SQL_MARCAR_ESPERA   = "UPDATE Reservas SET estado = 'Espera', fecha_reserva = ? WHERE ISBN = ? AND estado = 'Pendiente'"
+    SQL_CUMPLIR_ESPERA  = "UPDATE Reservas SET estado = 'Cumplida' WHERE ISBN = ? AND estado = 'Espera'"
+    SQL_RESERVA_EN_ESPERA = "SELECT email, fecha_reserva FROM Reservas WHERE ISBN = ? AND estado = 'Espera'"
+    SQL_ESPERA_EXPIRADA = "SELECT COUNT(*) FROM Reservas WHERE ISBN = ? AND estado = 'Espera' AND DATEADD(day, 7, fecha_reserva) < GETDATE()"
+    SQL_TODAS_RESERVAS = """
+        SELECT p.ISBN, l.titulo, l.autor, l.nombre_tema, l.descripcion, p.fecha_reserva, p.estado, p.email
+        FROM Reservas p
+        JOIN Libros l ON p.ISBN = l.ISBN
+    """
 
 
                                                        
@@ -139,6 +148,66 @@ class ReservaDaoJDBC(Conexion):
             fecha = reserva.fecha_reserva
         limite = fecha + datetime.timedelta(days=7)
         return datetime.date.today() > limite
+
+    def marcarReservaEspera(self, isbn):
+        cursor = self.getCursor()
+        try:
+            hoy = datetime.date.today().strftime('%Y-%m-%d')
+            cursor.execute(self.SQL_MARCAR_ESPERA, (hoy, isbn))
+            self.conexion.commit()
+            return True
+        except Exception as e:
+            print(f"Error en marcarReservaEspera: {e}")
+            return False
+
+    def cumplirReservaEspera(self, isbn):
+        cursor = self.getCursor()
+        try:
+            cursor.execute(self.SQL_CUMPLIR_ESPERA, (isbn,))
+            self.conexion.commit()
+            return True
+        except Exception as e:
+            print(f"Error en cumplirReservaEspera: {e}")
+            return False
+
+    def obtenerReservaEnEspera(self, isbn):
+        cursor = self.getCursor()
+        try:
+            cursor.execute(self.SQL_RESERVA_EN_ESPERA, (isbn,))
+            row = cursor.fetchone()
+            if row is None:
+                return None
+            correo, fecha_reserva = row
+            return ReservaVO(isbn, correo, fecha_reserva, 'Espera')
+        except Exception as e:
+            print(f"Error en obtenerReservaEnEspera: {e}")
+            return None
+
+    def esperaExpirada(self, isbn):
+        cursor = self.getCursor()
+        try:
+            cursor.execute(self.SQL_ESPERA_EXPIRADA, (isbn,))
+            return cursor.fetchone()[0] > 0
+        except Exception as e:
+            print(f"Error en esperaExpirada: {e}")
+            return False
+
+    def obtenerTodasReservas(self):
+        cursor = self.getCursor()
+        reservas = []
+        try:
+            cursor.execute(self.SQL_TODAS_RESERVAS)
+            for row in cursor.fetchall():
+                isbn, titulo, autor, tema, descripcion, fecha_reserva, estado, correo = row
+                vo = ReservaVO(isbn, correo, fecha_reserva, estado)
+                vo._titulo      = titulo
+                vo._autor       = autor
+                vo._nombre_tema = tema
+                vo._descripcion = descripcion
+                reservas.append(vo)
+        except Exception as e:
+            print(f"Error en obtenerTodasReservas: {e}")
+        return reservas
 
     def marcarReservaDisponible(self, isbn):
         cursor = self.getCursor()

@@ -15,9 +15,6 @@ class LogicaReservas:
         ReservaDaoJDBC().cancelarReserva(isbn)
         return LibroDaoJDBC().restaurarLibro(isbn)
 
-    def obtenerReservasEstudiante(self, correo_estudiante):
-        return ReservaDaoJDBC().obtenerReservasEstudiante(correo_estudiante)
-
     def contarReservasEstudiante(self, correo_estudiante):
         return ReservaDaoJDBC().contarReservasEstudiante(correo_estudiante)
 
@@ -26,6 +23,25 @@ class LogicaReservas:
 
     def obtenerReservaPorLibro(self, isbn):
         return ReservaDaoJDBC().obtenerReservaPorLibro(isbn)
+
+    def marcarReservaEspera(self, isbn):
+        return ReservaDaoJDBC().marcarReservaEspera(isbn)
+
+    def cumplirReservaEspera(self, isbn):
+        return ReservaDaoJDBC().cumplirReservaEspera(isbn)
+
+    def obtenerReservaEnEspera(self, isbn):
+        return ReservaDaoJDBC().obtenerReservaEnEspera(isbn)
+
+    def esperaExpirada(self, isbn):
+        return ReservaDaoJDBC().esperaExpirada(isbn)
+
+    def liberarEsperaExpirada(self, isbn):
+        ReservaDaoJDBC().cumplirReservaEspera(isbn)
+        return LibroDaoJDBC().restaurarLibro(isbn)
+
+    def obtenerReservasEstudiante(self, correo_estudiante):
+        return ReservaDaoJDBC().obtenerReservasEstudiante(correo_estudiante)
 
     def buscarReservasEstudiante(self, correo_estudiante, titulo='', tema='Ninguno'):
         return ReservaDaoJDBC().buscarReservasEstudiante(correo_estudiante, titulo, tema)
@@ -49,12 +65,21 @@ class LogicaReservas:
         return True, ""
 
     def actualizarReservasEstudiante(self, correo_estudiante):
-        """Obtiene reservas del estudiante y libera las expiradas automáticamente."""
+        """Obtiene reservas del estudiante y libera automáticamente:
+        - Las reservas 'Pendiente' expiradas (más de 7 días sin recoger tras reservar).
+        - Las reservas 'Espera' expiradas (más de 7 días sin recoger tras devolución).
+        """
         reservas = self.obtenerReservasEstudiante(correo_estudiante)
         for reserva in reservas:
-            if self.reservaExpirada(reserva.isbn_libro):
+            if reserva.estado == 'Pendiente' and self.reservaExpirada(reserva.isbn_libro):
                 self.liberarReservaExpirada(reserva.isbn_libro)
+            elif reserva.estado == 'Espera' and self.esperaExpirada(reserva.isbn_libro):
+                self.liberarEsperaExpirada(reserva.isbn_libro)
         return self.obtenerReservasEstudiante(correo_estudiante)
+
+    def obtenerTodasReservas(self):
+        """Devuelve todas las reservas del sistema (para la vista del bibliotecario)."""
+        return ReservaDaoJDBC().obtenerTodasReservas()
 
     def marcarReservaDisponible(self, isbn):
         return ReservaDaoJDBC().marcarReservaDisponible(isbn)

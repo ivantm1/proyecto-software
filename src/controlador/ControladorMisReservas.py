@@ -11,13 +11,22 @@ class ControladorMisReservas:
                                                 
 
     def actualizarReservas(self):
-        reservas = self._modelo.actualizarReservasEstudiante(self._correo)
+        if self._correo is None:
+            reservas = self._modelo.obtenerTodasReservas()
+        else:
+            reservas = self._modelo.actualizarReservasEstudiante(self._correo)
         self._vista.mostrarReservas(reservas)
 
     def buscarReservas(self, titulo, tema):
-        reservas = self._modelo.buscarReservasEstudiante(self._correo, titulo, tema)
-        self._vista.mostrarReservas(reservas)
+        if self._correo is None:
+            self.actualizarReservas()
+        else:
+            reservas = self._modelo.buscarReservasEstudiante(self._correo, titulo, tema)
+            self._vista.mostrarReservas(reservas)
 
     def registroAtras(self):
         self._vista.close()
-        self._vista_estudiante.showMaximized()
+        if self._tipo_usuario == "Bibliotecario":
+            self._vista_bibliotecario.showMaximized()
+        else:
+            self._vista_estudiante.showMaximized()

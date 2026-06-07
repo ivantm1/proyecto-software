@@ -213,6 +213,23 @@ class ControladorPrincipal:
         self._vistaEstudiante.close()
         self._vistaMisReservas.showMaximized()
 
+    def ventanaLibrosReservados(self):
+        """Abre la vista de reservas mostrando TODAS las reservas del sistema."""
+        if not self._vistaMisReservas:
+            return
+        ctrl = ControladorMisReservas(
+            self._modelo,
+            self._vistaMisReservas,
+            self._vistaEstudiante,
+            self._vistaBibliotecario,
+            correo_estudiante=None,
+            tipo_usuario="Bibliotecario"
+        )
+        self._vistaMisReservas.controlador = ctrl
+        ctrl.actualizarReservas()
+        self._vistaBibliotecario.close()
+        self._vistaMisReservas.showMaximized()
+
     def ventanaDevolucion(self):
         if not self._vistaDevolucion:
             return

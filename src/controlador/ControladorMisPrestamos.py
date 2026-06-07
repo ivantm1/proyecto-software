@@ -59,11 +59,13 @@ class ControladorMisPrestamos:
 
         reserva = self._modelo.obtenerReservaPorLibro(isbn)
         if reserva:
-            self._modelo.marcarReservaDisponible(isbn)
-            QMessageBox.warning(
+            self._modelo.marcarReservaEspera(isbn)
+            QMessageBox.information(
                 self._detalle,
-                "Libro reservado",
-                "El libro estaba reservado. Debes retirarlo para entregarlo al estudiante que hizo la reserva."
+                "Libro con reserva",
+                f"El libro devuelto tiene una reserva activa del alumno {reserva.correo_estudiante}.\n"
+                "La reserva ha pasado a estado 'Espera'. El alumno tiene 7 días para recoger el libro.\n"
+                "Si no lo recoge en ese plazo, la reserva se cancelará automáticamente."
             )
 
         self.actualizarPrestamos()

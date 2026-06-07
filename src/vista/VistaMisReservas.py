@@ -33,8 +33,21 @@ class VistaMisReservas(QDialog, Form):
         self._reservas = lista_reservas or []
         self.tabla_libros.clearContents()
         self.tabla_libros.setRowCount(0)
-        self.tabla_libros.setColumnCount(4)
-        self.tabla_libros.setHorizontalHeaderLabels(["Nombre", "Autor", "Tema", "Estado"])
+
+        correos_unicos = {r.correo_estudiante for r in self._reservas} if self._reservas else set()
+        modo_global = len(correos_unicos) > 1
+
+        if modo_global:
+            self.tabla_libros.setColumnCount(5)
+            self.tabla_libros.setHorizontalHeaderLabels(
+                ["Alumno", "Nombre", "Autor", "Tema", "Estado"]
+            )
+        else:
+            self.tabla_libros.setColumnCount(4)
+            self.tabla_libros.setHorizontalHeaderLabels(
+                ["Nombre", "Autor", "Tema", "Estado"]
+            )
+
         self.tabla_libros.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
 
         if not lista_reservas:
@@ -43,10 +56,17 @@ class VistaMisReservas(QDialog, Form):
         for reserva in lista_reservas:
             fila = self.tabla_libros.rowCount()
             self.tabla_libros.insertRow(fila)
-            self.tabla_libros.setItem(fila, 0, QTableWidgetItem(str(reserva.titulo)))
-            self.tabla_libros.setItem(fila, 1, QTableWidgetItem(str(reserva.autor)))
-            self.tabla_libros.setItem(fila, 2, QTableWidgetItem(str(reserva.nombre_tema)))
-            self.tabla_libros.setItem(fila, 3, QTableWidgetItem(str(reserva.estado)))
+            if modo_global:
+                self.tabla_libros.setItem(fila, 0, QTableWidgetItem(str(reserva.correo_estudiante)))
+                self.tabla_libros.setItem(fila, 1, QTableWidgetItem(str(reserva.titulo)))
+                self.tabla_libros.setItem(fila, 2, QTableWidgetItem(str(reserva.autor)))
+                self.tabla_libros.setItem(fila, 3, QTableWidgetItem(str(reserva.nombre_tema)))
+                self.tabla_libros.setItem(fila, 4, QTableWidgetItem(str(reserva.estado)))
+            else:
+                self.tabla_libros.setItem(fila, 0, QTableWidgetItem(str(reserva.titulo)))
+                self.tabla_libros.setItem(fila, 1, QTableWidgetItem(str(reserva.autor)))
+                self.tabla_libros.setItem(fila, 2, QTableWidgetItem(str(reserva.nombre_tema)))
+                self.tabla_libros.setItem(fila, 3, QTableWidgetItem(str(reserva.estado)))
 
     def lanzarAviso(self, aviso):
         QMessageBox.information(self, "Información", aviso)

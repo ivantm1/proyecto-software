@@ -10,7 +10,12 @@ class LogicaPrestamos:
     MAX_PRESTAMOS_ACTIVOS = 7
 
     def registrarPrestamo(self, isbn, correo_estudiante):
-        return PrestamoDaoJDBC().registrarPrestamo(isbn, correo_estudiante)
+        resultado = PrestamoDaoJDBC().registrarPrestamo(isbn, correo_estudiante)
+        if resultado:
+            reserva_espera = ReservaDaoJDBC().obtenerReservaEnEspera(isbn)
+            if reserva_espera and reserva_espera.correo_estudiante == correo_estudiante:
+                ReservaDaoJDBC().cumplirReservaEspera(isbn)
+        return resultado
 
     def registrarDevolucion(self, isbn):
         return PrestamoDaoJDBC().registrarDevolucion(isbn)
