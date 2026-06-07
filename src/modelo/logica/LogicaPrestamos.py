@@ -63,11 +63,21 @@ class LogicaPrestamos:
             return False, "No es posible prestar el libro porque ya está prestado."
 
         if disponibilidad == 'reservado':
-            if ReservaDaoJDBC().reservaExpirada(isbn):
-                ReservaDaoJDBC().cancelarReserva(isbn)
-                LibroDaoJDBC().restaurarLibro(isbn)
+            # Si el libro está marcado como reservado, solo el alumno con la reserva en 'Espera' puede recogerlo
+            reserva_espera = ReservaDaoJDBC().obtenerReservaEnEspera(isbn)
+            if reserva_espera:
+                if reserva_espera.correo_estudiante != correo_estudiante:
+                    return False, (
+                        f"Este libro está reservado para el alumno {reserva_espera.correo_estudiante}. "
+                        "Solo ese alumno puede recogerlo."
+                    )
+                # es el alumno correcto: permitir el préstamo (la reserva será cumplida en registrarPrestamo)
             else:
-                return False, "No es posible prestar el libro porque está reservado."
+                if ReservaDaoJDBC().reservaExpirada(isbn):
+                    ReservaDaoJDBC().cancelarReserva(isbn)
+                    LibroDaoJDBC().restaurarLibro(isbn)
+                else:
+                    return False, "No es posible prestar el libro porque está reservado."
         elif disponibilidad != 'disponible':
             return False, "No es posible prestar el libro porque no está disponible."
 
