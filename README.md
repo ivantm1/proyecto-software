@@ -54,19 +54,12 @@ proyecto-software/
 | SQL Server | 2019 o superior |
 | Anaconda (opcional) | cualquier versión reciente |
 
-### Dependencias Python
-
-```bash
-pip install PyQt5 jaydebeapi JPype1
-```
-
 ---
 
-## 🗄️ Configuración de la base de datos
+## 🗄️ Ejecucion
 
-1. Abre **SQL Server Management Studio** (SSMS) o Azure Data Studio.
-2. Ejecuta el script completo `DataBase.sql`. Esto crea la base de datos `BibliotecaDB`, todas las tablas y los datos iniciales.
-3. Crea el usuario de SQL Server con los siguientes credenciales (o edita `Conexion.py` con los tuyos):
+1. Ejecuta el script completo `DataBase.sql`. Esto crea la base de datos `BibliotecaDB`, todas las tablas y los datos iniciales.
+2. Ejecuta el archivo `main.py`
 
 ## 👥 Roles de usuario
 
@@ -129,11 +122,3 @@ Vista (PyQt5)  ←→  Controlador  ←→  Logica (fachada)  ←→  DAO (JDBC)
 - Los **controladores** median entre la vista y la lógica, sin acceder nunca directamente a la BD.
 - Las **vistas** son completamente pasivas y no contienen lógica de negocio.
 - Los **Value Objects (VO)** son objetos de transferencia de datos simples entre capas.
-
----
-
-## 📝 Notas técnicas
-
-- La conexión a SQL Server se realiza vía **JDBC** (`jaydebeapi` + `JPype1`), lo que requiere Java instalado y el `.jar` del driver en la carpeta `lib/`.
-- Los warnings de Java sobre acceso nativo (`java.lang.System::load`) son esperados en entornos Anaconda y no afectan al funcionamiento.
-- La comprobación del tiempo transcurrido en sanciones usa `datetime.date.today()`, que toma la fecha del sistema operativo local.
