@@ -18,6 +18,7 @@ class LibroDaoJDBC(Conexion):
     """
     SQL_DELETE = "DELETE FROM Libros WHERE ISBN = ?"
     SQL_RESTAURAR = "UPDATE Libros SET disponibilidad = 'Disponible' WHERE ISBN = ?"
+    SQL_ACTUALIZAR = "UPDATE Libros SET disponibilidad = ? WHERE ISBN = ?"
     SQL_DELETE_RETIRADO = "DELETE FROM Retirados WHERE ISBN = ?"
     SQL_MARCAR_RETIRADO = "UPDATE Libros SET disponibilidad = 'Retirado' WHERE ISBN = ?"
     SQL_INSERT_RETIRADO = "INSERT INTO Retirados (ISBN, motivo) VALUES (?, ?)"
@@ -145,4 +146,14 @@ class LibroDaoJDBC(Conexion):
             return True
         except Exception as e:
             print(f"Error en restaurarLibro: {e}")
+            return False
+
+    def actualizarDisponibilidad(self, isbn, disponibilidad):
+        cursor = self.getCursor()
+        try:
+            cursor.execute(self.SQL_ACTUALIZAR, (disponibilidad, isbn))
+            self.conexion.commit()
+            return True
+        except Exception as e:
+            print(f"Error en actualizarDisponibilidad: {e}")
             return False

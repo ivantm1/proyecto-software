@@ -129,8 +129,45 @@ INSERT INTO Reservas (email, ISBN, fecha_reserva, estado) VALUES
 ('1234', '978-84-291-6908-5', DATEADD(day,-3,GETDATE()), 'Espera');
 
 -- =============================================================================
+--  BLOQUE 6B — RESERVAS EN ESTADO 'Recoger'
+--  Caso: libro devuelto y disponible, pendiente de recogida por el alumno con reserva
+--  El libro está apartado en la biblioteca (disponibilidad='Reservado'), listo para recoger
+-- =============================================================================
+
+-- Libro '978-84-9835-203-4' = Anatomía Humana — devuelto hace 2 días, reservado por David
+UPDATE Libros SET disponibilidad='Reservado' WHERE ISBN='978-84-9835-203-4';
+
+INSERT INTO Prestamos (email, ISBN, estado, fecha_prestamo, fecha_devolucion, prorroga) VALUES
+('jvazqh00@estudiantes.unileon.es', '978-84-9835-203-4', 'Devuelto',
+ DATEADD(day,-10,GETDATE()), DATEADD(day,-2,GETDATE()), 0);
+
+INSERT INTO Reservas (email, ISBN, fecha_reserva, estado) VALUES
+('dferns00@estudiantes.unileon.es', '978-84-9835-203-4', DATEADD(day,-2,GETDATE()), 'Recoger');
+
+-- Libro '978-84-291-3985-3' = Harrison: Principios de Medicina Interna — devuelto hace 1 día, reservado por Sara
+UPDATE Libros SET disponibilidad='Reservado' WHERE ISBN='978-84-291-3985-3';
+
+INSERT INTO Prestamos (email, ISBN, estado, fecha_prestamo, fecha_devolucion, prorroga) VALUES
+('pcanol00@estudiantes.unileon.es', '978-84-291-3985-3', 'Devuelto',
+ DATEADD(day,-8,GETDATE()), DATEADD(day,-1,GETDATE()), 0);
+
+INSERT INTO Reservas (email, ISBN, fecha_reserva, estado) VALUES
+('smartm00@estudiantes.unileon.es', '978-84-291-3985-3', DATEADD(day,-1,GETDATE()), 'Recoger');
+
+-- Libro '978-84-9835-612-4' = Farmacología Básica y Clínica — devuelto hoy mismo, reservado por Laura
+UPDATE Libros SET disponibilidad='Reservado' WHERE ISBN='978-84-9835-612-4';
+
+INSERT INTO Prestamos (email, ISBN, estado, fecha_prestamo, fecha_devolucion, prorroga) VALUES
+('amends00@estudiantes.unileon.es', '978-84-9835-612-4', 'Devuelto',
+ DATEADD(day,-5,GETDATE()), CAST(GETDATE() AS DATE), 0);
+
+INSERT INTO Reservas (email, ISBN, fecha_reserva, estado) VALUES
+('ldiazf00@estudiantes.unileon.es', '978-84-9835-612-4', CAST(GETDATE() AS DATE), 'Recoger');
+
+-- Libro '978-84-9835-203-4' = Anatomía Humana — devuelto hace 2 días, reservado por David
+-- =============================================================================
 --  BLOQUE 7 — RESERVAS EN ESTADO 'Espera' EXPIRADA (> 7 días sin recoger)
---  Caso: el alumno dejó pasar más de 7 días → la lógica debe pasarla a 'Cumplida'
+--  Caso: el alumno dejó pasar más de 7 días → la lógica debe pasarla a 'Caducada'
 --        Se inserta en 'Espera' para que la app la detecte y cambie automáticamente
 -- =============================================================================
 
@@ -145,19 +182,19 @@ INSERT INTO Reservas (email, ISBN, fecha_reserva, estado) VALUES
 ('123', '978-84-9835-310-9', DATEADD(day,-9,GETDATE()), 'Espera');  -- 9 días → expirada
 
 -- =============================================================================
---  BLOQUE 8 — RESERVAS 'Cumplida' (historial)
---  Caso: reservas ya cerradas que aparecen en el historial del alumno
+--  BLOQUE 8 — RESERVAS 'Caducada' (historial)
+--  Caso: reservas expiradas que aparecen en el historial del alumno
 -- =============================================================================
 
 INSERT INTO Reservas (email, ISBN, fecha_reserva, estado) VALUES
 -- Miguel (123) — reservas pasadas cumplidas
-('123', '978-84-8322-910-6', DATEADD(day,-70,GETDATE()), 'Cumplida'),  -- Probabilidad
-('123', '978-84-291-1720-2', DATEADD(day,-55,GETDATE()), 'Cumplida'),  -- La República
--- Elena (1234) — reservas pasadas cumplidas
-('1234', '978-84-9735-089-2', DATEADD(day,-65,GETDATE()), 'Cumplida'), -- Historia Música
-('1234', '978-84-291-5032-2', DATEADD(day,-40,GETDATE()), 'Cumplida'), -- Cálculo (ya está prestado por Miguel, historial OK)
+('123', '978-84-8322-910-6', DATEADD(day,-70,GETDATE()), 'Caducada'),  -- Probabilidad
+('123', '978-84-291-1720-2', DATEADD(day,-55,GETDATE()), 'Caducada'),  -- La República
+-- Elena (1234) — reservas pasadas caducadas
+('1234', '978-84-9735-089-2', DATEADD(day,-65,GETDATE()), 'Caducada'), -- Historia Música
+('1234', '978-84-291-5032-2', DATEADD(day,-40,GETDATE()), 'Caducada'), -- Cálculo (ya está prestado por Miguel, historial OK)
 -- Otros
-('smartm00@estudiantes.unileon.es', '978-84-7615-544-4', DATEADD(day,-30,GETDATE()), 'Cumplida');
+('smartm00@estudiantes.unileon.es', '978-84-7615-544-4', DATEADD(day,-30,GETDATE()), 'Caducada');
 
 -- =============================================================================
 --  BLOQUE 9 — SANCIONES
@@ -207,44 +244,31 @@ INSERT INTO Retirados (ISBN, motivo, fecha_retiro) VALUES
 --   '978-84-376-0494-7'  Don Quijote                  (Disponible)
 --   '978-84-9732-788-1'  Cien Años de Soledad         (Disponible)
 
--- =============================================================================
---  RESUMEN DE CASOS CUBIERTOS
--- =============================================================================
---
---  CUENTA 123 (Estudiante Miguel):
---    Préstamos activos    : Cálculo, Visión por Computador, Redes de Computadores
---    Préstamo prorrogado  : Introducción a los Algoritmos
---    Préstamo vencido     : Ecología
---    Devoluciones pasadas : Probabilidad, La República, Don Quijote
---    Reserva Pendiente    : Mecánica Clásica (prestada por Elena)
---    Reserva Espera (<7d) : Urgencias en Medicina (recogida pendiente)
---    Reserva Espera exp.  : Armonía (>7 días → app debe pasarla a Cumplida)
---    Reservas Cumplidas   : Probabilidad, La República (historial)
---    Sanciones            : 1 cumplida (no bloquea)
---
 --  CUENTA 1234 (Estudiante Elena):
 --    Préstamos activos    : Mecánica Clásica, Microbiología
 --    Préstamo vencido     : Patología Estructural
 --    Devoluciones pasadas : Historia de la Música, Ética a Nicómaco
 --    Reserva Pendiente    : Visión por Computador (prestado por Miguel)
 --    Reserva Espera (<7d) : Derecho Constitucional (recogida pendiente)
---    Reservas Cumplidas   : Historia de la Música, Cálculo (historial)
+--    Reservas Caducadas   : Historia de la Música, Cálculo (historial expirado)
 --    Sanciones            : 1 ACTIVA por retraso (bloquea préstamos y reservas)
 --
 --  CUENTA 12 (Bibliotecario Pepe):
 --    Puede ver en "Libros Reservados" TODAS las reservas del sistema:
 --      - Reservas Pendientes de 123, 1234 y smartm00
 --      - Reservas en Espera de 123 y 1234 (incluyendo la expirada)
---      - Historial de Cumplidas de todos
+--      - Reservas en Recoger de David, Sara y Laura (libros listos en biblioteca)
+--      - Historial de Caducadas de todos
 --    Puede gestionar devoluciones de cualquier ISBN activo/vencido
 --    Puede hacer préstamos directos desde "Gestionar Estudiante"
 --
 --  CASOS ESPECIALES PARA PROBAR:
 --    1. Devolver '978-84-291-4198-6' (Mecánica) → reserva de 123 pasa a 'Espera'
---    2. Miguel (123) pide prestado '978-84-291-5560-0' (Urgencias) → reserva pasa a 'Cumplida'
+--    2. Miguel (123) pide prestado '978-84-291-5560-0' (Urgencias) → reserva se elimina
 --    3. Elena (1234) intenta reservar/prestar → bloqueada por sanción activa
---    4. Abrir "Libros Reservados" como Pepe (12) → debe mostrar todas las reservas
---    5. Armonía (ISBN 978-84-9835-310-9) → reserva expirada, la app la debe cumplir
---    6. Libro disponible '978-84-376-0494-7' (Don Quijote) → flujo nuevo préstamo/reserva
+--    4. Abrir "Libros Reservados" como Pepe (12) → debe mostrar todas las reservas activas e historial
+--    5. Armonía (ISBN 978-84-9835-310-9) → reserva expirada, la app la debe pasar a 'Caducada'
+--    6. Libro en 'Recoger' (ej. '978-84-9835-203-4') → David (dferns00) debe poder verlo y recogerlo
+--    7. Libro disponible '978-84-376-0494-7' (Don Quijote) → flujo nuevo préstamo/reserva
 --
 -- =============================================================================

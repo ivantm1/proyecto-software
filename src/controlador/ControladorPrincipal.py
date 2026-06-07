@@ -221,8 +221,9 @@ class ControladorPrincipal:
             self._modelo,
             self._vistaMisReservas,
             self._vistaBibliotecario,
-            correo_estudiante=None,
-            tipo_usuario="Bibliotecario"
+            self._vistaBuscarEstudiante,
+            None,
+            "Bibliotecario"
         )
         self._vistaMisReservas.controlador = ctrl
         ctrl.actualizarReservas()

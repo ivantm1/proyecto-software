@@ -12,7 +12,8 @@ class LogicaReservas:
         return ReservaDaoJDBC().cancelarReserva(isbn)
 
     def liberarReservaExpirada(self, isbn):
-        ReservaDaoJDBC().cancelarReserva(isbn)
+        # Marcar la reserva expirada como 'Caducada' y restaurar disponibilidad
+        ReservaDaoJDBC().caducarReservaPendiente(isbn)
         return LibroDaoJDBC().restaurarLibro(isbn)
 
     def contarReservasEstudiante(self, correo_estudiante):
@@ -37,7 +38,8 @@ class LogicaReservas:
         return ReservaDaoJDBC().esperaExpirada(isbn)
 
     def liberarEsperaExpirada(self, isbn):
-        ReservaDaoJDBC().cumplirReservaEspera(isbn)
+        # Marcar la reserva en espera expirada como 'Caducada' y restaurar disponibilidad
+        ReservaDaoJDBC().caducarReservaEspera(isbn)
         return LibroDaoJDBC().restaurarLibro(isbn)
 
     def obtenerReservasEstudiante(self, correo_estudiante):
