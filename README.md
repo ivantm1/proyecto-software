@@ -9,7 +9,7 @@ Aplicación de escritorio para la gestión integral de una biblioteca universita
 ```
 proyecto-software/
 ├── main.py                        # Punto de entrada
-├── SQLQuery1.sql                  # Script de creación de la base de datos
+├── DataBase.sql                  # Script de creación de la base de datos
 ├── lib/
 │   └── mssql-jdbc-13.4.0.jre11.jar
 └── src/
@@ -65,7 +65,7 @@ pip install PyQt5 jaydebeapi JPype1
 ## 🗄️ Configuración de la base de datos
 
 1. Abre **SQL Server Management Studio** (SSMS) o Azure Data Studio.
-2. Ejecuta el script completo `SQLQuery1.sql`. Esto crea la base de datos `BibliotecaDB`, todas las tablas y los datos iniciales.
+2. Ejecuta el script completo `DataBase.sql`. Esto crea la base de datos `BibliotecaDB`, todas las tablas y los datos iniciales.
 3. Crea el usuario de SQL Server con los siguientes credenciales (o edita `Conexion.py` con los tuyos):
 
 ## 👥 Roles de usuario
