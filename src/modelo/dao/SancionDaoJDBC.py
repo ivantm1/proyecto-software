@@ -56,7 +56,6 @@ class SancionDaoJDBC(Conexion):
     def eliminarSancion(self, correo_estudiante, tipo, fecha_inicio, duracion):
         cursor = self.getCursor()
         try:
-            # Averiguar si la que se elimina era Activa
             sql_estado = ("SELECT estado FROM Sanciones WHERE email = ? AND tipo = ? "
                           "AND fecha_inicio = ? AND duracion = ?")
             cursor.execute(sql_estado, (correo_estudiante, tipo, fecha_inicio, duracion))
@@ -78,7 +77,6 @@ class SancionDaoJDBC(Conexion):
         """Activa la sanción pendiente más antigua si no hay ninguna activa."""
         cursor = self.getCursor()
         try:
-            # Verificar que no haya otra activa ya
             cursor.execute(self.SQL_ACTIVA, (correo_estudiante,))
             if cursor.fetchone()[0] > 0:
                 return

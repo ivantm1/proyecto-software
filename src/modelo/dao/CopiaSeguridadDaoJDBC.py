@@ -54,19 +54,17 @@ class CopiaSeguridadDaoJDBC(Conexion):
             datos = json.load(f)
 
         cursor = self.getCursor()
-        # Desactivar auto-commit en el driver JDBC subyacente
         try:
             self.conexion.jconn.setAutoCommit(False)
         except Exception:
-            # Si no está disponible, intentar usar conexion.commit/rollback
             pass
 
         try:
-            # Borrar en orden inverso para respetar FK
+            # Borrar en orden inverso
             for tabla in reversed(self.TABLAS):
                 cursor.execute(f"DELETE FROM {tabla}")
 
-            # Insertar en orden normal
+            # Insertar
             for tabla in self.TABLAS:
                 filas = datos.get(tabla, [])
                 identidad_completa = f"dbo.{tabla}" if tabla in self.IDENTITY_TABLES else tabla
@@ -91,11 +89,10 @@ class CopiaSeguridadDaoJDBC(Conexion):
                     if identity_on:
                         cursor.execute(f"SET IDENTITY_INSERT {identidad_completa} OFF")
 
-            # Commit en el conector JDBC subyacente si existe
+            # Commit en el conector JDBC
             try:
                 self.conexion.jconn.commit()
             except Exception:
-                # Fallback a commit de jaydebeapi
                 self.conexion.commit()
         except Exception as e:
             try:

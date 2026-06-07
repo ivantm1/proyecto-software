@@ -42,7 +42,7 @@ class LogicaLibros:
         return True, ""
 
     def crearLibroVO(self, titulo, isbn, autor, tema, descripcion):
-        """Crea un VO de Libro con la información proporcionada."""
+        """Crea un VO de Libro."""
         hoy = datetime.date.today().strftime('%Y-%m-%d')
         return LibroVO(
             isbn=isbn,

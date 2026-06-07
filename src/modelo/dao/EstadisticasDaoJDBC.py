@@ -5,7 +5,6 @@ class EstadisticasDaoJDBC(Conexion):
     def obtener_top_temas(self, periodo):
         cursor = self.getCursor()
         try:
-            # Determinar la unidad y el valor para DATEADD según periodo
             if periodo == '1w':
                 dateadd = "DATEADD(week, -1, GETDATE())"
             elif periodo == '1m':
