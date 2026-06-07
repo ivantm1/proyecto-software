@@ -2,7 +2,7 @@ import datetime
 from src.modelo.dao.SancionDaoJDBC import SancionDaoJDBC
 
 class LogicaSanciones:
-    """Responsabilidad: sanciones a estudiantes y cálculos de retraso."""
+    """Sanciones a estudiantes por retraso, daño o sancion manual"""
 
     def aplicarSancionRetraso(self, correo_estudiante, semanas_retraso):
         return SancionDaoJDBC().aplicarSancionRetraso(correo_estudiante, semanas_retraso)

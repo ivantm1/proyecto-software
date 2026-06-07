@@ -10,7 +10,6 @@ class ControladorEstadisticas:
         self._logica = LogicaEstadisticas()
 
     def generarGrafica(self, sel):
-        # Mapear selección a código de periodo
         if 'Última semana' == sel:
             periodo = '1w'
         elif 'Último mes' == sel:
