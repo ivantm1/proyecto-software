@@ -1,7 +1,6 @@
 import os
 from datetime import datetime
 
-# ── Decorador Singleton (variante 1 del PDF) ─────────────────────────────────
 def singleton(cls):
     """
     Hace que `cls` tenga como máximo una instancia única.
@@ -17,7 +16,6 @@ def singleton(cls):
 
     return get_instance
 
-# ── Clase Logger decorada con @singleton ─────────────────────────────────────
 @singleton
 class Logger:
     """
@@ -32,7 +30,6 @@ class Logger:
         nombre = f"log_{datetime.now().strftime('%Y%m%d')}.txt"
         self._ruta = os.path.join(carpeta, nombre)
 
-    # ── Método interno de escritura ───────────────────────────────────────────
     def _escribir(self, nivel: str, accion: str, detalle: str = ""):
         marca = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         linea = f"[{marca}] [{nivel}] {accion}"
@@ -45,14 +42,12 @@ class Logger:
         except Exception as e:
             print(f"[Logger] Error escribiendo log: {e}")
 
-    # ── API pública ───────────────────────────────────────────────────────────
     def info(self, accion: str, detalle: str = ""):
         self._escribir("INFO ", accion, detalle)
 
     def error(self, accion: str, detalle: str = ""):
         self._escribir("ERROR", accion, detalle)
 
-    # ── Métodos semánticos para cada evento de la app ─────────────────────────
 
     def login_ok(self, correo: str, tipo: str):
         self.info("INICIO_SESION", f"usuario={correo} tipo={tipo}")

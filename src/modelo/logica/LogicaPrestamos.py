@@ -5,7 +5,7 @@ from src.modelo.dao.SancionDaoJDBC import SancionDaoJDBC
 from src.modelo.dao.BuscarEstudianteDaoJDBC import BuscarEstudianteDaoJDBC
 
 class LogicaPrestamos:
-    """Responsabilidad: ciclo de vida y consultas de préstamos."""
+    """Consultas de préstamos y gestión de devoluciones ."""
 
     MAX_PRESTAMOS_ACTIVOS = 7
 
@@ -63,7 +63,7 @@ class LogicaPrestamos:
             return False, "No es posible prestar el libro porque ya está prestado."
 
         if disponibilidad == 'reservado':
-            # Si el libro está marcado como reservado, solo el alumno con la reserva en 'Espera' puede recogerlo
+            #Si el libro está reservado solo puede tomarlo prestado el estudiante que lo tenía reservado
             reserva_espera = ReservaDaoJDBC().obtenerReservaEnEspera(isbn)
             if reserva_espera:
                 if reserva_espera.correo_estudiante != correo_estudiante:
@@ -71,7 +71,7 @@ class LogicaPrestamos:
                         f"Este libro está reservado para el alumno {reserva_espera.correo_estudiante}. "
                         "Solo ese alumno puede recogerlo."
                     )
-                # es el alumno correcto: permitir el préstamo (la reserva será cumplida en registrarPrestamo)
+                
             else:
                 if ReservaDaoJDBC().reservaExpirada(isbn):
                     ReservaDaoJDBC().cancelarReserva(isbn)

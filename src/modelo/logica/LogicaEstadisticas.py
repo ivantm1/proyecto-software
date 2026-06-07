@@ -26,17 +26,17 @@ class LogicaEstadisticas:
 
         # Dibujar en la figura
         figura.clear()
-        figura.patch.set_facecolor('#F7F9FC')   # fondo de la figura ligeramente azulado
+        figura.patch.set_facecolor('#F7F9FC')
 
         ax = figura.add_subplot(111)
-        ax.set_facecolor('#F7F9FC')             # fondo del área de trazado igual
+        ax.set_facecolor('#F7F9FC')
 
-        # --- Paleta de color degradada según el valor (más préstamos → más oscuro) ---
+        #Cuanto más prestamos tenga, el color será mas oscuro.
         max_count = max(counts) if counts else 1
         colores = [
-            (0.18 + 0.42 * (v / max_count),    # R
-             0.44 + 0.20 * (v / max_count),    # G
-             0.80 - 0.30 * (v / max_count))    # B
+            (0.18 + 0.42 * (v / max_count),
+             0.44 + 0.20 * (v / max_count),
+             0.80 - 0.30 * (v / max_count))
             for v in counts[::-1]
         ]
 
@@ -49,7 +49,7 @@ class LogicaEstadisticas:
             height=0.6,
         )
 
-        # --- Etiquetas de valor al final de cada barra ---
+        #Numero de prestamos al final de las barras
         for bar in bars:
             w = bar.get_width()
             ax.text(
@@ -63,23 +63,20 @@ class LogicaEstadisticas:
                 color='#333333',
             )
 
-        # --- Grid vertical suave solo en el eje X ---
         ax.xaxis.grid(True, linestyle='--', linewidth=0.5, color='#CCCCCC', alpha=0.7)
         ax.set_axisbelow(True)
 
-        # --- Quitar bordes sobrantes ---
         for spine in ['top', 'right', 'left']:
             ax.spines[spine].set_visible(False)
         ax.spines['bottom'].set_color('#CCCCCC')
 
-        # --- Etiquetas de ejes y título ---
+        #Titulos y ejes
         ax.set_xlabel('Número de préstamos', fontsize=10, color='#555555', labelpad=8)
         ax.tick_params(axis='y', labelsize=9, colors='#333333', length=0)
         ax.tick_params(axis='x', labelsize=8, colors='#777777', length=0)
 
         ax.set_title(titulo, fontsize=13, fontweight='bold', color='#1A2E4A', pad=14)
 
-        # --- Ajuste de márgenes para que las etiquetas de valor no queden cortadas ---
         ax.set_xlim(0, max_count * 1.15)
 
         figura.tight_layout(pad=1.5)

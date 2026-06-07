@@ -16,12 +16,10 @@ class VistaEstadisticas(QDialog, Form):
         self.boton_buscar.clicked.connect(self.on_generar_grafica)
         self.boton_volver.clicked.connect(self.on_volver_click)
 
-        # Canvas de Matplotlib embebido
         self.figure = Figure(figsize=(8, 6))
         self.canvas = FigureCanvas(self.figure)
         self.canvas.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
-        # Poner el canvas en label_2
         if hasattr(self, 'label_2'):
             container = self.label_2
             container.setText("")
@@ -35,7 +33,6 @@ class VistaEstadisticas(QDialog, Form):
         self._controlador = None
 
     def on_generar_grafica(self):
-        # Mapear selección a código de periodo
         sel = self.opcion_buscador.currentText()
         self._controlador.generarGrafica(sel)
 

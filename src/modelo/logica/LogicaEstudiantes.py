@@ -5,7 +5,7 @@ from src.modelo.logica.LogicaReservas import LogicaReservas
 from src.modelo.logica.LogicaSanciones import LogicaSanciones
 
 class LogicaEstudiantes:
-    """Responsabilidad: búsqueda de estudiantes y gestión de temas favoritos."""
+    """Búsqueda de estudiantes y gestión de temas favoritos."""
 
     def buscarEstudiante(self, correo):
         return BuscarEstudianteDaoJDBC().buscarEstudiante(correo)
