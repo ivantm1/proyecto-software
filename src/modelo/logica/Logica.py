@@ -137,6 +137,9 @@ class Logica:
     def cancelarReserva(self, isbn):
         return self._reservas.cancelarReserva(isbn)
 
+    def cancelarReservaCaducada(self, isbn):
+        return self._reservas.cancelarReservaCaducada(isbn)
+
     def liberarReservaExpirada(self, isbn):
         return self._reservas.liberarReservaExpirada(isbn)
 

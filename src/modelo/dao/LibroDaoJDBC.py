@@ -55,7 +55,7 @@ class LibroDaoJDBC(Conexion):
                 p.fecha_devolucion
             FROM Libros l
             LEFT JOIN Prestamos p ON l.ISBN = p.ISBN AND p.estado = 'Activo'
-            WHERE l.titulo LIKE ?
+            WHERE l.titulo COLLATE Latin1_General_CI_AI LIKE ? COLLATE Latin1_General_CI_AI
         """
         params = [titulo_like]
         if tema != "Ninguno" and tema != "":

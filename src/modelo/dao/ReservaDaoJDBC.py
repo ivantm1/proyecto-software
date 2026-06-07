@@ -6,6 +6,7 @@ from src.modelo.dao.LibroDaoJDBC import LibroDaoJDBC
 class ReservaDaoJDBC(Conexion):
     SQL_CREAR           = "INSERT INTO Reservas (email, ISBN, fecha_reserva) VALUES (?, ?, ?)"
     SQL_CANCELAR        = "DELETE FROM Reservas WHERE ISBN = ? AND estado = 'Pendiente'"
+    SQL_CANCELAR_CADUCADA = "DELETE FROM Reservas WHERE ISBN = ? AND estado = 'Caducada'"
     SQL_RESERVAS_EST    = "SELECT ISBN, email, fecha_reserva FROM Reservas WHERE email = ? AND estado = 'Pendiente'"
     SQL_RESERVA_LIBRO   = "SELECT email, fecha_reserva FROM Reservas WHERE ISBN = ? AND estado = 'Pendiente'"
     SQL_CUENTA_RESERVAS = "SELECT COUNT(*) FROM Reservas WHERE email = ? AND estado IN ('Pendiente', 'Espera')"
@@ -37,7 +38,7 @@ class ReservaDaoJDBC(Conexion):
         FROM Reservas p
         JOIN Libros l ON p.ISBN = l.ISBN
         WHERE p.email = ?
-        AND l.titulo LIKE ?
+        AND l.titulo COLLATE Latin1_General_CI_AI LIKE ? COLLATE Latin1_General_CI_AI
     """
  
     SQL_BUSCAR_RESERVAS_TEMA = """
@@ -45,7 +46,7 @@ class ReservaDaoJDBC(Conexion):
         FROM Reservas p
         JOIN Libros l ON p.ISBN = l.ISBN
         WHERE p.email = ?
-        AND l.titulo LIKE ?
+        AND l.titulo COLLATE Latin1_General_CI_AI LIKE ? COLLATE Latin1_General_CI_AI
         AND l.nombre_tema = ?
     """
 
@@ -84,6 +85,20 @@ class ReservaDaoJDBC(Conexion):
             return True
         except Exception as e:
             print(f"Error en cancelarReserva: {e}")
+            return False
+
+    def cancelarReservaCaducada(self, isbn):
+        cursor = self.getCursor()
+        try:
+            cursor.execute(self.SQL_CANCELAR_CADUCADA, (isbn,))
+            self.conexion.commit()
+            try:
+                LibroDaoJDBC().restaurarLibro(isbn)
+            except Exception:
+                pass
+            return True
+        except Exception as e:
+            print(f"Error en cancelarReservaCaducada: {e}")
             return False
 
     def obtenerReservasEstudiante(self, correo_estudiante):

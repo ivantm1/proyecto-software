@@ -165,7 +165,7 @@ QPushButton:pressed {
 }</string>
        </property>
        <property name="text">
-        <string>Libros Reservados</string>
+        <string>Libros reservados</string>
        </property>
       </widget>
      </item>

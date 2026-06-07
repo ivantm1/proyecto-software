@@ -27,8 +27,8 @@ class VistaCatalogo(QDialog, Form):
 
     def on_buscar_click(self):
         if self.controlador:
-            texto_busqueda = self.linea_busqueda.text()
-            tema = self.opcion_buscador.currentText()
+            texto_busqueda = self.linea_busqueda.text().strip()
+            tema = self.opcion_buscador.currentText().strip()
             self.controlador.buscarLibro(texto_busqueda, tema)
 
     def on_volver_click(self):

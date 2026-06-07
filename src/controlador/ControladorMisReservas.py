@@ -23,6 +23,9 @@ class ControladorMisReservas:
             reservas = self._modelo.buscarReservasEstudiante(self._correo, titulo, tema)
             self._vista.mostrarReservas(reservas)
 
+    def finalizarReservaCaducada(self, isbn):
+        return self._modelo.cancelarReservaCaducada(isbn)
+
     def registroAtras(self):
         self._vista.close()
         self._vista_origen.showMaximized()
