@@ -57,7 +57,7 @@ CREATE TABLE Libros (
 CREATE TABLE Sanciones (
     ID_sancion INT PRIMARY KEY IDENTITY(1,1),
     tipo VARCHAR(100) NOT NULL,
-	estado VARCHAR(40) CHECK (estado IN ('Activa', 'Cumplida')),
+	estado VARCHAR(40) CHECK (estado IN ('Activa', 'Pendiente', 'Cumplida')),
     fecha_inicio DATE NOT NULL,
     duracion INT,
     email VARCHAR(100) NOT NULL, 
