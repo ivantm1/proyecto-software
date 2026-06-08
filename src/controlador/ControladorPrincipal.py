@@ -1,7 +1,7 @@
 from src.modelo.vo.LoginVO import LoginVO
 from src.modelo.vo.RegistroVO import RegistroVO
 from src.modelo.logica.LoggerSingleton import Logger
-from PyQt5.QtWidgets import QApplication, QMessageBox
+from PyQt5.QtWidgets import QApplication
 from src.controlador.ControladorCatalogo import ControladorCatalogo
 from src.controlador.ControladorMisPrestamos import ControladorMisPrestamos
 from src.controlador.ControladorMisReservas import ControladorMisReservas
@@ -257,19 +257,19 @@ class ControladorPrincipal:
         self._vistaAnadirLibro.showMaximized()
 
     def cerrarSesion(self):
-        msg = QMessageBox()
-        msg.setWindowTitle("Cerrar sesión")
-        msg.setText("¿Estás seguro de que quieres cerrar sesión?")
-        msg.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
-        msg.button(QMessageBox.Yes).setText("Sí")
-        msg.button(QMessageBox.No).setText("No")
-        respuesta = msg.exec_()
-        if respuesta == QMessageBox.Yes:
-            Logger().cierre_sesion(self._usuario_activo.correo)
-            self._cerrando_por_cerrar_sesion = True
-            if self._vistaRegistro:
-                QApplication.closeAllWindows()
-                self.ventanaIniciarSesion()
+        if not self._vistaAdmin or not self._vistaAdmin.confirmarAccion(
+            "Cerrar sesión",
+            "¿Estás seguro de que quieres cerrar sesión?",
+            si_text="Sí",
+            no_text="No"
+        ):
+            return
+
+        Logger().cierre_sesion(self._usuario_activo.correo)
+        self._cerrando_por_cerrar_sesion = True
+        if self._vistaRegistro:
+            QApplication.closeAllWindows()
+            self.ventanaIniciarSesion()
 
     def ventanaBuscarEstudiante(self):
         if not self._vistaBuscarEstudiante:
@@ -281,32 +281,30 @@ class ControladorPrincipal:
         self._vistaBuscarEstudiante.showMaximized()
 
     def realizarCopiaSeguridad(self):
-        from PyQt5.QtWidgets import QMessageBox
-
         exito, info = self._modelo.realizarCopiaSeguridad()
         actor = self._usuario_activo.correo if self._usuario_activo else "desconocido"
-        msg = QMessageBox()
         if exito:
             Logger().copia_seguridad_ok(info, actor)
-            msg.setWindowTitle("Copia de seguridad")
-            msg.setIcon(QMessageBox.Information)
-            msg.setText("Copia de seguridad creada correctamente.")
-            msg.setInformativeText(f"Guardada en:\n{info}")
+            if self._vistaAdmin:
+                self._vistaAdmin.lanzarAviso(
+                    f"Copia de seguridad creada correctamente.\nGuardada en:\n{info}"
+                )
         else:
             Logger().copia_seguridad_error(info, actor)
-            msg.setWindowTitle("Error")
-            msg.setIcon(QMessageBox.Critical)
-            msg.setText("No se pudo crear la copia de seguridad.")
-            msg.setInformativeText(info)
-        msg.exec_()
+            if self._vistaAdmin:
+                self._vistaAdmin.lanzarAviso(
+                    f"No se pudo crear la copia de seguridad.\n{info}",
+                    error=True
+                )
 
     def restaurarCopiaSeguridad(self):
         import os
-        from PyQt5.QtWidgets import QInputDialog, QMessageBox
+        from PyQt5.QtWidgets import QInputDialog
 
         carpeta = os.path.join(os.getcwd(), "copias_seguridad")
         if not os.path.isdir(carpeta):
-            QMessageBox.warning(None, "Sin copias", "No existe la carpeta 'copias_seguridad'.")
+            if self._vistaAdmin:
+                self._vistaAdmin.lanzarAviso("No existe la carpeta 'copias_seguridad'.", error=True)
             return
 
         archivos = sorted(
@@ -315,7 +313,8 @@ class ControladorPrincipal:
         )
 
         if not archivos:
-            QMessageBox.warning(None, "Sin copias", "No hay copias de seguridad disponibles.")
+            if self._vistaAdmin:
+                self._vistaAdmin.lanzarAviso("No hay copias de seguridad disponibles.", error=True)
             return
 
         archivo, ok = QInputDialog.getItem(
@@ -330,18 +329,14 @@ class ControladorPrincipal:
         if not ok or not archivo:
             return
 
-        msg = QMessageBox()
-        msg.setWindowTitle("¿Confirmar restauración?")
-        msg.setIcon(QMessageBox.Warning)
-        msg.setText(f"¿Seguro que quieres restaurar '{archivo}'?")
-        msg.setInformativeText(
+        if not self._vistaAdmin or not self._vistaAdmin.confirmarAccion(
+            "¿Confirmar restauración?",
+            f"¿Seguro que quieres restaurar '{archivo}'?\n\n"
             "Esta operación sobreescribirá TODOS los datos actuales de la base de datos. "
-            "Esta acción no se puede deshacer."
-        )
-        msg.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
-        msg.button(QMessageBox.Yes).setText("Sí, restaurar")
-        msg.button(QMessageBox.No).setText("Cancelar")
-        if msg.exec_() != QMessageBox.Yes:
+            "Esta acción no se puede deshacer.",
+            si_text="Sí, restaurar",
+            no_text="Cancelar"
+        ):
             return
 
         ruta = os.path.join(carpeta, archivo)
@@ -349,20 +344,18 @@ class ControladorPrincipal:
 
         exito, info = self._modelo.restaurarCopiaSeguridad(ruta)
 
-        resultado_msg = QMessageBox()
-        if exito:
-            Logger().info(f"Restauración completada desde '{archivo}' por {actor}")
-            resultado_msg.setWindowTitle("Restauración completada")
-            resultado_msg.setIcon(QMessageBox.Information)
-            resultado_msg.setText("Base de datos restaurada correctamente.")
-            resultado_msg.setInformativeText(f"Copia usada:\n{info}")
-        else:
-            Logger().error(f"Error al restaurar desde '{archivo}' por {actor}: {info}")
-            resultado_msg.setWindowTitle("Error en la restauración")
-            resultado_msg.setIcon(QMessageBox.Critical)
-            resultado_msg.setText("No se pudo restaurar la copia de seguridad.")
-            resultado_msg.setInformativeText(info)
-        resultado_msg.exec_()
+        if self._vistaAdmin:
+            if exito:
+                Logger().info(f"Restauración completada desde '{archivo}' por {actor}")
+                self._vistaAdmin.lanzarAviso(
+                    f"Base de datos restaurada correctamente.\nCopia usada:\n{info}"
+                )
+            else:
+                Logger().error(f"Error al restaurar desde '{archivo}' por {actor}: {info}")
+                self._vistaAdmin.lanzarAviso(
+                    f"No se pudo restaurar la copia de seguridad.\n{info}",
+                    error=True
+                )
 
     def ventanaEstadisticas(self):
         if not self._vistaEstadistica:

@@ -1,4 +1,3 @@
-from PyQt5.QtWidgets import QMessageBox
 from src.modelo.logica.LoggerSingleton import Logger
 
 class ControladorDevolucion:
@@ -60,9 +59,7 @@ class ControladorDevolucion:
         reserva = self._modelo.obtenerReservaPorLibro(isbn)
         if reserva:
             self._modelo.marcarReservaEspera(isbn)
-            QMessageBox.information(
-                self._vista,
-                "Libro con reserva",
+            self._vista.lanzarAviso(
                 f"El libro devuelto tiene una reserva activa del alumno {reserva.correo_estudiante}.\n"
                 "La reserva ha pasado a estado 'Espera'. El alumno tiene 7 días para recoger el libro.\n"
                 "Si no lo recoge en ese plazo, la reserva se cancelará automáticamente."

@@ -35,7 +35,7 @@ class VistaGestionarEstudiante(QDialog, Form):
     def on_hacer_prestamo_click(self):
         isbn = self.lineEdit.text().strip()
         if not isbn:
-            QMessageBox.warning(self, "Aviso", "Por favor, introduce un ISBN válido para realizar el préstamo.")
+            self.lanzarAviso("Por favor, introduce un ISBN válido para realizar el préstamo.")
             return
             
         if self._controlador:
@@ -56,6 +56,9 @@ class VistaGestionarEstudiante(QDialog, Form):
     def on_gestionar_sanciones_click(self):
         if self._controlador and self._correo_estudiante:
             self._controlador.gestionarSanciones(self._correo_estudiante)
+
+    def lanzarAviso(self, aviso):
+        QMessageBox.information(self, "Aviso", aviso)
 
     @property
     def controlador(self):

@@ -1,4 +1,3 @@
-from PyQt5.QtWidgets import QMessageBox
 from src.modelo.logica.LoggerSingleton import Logger
 from src.modelo.vo.RegistroVO import RegistroVO
 

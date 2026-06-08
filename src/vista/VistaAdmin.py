@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QDialog
+from PyQt5.QtWidgets import QDialog, QMessageBox
 from PyQt5 import uic
 
 Form, Window = uic.loadUiType("./src/vista/Ui/VistaAdmin.ui")
@@ -42,3 +42,18 @@ class VistaAdmin(QDialog, Form):
     @controlador.setter
     def controlador(self, ref_controlador):
         self._controlador = ref_controlador
+
+    def lanzarAviso(self, mensaje, error=False):
+        if error:
+            QMessageBox.critical(self, "Error", mensaje)
+        else:
+            QMessageBox.information(self, "Información", mensaje)
+
+    def confirmarAccion(self, titulo, pregunta, si_text="Sí", no_text="No"):
+        msg = QMessageBox(self)
+        msg.setWindowTitle(titulo)
+        msg.setText(pregunta)
+        msg.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
+        msg.button(QMessageBox.Yes).setText(si_text)
+        msg.button(QMessageBox.No).setText(no_text)
+        return msg.exec_() == QMessageBox.Yes

@@ -16,7 +16,7 @@ class VistaBuscarEstudiante(QDialog, Form):
     def on_buscar_click(self):
         correo = self.linea_busqueda.text().strip()
         if not correo:
-            QMessageBox.warning(self, "Aviso", "Por favor, introduce un correo electrónico.")
+            self.lanzarAviso("Por favor, introduce un correo electrónico.")
             return
             
         if self._controlador:
@@ -29,6 +29,9 @@ class VistaBuscarEstudiante(QDialog, Form):
     @property
     def controlador(self):
         return self._controlador
+
+    def lanzarAviso(self, aviso):
+        QMessageBox.information(self, "Aviso", aviso)
 
     @controlador.setter
     def controlador(self, ref_controlador):

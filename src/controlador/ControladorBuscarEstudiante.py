@@ -1,4 +1,3 @@
-from PyQt5.QtWidgets import QMessageBox
 from src.modelo.logica.LoggerSingleton import Logger
 from src.vista.VistaGestionarEstudiante import VistaGestionarEstudiante
 from src.vista.VistaSanciones import VistaSanciones
@@ -21,13 +20,12 @@ class ControladorBuscarEstudiante:
 
     def buscarEstudiante(self, correo):
         if not correo:
-            QMessageBox.warning(self._vista_buscar, "Aviso", "Por favor, introduce un correo electrónico.")
+            self._vista_buscar.lanzarAviso("Por favor, introduce un correo electrónico.")
             return
 
         resumen = self._modelo.obtenerResumenEstudiante(correo)
         if resumen is None:
-            QMessageBox.warning(self._vista_buscar, "No encontrado", 
-                                "No se encontró un estudiante con ese correo.")
+            self._vista_buscar.lanzarAviso("No se encontró un estudiante con ese correo.")
             return
 
         estudiante, num_prestamos, num_reservas, num_sanciones_activas = resumen
@@ -46,23 +44,22 @@ class ControladorBuscarEstudiante:
 
     def hacerPrestamoDesdeGestion(self, isbn, correo_estudiante):
         if not isbn:
-            QMessageBox.warning(self._vista_gestion, "Aviso", "Por favor, introduce un ISBN válido.")
+            self._vista_gestion.lanzarAviso("Por favor, introduce un ISBN válido.")
             return
 
         valido, mensaje = self._modelo.validarPrestamo(isbn, correo_estudiante)
         if not valido:
-            QMessageBox.warning(self._vista_gestion, "Aviso", mensaje)
+            self._vista_gestion.lanzarAviso(mensaje)
             return
 
         exito = self._modelo.registrarPrestamo(isbn, correo_estudiante)
         if exito:
             Logger().prestamo_ok(isbn, correo_estudiante, exito.fecha_devolucion)
-            QMessageBox.information(self._vista_gestion, "Éxito", "Préstamo registrado correctamente.")
+            self._vista_gestion.lanzarAviso("Préstamo registrado correctamente.")
             self.buscarEstudiante(correo_estudiante)
         else:
             Logger().prestamo_error(isbn, correo_estudiante, "Error en BD")
-            QMessageBox.warning(self._vista_gestion, "Error", 
-                                "No se pudo registrar el préstamo.")
+            self._vista_gestion.lanzarAviso("No se pudo registrar el préstamo.", error=True)
 
     def volverGestionarEstudiante(self):
         self._vista_gestion.close()
